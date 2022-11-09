@@ -14,12 +14,26 @@
         {% endblock %}
 
         {% block javascripts %}
-            {# {{ encore_entry_script_tags('app') }} #}
-            <script src="{{ asset('build/app.js') }}"></script>
+            <script src="{{ asset('build/app.js') }}" defer></script>
         {% endblock %}
     </head>
 
     <body>
-        {% block body %}{% endblock %}
+        <div class="container p-3">
+
+            <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('app_home') }}">Home</a>
+            
+            {% if app.user %}
+                <p>Logged as {{ app.user.username }}</p>
+
+                <a class="m-3 p-1 bg-gray-100 hover:bg-gray-200 text-xl border border-black rounded">Logout</a>
+            {% else %}
+                <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('app_login') }}">Login</a>
+
+                <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('app_register') }}">Register</a>
+            {% endif %}
+
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

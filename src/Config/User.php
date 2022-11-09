@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-enum User: int
+enum User
 {
     const DEFAULT_BALANCE = 100_000;
 }
