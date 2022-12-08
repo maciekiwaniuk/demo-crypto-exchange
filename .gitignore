@@ -17,5 +17,5 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 ###< php storm ###
-.idea
+.idea 
 ###< php storm ###
