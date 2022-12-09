@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use App\Config\BanStatus;
-use App\Config\User as UserEnum;
+use App\Config\User as UserConfig;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,9 +29,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -39,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
 
     #[ORM\Column]
-    private ?float $balance = UserEnum::DEFAULT_BALANCE;
+    private ?float $balance = UserConfig::DEFAULT_BALANCE;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastLoginIp = null;

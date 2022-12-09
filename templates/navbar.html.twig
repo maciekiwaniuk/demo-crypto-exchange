@@ -1,0 +1,13 @@
+<div class="flex flex-row mb-4">
+    <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('app_home') }}">Home</a>
+
+    {% if app.user %}
+        <p>Logged as {{ app.user.username }}</p>
+
+        <a class="m-3 p-1 bg-gray-100 hover:bg-gray-200 text-xl border border-black rounded">Logout</a>
+    {% else %}
+        <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('login') }}">Login</a>
+
+        <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('register') }}">Register</a>
+    {% endif %}
+</div>
