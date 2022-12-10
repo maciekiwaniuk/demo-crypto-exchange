@@ -1,10 +1,14 @@
 <div class="flex flex-row mb-4">
-    <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('app_home') }}">Home</a>
+    <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('home') }}">Home</a>
 
     {% if app.user %}
         <p>Logged as {{ app.user.username }}</p>
 
-        <a class="m-3 p-1 bg-gray-100 hover:bg-gray-200 text-xl border border-black rounded">Logout</a>
+        <form method="POST" action="{{ path('logout') }}">
+            <button type="submit" class="m-3 p-1 bg-gray-100 hover:bg-gray-200 text-xl border border-black rounded">
+                Logout
+            </button>
+        </form>
     {% else %}
         <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('login') }}">Login</a>
 
