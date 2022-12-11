@@ -21,12 +21,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
-            ->add('password', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-
-            ])
+            ->add('password', PasswordType::class)
         ;
 
     }
@@ -35,6 +30,8 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+//            'data_class' => UserRegistrationDto::class,
+???????????????????????????????????????????????????????
             'csrf_protection' => true,
             'csrf_field_name' => '_csrf_token'
         ]);

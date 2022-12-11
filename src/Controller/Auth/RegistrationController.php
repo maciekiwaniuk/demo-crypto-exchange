@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use App\Dto\UserRegistrationDto;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,7 +38,9 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $entityManager->persist($user);
+            $userRegistrationDto = new UserRegistrationDto($user);
+
+            $entityManager->persist($userRegistrationDto);
             $entityManager->flush();
 
             // // generate a signed url and email it to the user

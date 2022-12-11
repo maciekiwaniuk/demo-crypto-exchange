@@ -53,18 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addPropertyConstraint('email', new Email());
-        $metadata->addPropertyConstraint('username',
-            new Length([
-                'min' => 6,
-                'minMessage' => 'Your password should be at least {{ limit }} characters',
-                'max' => 40
-            ])
-        );
-    }
-
     public function getId(): ?int
     {
         return $this->id;

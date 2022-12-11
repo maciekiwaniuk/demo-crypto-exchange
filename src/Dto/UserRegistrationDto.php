@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Entity\User;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -26,4 +27,10 @@ class UserRegistrationDto
     ])]
     public $password;
 
+    public function __construct(User $user)
+    {
+        $this->email = $user->getEmail();
+        $this->username = $user->getUsername();
+        $this->password = $user->getPassword();
+    }
 }
