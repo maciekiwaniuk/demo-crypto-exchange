@@ -26,11 +26,4 @@ class UserRegistrationDto
         "maxMessage" => "Max 50 chars"
     ])]
     public $password;
-
-    public function __construct(User $user)
-    {
-        $this->email = $user->getEmail();
-        $this->username = $user->getUsername();
-        $this->password = $user->getPassword();
-    }
 }

@@ -25,12 +25,15 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'register', methods: ["GET", "POST"])]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $userRegistrationDto = new UserRegistrationDto;
+        $form = $this->createForm(RegistrationFormType::class, $userRegistrationDto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $user = new User();
+            $user->setEmail($userRegistrationDto->email);
+            $user->setUsername($userRegistrationDto->username);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -38,9 +41,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $userRegistrationDto = new UserRegistrationDto($user);
-
-            $entityManager->persist($userRegistrationDto);
+            $entityManager->persist($user);
             $entityManager->flush();
 
             // // generate a signed url and email it to the user
