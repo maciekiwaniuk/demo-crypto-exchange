@@ -5,26 +5,36 @@ namespace App\Controller\Auth;
 use App\Dto\UserRegistrationDto;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
 
 class RegistrationController extends AbstractController
 {
     // private EmailVerifier $emailVerifier;
 
     // public function __construct(EmailVerifier $emailVerifier)
-    public function __construct()
+
+    private LoginAuthenticator $authenticator;
+    public function __construct(LoginAuthenticator $authenticator)
     {
         // $this->emailVerifier = $emailVerifier;
+        $this->authenticator = $authenticator;
     }
 
     #[Route('/register', name: 'register', methods: ["GET", "POST"])]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        EntityManagerInterface $entityManager)
+    : Response {
         $userRegistrationDto = new UserRegistrationDto;
         $form = $this->createForm(RegistrationFormType::class, $userRegistrationDto);
         $form->handleRequest($request);
@@ -54,7 +64,7 @@ class RegistrationController extends AbstractController
             // );
             // // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('home');
+            $userAuthenticator->authenticateUser($user, $this->authenticator, $request);
         }
 
         return $this->render('auth/registration/register.html.twig', [

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use App\Dto\UserLoginDto;
 use App\Form\LoginFormType;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +19,14 @@ class LoginController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $form = $this->createForm(LoginFormType::class, null, [
+        $userLoginDto = new UserLoginDto();
+        $form = $this->createForm(LoginFormType::class, $userLoginDto, [
             'method' => 'POST',
             'action' => $this->generateUrl('login')
         ]);
 
         return $this->render('auth/login/index.html.twig', [
-            'error' => $error,
+            'error' => $authenticationUtils->getLastAuthenticationError(),
             'loginForm' => $form->createView()
         ]);
     }
