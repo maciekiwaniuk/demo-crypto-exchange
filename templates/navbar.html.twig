@@ -1,6 +1,8 @@
 <div class="flex flex-row mb-4">
     <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('home') }}">Home</a>
 
+    <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('ranking') }}">Ranking</a>
+
     {% if app.user %}
         <p>Logged as {{ app.user.username }}</p>
 
@@ -14,4 +16,5 @@
 
         <a class="m-3 p-1 text-xl border border-black rounded" href="{{ path('register') }}">Register</a>
     {% endif %}
+
 </div>
