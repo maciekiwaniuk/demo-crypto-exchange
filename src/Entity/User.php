@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use App\Config\BanStatus;
 use App\Config\User as UserConfig;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,26 +34,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 30, unique: true)]
     private ?string $username = null;
 
     #[ORM\Column]
-    private ?float $balance = UserConfig::DEFAULT_BALANCE;
+    private float $balance = UserConfig::DEFAULT_BALANCE;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 60, nullable: true)]
     private ?string $lastLoginIp = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $lastLoginTime = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastUserAgent = null;
 
     #[ORM\Column]
-    private ?string $banStatus = BanStatus::NOT_BANNED;
+    private string $banStatus = BanStatus::NOT_BANNED;
 
-    #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    #[ORM\Column(length: 20, nullable: true)]
+    private string $isVerified = UserConfig::EMAIL_NOT_VERIFIED;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Log::class, orphanRemoval: true)]
+    private Collection $logs;
+
+    public function __construct()
+    {
+        $this->logs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -203,6 +213,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Log>
+     */
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
+
+    public function addLog(Log $log): self
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs->add($log);
+            $log->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLog(Log $log): self
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getUserId() === $this) {
+                $log->setUserId(null);
+            }
+        }
 
         return $this;
     }
