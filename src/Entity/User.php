@@ -55,9 +55,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Log::class, orphanRemoval: true)]
     private Collection $logs;
 
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Transaction::class, orphanRemoval: true)]
+    private Collection $transactions;
+
     public function __construct()
     {
         $this->logs = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,9 +119,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return false;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -247,6 +248,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($log->getUserId() === $this) {
                 $log->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): self
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getUserId() === $this) {
+                $transaction->setUserId(null);
             }
         }
 
