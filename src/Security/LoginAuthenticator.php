@@ -23,12 +23,13 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'login';
 
+    private UrlGeneratorInterface $urlGenerator;
     private Security $security;
-
     private EntityManagerInterface $entityManager;
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator, Security $security, EntityManagerInterface $entityManager)
+    public function __construct(UrlGeneratorInterface $urlGenerator, Security $security, EntityManagerInterface $entityManager)
     {
+        $this->urlGenerator = $urlGenerator;
         $this->security = $security;
         $this->entityManager = $entityManager;
     }

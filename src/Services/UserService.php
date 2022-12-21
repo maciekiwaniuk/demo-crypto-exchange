@@ -7,8 +7,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserService
 {
-    public function getUserWithSetLastLoginAttributes(User $user, Request $request): User
-    {
 
-    }
 }
