@@ -10,19 +10,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         {% block stylesheets %}
+
             <link rel="stylesheet" type="text/css" href="{{ asset('build/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
-            <script src="{{ asset('build/app.js') }}" defer></script>
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
 
     <body>
+
         <div class="container p-3">
             {% include 'navbar.html.twig' %}
 
             {% block body %}{% endblock %}
+        </div>
+
+        <br>
+        <hr>
+        <br>
+
+        <div class="container max-w-screen max-h-screen m-5 p-5">
+            <div id="app"></div>
         </div>
     </body>
 </html>

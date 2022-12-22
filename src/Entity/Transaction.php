@@ -15,16 +15,16 @@ class Transaction
 
     #[ORM\ManyToOne(inversedBy: 'type')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user_id = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 50)]
     private ?string $type = null;
 
     #[ORM\ManyToOne]
-    private ?Cryptocurrency $crypto_id_sold = null;
+    private ?Cryptocurrency $crypto_sold = null;
 
     #[ORM\ManyToOne]
-    private ?Cryptocurrency $crypto_id_bought = null;
+    private ?Cryptocurrency $crypto_bought = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $number_of_crypto_sold = null;
@@ -43,14 +43,14 @@ class Transaction
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -67,26 +67,26 @@ class Transaction
         return $this;
     }
 
-    public function getCryptoIdSold(): ?Cryptocurrency
+    public function getCryptoSold(): ?Cryptocurrency
     {
-        return $this->crypto_id_sold;
+        return $this->crypto_sold;
     }
 
-    public function setCryptoIdSold(?Cryptocurrency $crypto_id_sold): self
+    public function setCryptoSold(?Cryptocurrency $crypto_sold): self
     {
-        $this->crypto_id_sold = $crypto_id_sold;
+        $this->crypto_sold = $crypto_sold;
 
         return $this;
     }
 
-    public function getCryptoIdBought(): ?Cryptocurrency
+    public function getCryptoBought(): ?Cryptocurrency
     {
-        return $this->crypto_id_bought;
+        return $this->crypto_bought;
     }
 
-    public function setCryptoIdBought(?Cryptocurrency $crypto_id_bought): self
+    public function setCryptoBought(?Cryptocurrency $crypto_bought): self
     {
-        $this->crypto_id_bought = $crypto_id_bought;
+        $this->crypto_bought = $crypto_bought;
 
         return $this;
     }
