@@ -20,6 +20,16 @@ security:
             logout:
                 path: logout
                 target: login
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            logout:
+                path: /api/logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

@@ -1,18 +1,11 @@
 <template>
-    Apka vue
+    <Login />
 </template>
 
-<script>
+<script setup>
+import Login from './components/Login.vue';
 
-
-export default {
-    name: 'App',
-    components: {
-
-    }
-}
 </script>
 
 <style lang="scss">
-
 </style>
