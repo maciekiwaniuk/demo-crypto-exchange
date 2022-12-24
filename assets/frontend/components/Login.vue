@@ -1,6 +1,8 @@
 <template>
+    <h1>Login page</h1>
+
     <form @submit.prevent="login();">
-        <label for="email">Emdsadsaail</label>
+        <label for="email">Email</label>
         <input type="text" id="email" v-model="email">
 
         <br>

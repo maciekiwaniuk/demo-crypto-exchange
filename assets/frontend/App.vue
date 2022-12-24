@@ -1,9 +1,10 @@
 <template>
-    <Login />
+    <Nav />
+    <router-view />
 </template>
 
 <script setup>
-import Login from './components/Login.vue';
+import Nav from "./components/Nav.vue";
 
 </script>
 
