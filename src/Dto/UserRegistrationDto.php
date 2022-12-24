@@ -30,4 +30,6 @@ class UserRegistrationDto
         "maxMessage" => "Max 50 chars"
     ])]
     public $password;
+
+
 }
