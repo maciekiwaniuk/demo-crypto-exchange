@@ -1,7 +1,7 @@
 <template>
-    <h1>Home page</h1>
+    <h1 class="text-5xl text-yellow-400">Home page</h1>
 
-    <p>Welcome on home page!</p>
+    <p class="test1234">Welcome on home page!</p>
 </template>
 
 <script setup>

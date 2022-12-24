@@ -15,5 +15,8 @@ import { createPinia } from 'pinia';
 const pinia = createPinia();
 app.use(pinia);
 
+/* import styles (tailwind css) */
+import './main.css';
+
 /* mount app */
 app.mount('#app');
