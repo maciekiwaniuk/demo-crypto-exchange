@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserRegistrationDto
+class UserRegistrationDto extends BaseDto
 {
     #[NotBlank()]
     #[Length([
@@ -35,21 +35,4 @@ class UserRegistrationDto
         'maxMessage' => 'Password can be up to 100 characters long.'
     ])]
     public $password;
-
-    public $errors;
-
-    public function setErrors($errors): void
-    {
-        $this->errors = $errors;
-    }
-
-    public function hasErrors(): bool
-    {
-        return count($this->errors) > 0;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
 }

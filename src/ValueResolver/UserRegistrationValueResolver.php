@@ -4,7 +4,6 @@ namespace App\ValueResolver;
 
 use App\Dto\Api\UserRegistrationDto;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -36,7 +35,9 @@ class UserRegistrationValueResolver implements ArgumentValueResolverInterface
         $errors = $this->validator->validate($dto);
         if (count($errors) > 0) {
             $dto->setErrors($errors);
+            $this->logger->debug('1', [$dto->getErrors()]);
         }
+
         yield $dto;
     }
 }

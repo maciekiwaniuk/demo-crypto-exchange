@@ -27,7 +27,8 @@ class RegistrationController extends AbstractController
 
         if ($dto->hasErrors()) {
             return $this->json([
-                'error' => $dto->getErrors()
+                'success' => false,
+                'errors' => $dto->getErrors()
             ]);
         }
 
@@ -42,6 +43,7 @@ class RegistrationController extends AbstractController
         $entityManager->flush();
 
         return $this->json([
+            'success' => true,
             'username' => $user->getUsername()
         ]);
     }
