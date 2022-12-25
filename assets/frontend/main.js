@@ -18,5 +18,8 @@ app.use(pinia);
 /* import styles (tailwind css) */
 import './main.css';
 
+/* axios default settings */
+import './axios';
+
 /* mount app */
 app.mount('#app');

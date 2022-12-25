@@ -13,9 +13,6 @@
         <button type="submit">Login</button>
     </form>
 
-    <br>
-
-    <button @click="checkAuthentication();">Check authentication</button>
 </template>
 
 <script setup>
@@ -29,43 +26,17 @@ const password = ref('');
 const authStore = useAuthStore();
 
 const login = async () => {
-    console.log('request na /api/login');
 
-    // await fetch('/api/login_check', {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     method: 'POST',
-    //     body: JSON.stringify({email: email.value, password: password.value}
-    // )})
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if (data.error) {
-    //             console.log(data.error);
-    //             return;
-    //         }
-    //         console.log(data);
-    //         // authStore.setAuthenticationToken(data.token);
-    //     });
+    try {
+        const response = await axios.post('/api/login_check', {
+            email: email.value,
+            password: password.value
+        });
 
-
-
-    await axios.post('/api/login_check', {
-        email: email.value,
-        password: password.value
-    }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            console.log('response');
-            console.log(response);
-        })
-        .catch(error => {
-            console.log('error');
-            console.log(error.response.data.message);
-        })
+        console.log(response);
+    } catch (error) {
+        console.log(error.response.data.message);
+    }
 }
 
 
