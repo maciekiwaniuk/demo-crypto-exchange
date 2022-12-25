@@ -22,7 +22,7 @@ class BaseDto
      */
     public function hasErrors(): bool
     {
-        return count($this->errors) > 0;
+        return isset($this->errors) && count($this->errors) > 0;
     }
 
     /**
