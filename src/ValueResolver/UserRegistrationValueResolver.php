@@ -35,7 +35,6 @@ class UserRegistrationValueResolver implements ArgumentValueResolverInterface
         $errors = $this->validator->validate($dto);
         if (count($errors) > 0) {
             $dto->setErrors($errors);
-            $this->logger->debug('1', [$dto->getErrors()]);
         }
 
         yield $dto;

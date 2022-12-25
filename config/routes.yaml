@@ -8,3 +8,9 @@ kernel:
 
 api_login_check:
     path: /api/login_check
+
+app_catch_all:
+    path: /{path}
+    controller: App\Controller\EntryController::index
+    requirements:
+        path: .*

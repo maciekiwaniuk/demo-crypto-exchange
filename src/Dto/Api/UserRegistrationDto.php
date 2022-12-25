@@ -5,6 +5,7 @@ namespace App\Dto\Api;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use App\Constraint\UniqueValueInEntity;
 
 class UserRegistrationDto extends BaseDto
 {
@@ -18,7 +19,7 @@ class UserRegistrationDto extends BaseDto
     public $username;
 
     #[NotBlank()]
-    #[Email]
+    #[Email()]
     #[Length([
         'min' => 5,
         'minMessage' => 'Email should be at least 5 characters long.',

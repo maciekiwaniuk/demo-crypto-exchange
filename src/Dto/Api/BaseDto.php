@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class BaseDto
 {
-    public ConstraintViolationList $errors;
+    private ConstraintViolationList $errors;
 
     /**
      * @param ConstraintViolationList $errors
