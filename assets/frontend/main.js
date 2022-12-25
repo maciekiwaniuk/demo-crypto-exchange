@@ -23,3 +23,8 @@ import './axios';
 
 /* mount app */
 app.mount('#app');
+
+/* set auth store */
+import { useAuthStore } from './stores/auth';
+const authStore = useAuthStore();
+authStore.setAuthenticationToken(localStorage.getItem('token') ?? '');

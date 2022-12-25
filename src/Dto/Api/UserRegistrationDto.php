@@ -5,7 +5,6 @@ namespace App\Dto\Api;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use App\Constraint\UniqueValueInEntity;
 
 class UserRegistrationDto extends BaseDto
 {
@@ -16,7 +15,7 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Username can be up to 100 characters long.'
     ])]
-    public $username;
+    public string $username;
 
     #[NotBlank()]
     #[Email()]
@@ -26,7 +25,7 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Email can be up to 100 characters long.'
     ])]
-    public $email;
+    public string $email;
 
     #[NotBlank()]
     #[Length([
@@ -35,5 +34,5 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Password can be up to 100 characters long.'
     ])]
-    public $password;
+    public string $password;
 }

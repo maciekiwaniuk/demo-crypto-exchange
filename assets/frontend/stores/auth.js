@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
         setAuthenticationToken(token) {
             this.isAuthenticated = true;
             this.token = token;
+            localStorage.setItem('token', `Bearer ${token}`);
         },
         setUser(user) {
             this.user = user;

@@ -6,8 +6,20 @@ import Registration from './components/Registration.vue';
 export const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: Home },
-        { path: '/login', component: Login },
-        { path: '/registration', component: Registration },
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/registration',
+            name: 'registration',
+            component: Registration
+        },
     ]
 })
