@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ax } from '../../axios';
+import { ax } from '../../plugins/axios';
 import { ref } from "vue";
 
 const email = ref(''),

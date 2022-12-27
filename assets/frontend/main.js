@@ -7,7 +7,7 @@ import App from './App.vue';
 const app = createApp(App);
 
 /* router */
-import { router } from './router';
+import { router } from './plugins/router';
 app.use(router);
 
 /* import pinia for state management */
@@ -18,10 +18,13 @@ app.use(pinia);
 /* import styles (tailwind css) */
 import './main.css';
 
-/* vue-auth plugin */
-import { auth } from './auth';
-app.use(auth);
-
 /* mount app */
 app.mount('#app');
 
+/* auth store */
+import { useAuthStore } from './stores/auth';
+const authStore = useAuthStore(),
+      JWToken = localStorage.getItem('token') ?? false;
+if (JWToken) {
+    authStore.setAuthenticationToken(JWToken);
+}
