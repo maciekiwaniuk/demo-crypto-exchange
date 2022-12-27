@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import { ax } from '../../axios';
 import { ref } from "vue";
 
 const email = ref(''),
@@ -28,7 +28,7 @@ const email = ref(''),
       password_confirm = ref('');
 
 const handleRegistration = async () => {
-    await axios.post('/api/register', {
+    await ax.post('/api/register', {
         username: username.value,
         email: email.value,
         password: password.value

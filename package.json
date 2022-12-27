@@ -27,11 +27,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@websanova/vue-auth": "^4.2.1",
         "axios": "^1.2.1",
         "jwt-decode": "^3.1.2",
         "pinia": "^2.0.28",
         "postcss-import": "^15.1.0",
         "vue": "^3.2.45",
+        "vue-auth": "^1.0.0-alpha.1",
         "vue-router": "^4.1.6"
     }
 }

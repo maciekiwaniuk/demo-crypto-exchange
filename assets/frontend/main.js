@@ -18,13 +18,10 @@ app.use(pinia);
 /* import styles (tailwind css) */
 import './main.css';
 
-/* axios default settings */
-import './axios';
+/* vue-auth plugin */
+import { auth } from './auth';
+app.use(auth);
 
 /* mount app */
 app.mount('#app');
 
-/* set auth store */
-import { useAuthStore } from './stores/auth';
-const authStore = useAuthStore();
-authStore.setAuthenticationToken(localStorage.getItem('token') ?? '');
