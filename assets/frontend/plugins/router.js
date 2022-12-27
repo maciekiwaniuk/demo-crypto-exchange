@@ -17,7 +17,7 @@ export const router = createRouter({
             name: 'login',
             component: Login,
             meta: {
-                auth: false
+                requiredStatus: 'guest'
             }
         },
         {
@@ -25,7 +25,7 @@ export const router = createRouter({
             name: 'registration',
             component: Registration,
             meta: {
-                auth: false
+                requiredStatus: 'guest'
             }
         },
         {
@@ -33,8 +33,14 @@ export const router = createRouter({
             name: 'user.settings',
             component: Settings,
             meta: {
-                auth: true
+                requiredStatus: 'user'
             }
         }
     ]
+});
+
+router.beforeEach((to, from) => {
+    console.log(to);
+    console.log(from);
+    console.log('----------');
 })
