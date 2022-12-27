@@ -33,6 +33,7 @@
         "pinia": "^2.0.28",
         "postcss-import": "^15.1.0",
         "vue": "^3.2.45",
+        "vue-cookies": "^1.8.2",
         "vue-router": "^4.1.6"
     }
 }

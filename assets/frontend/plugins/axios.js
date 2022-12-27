@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const JWToken = `Bearer ${localStorage.getItem('token') ?? ''}`
 
-export default axios.create({
+export const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/',
     timeout: 1000,
     headers: {

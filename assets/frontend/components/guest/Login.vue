@@ -19,7 +19,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
-import axios from '../../plugins/axios';
+import { axiosInstance } from '../../plugins/axios';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -29,14 +29,12 @@ const password = ref('');
 
 const login = async () => {
     try {
-        const response = await axios.post('/api/login_check', {
+        const response = await axiosInstance.post('/api/login_check', {
             email: email.value,
             password: password.value
         });
 
-        console.log(response);
-
-        authStore.setAuthenticationToken(response.data.token);
+        authStore.authenticate(response.data.token, response.data.roles);
         await router.push({ name:'home' });
 
     } catch (error) {
