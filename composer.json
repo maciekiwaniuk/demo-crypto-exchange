@@ -1,6 +1,8 @@
 {
     "type": "project",
     "license": "proprietary",
+    "description": "Demo cryptocurrencies exchange",
+    "keywords": ["Crypto", "Demo cryptocurrencies exchange"],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
@@ -17,7 +19,6 @@
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2",
-        "symfony/form": "6.1.*",
         "symfony/framework-bundle": "6.1.*",
         "symfony/http-client": "6.1.*",
         "symfony/mailer": "6.1.*",
