@@ -17,7 +17,10 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Username can be up to 100 characters long.'
     ])]
-    #[UniqueFieldInEntity(field: 'username', entityClassName: User::class)]
+    #[UniqueFieldInEntity(
+        field: 'username',
+        entityClassName: User::class
+    )]
     public string $username;
 
     #[NotBlank()]
@@ -28,7 +31,10 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Email can be up to 100 characters long.'
     ])]
-    #[UniqueFieldInEntity(field: 'email', entityClassName: User::class)]
+    #[UniqueFieldInEntity(
+        field: 'email',
+        entityClassName: User::class
+    )]
     public string $email;
 
     #[NotBlank()]
