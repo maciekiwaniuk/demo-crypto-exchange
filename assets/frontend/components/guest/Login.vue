@@ -33,9 +33,9 @@ const login = async () => {
             email: email.value,
             password: password.value
         });
-
+        console.log(response);
         authStore.authenticate(response.data.token, response.data.roles);
-        await router.push({ name:'home' });
+        await router.push({ name: 'home' });
 
     } catch (error) {
         console.log(error);

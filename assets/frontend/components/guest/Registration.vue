@@ -20,7 +20,7 @@
 
 <script setup>
 import { axiosInstance } from '../../plugins/axios';
-import { ref } from "vue";
+import { ref } from 'vue';
 
 const email = ref(''),
       username = ref(''),
@@ -28,14 +28,13 @@ const email = ref(''),
       password_confirm = ref('');
 
 const handleRegistration = async () => {
+    console.log(email.value);
+    console.log(username.value);
+    console.log(password.value);
     await axiosInstance.post('/api/register', {
         username: username.value,
         email: email.value,
         password: password.value
-    }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
     })
         .then(response => {
             console.log(response);

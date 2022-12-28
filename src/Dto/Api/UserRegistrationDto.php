@@ -2,6 +2,8 @@
 
 namespace App\Dto\Api;
 
+use App\Entity\User;
+use App\Validator\Constraints\UniqueFieldInEntity;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -15,6 +17,7 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Username can be up to 100 characters long.'
     ])]
+    #[UniqueFieldInEntity(field: 'username', entityClassName: User::class)]
     public string $username;
 
     #[NotBlank()]
@@ -25,6 +28,7 @@ class UserRegistrationDto extends BaseDto
         'max' => 100,
         'maxMessage' => 'Email can be up to 100 characters long.'
     ])]
+    #[UniqueFieldInEntity(field: 'email', entityClassName: User::class)]
     public string $email;
 
     #[NotBlank()]

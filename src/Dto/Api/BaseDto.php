@@ -4,7 +4,7 @@ namespace App\Dto\Api;
 
 use Symfony\Component\Validator\ConstraintViolationList;
 
-class BaseDto
+abstract class BaseDto
 {
     private ConstraintViolationList $errors;
 

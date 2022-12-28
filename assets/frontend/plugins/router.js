@@ -63,9 +63,4 @@ router.beforeEach((to, from) => {
 
         if (!foundAdminRule) return false;
     }
-
-
-    console.log(to);
-    console.log(from);
-    console.log('----------');
 })
