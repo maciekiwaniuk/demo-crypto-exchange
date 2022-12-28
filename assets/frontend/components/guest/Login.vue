@@ -38,6 +38,7 @@ const login = async () => {
         await router.push({ name:'home' });
 
     } catch (error) {
+        console.log(error);
         console.log(error.response.data.message);
     }
 }
