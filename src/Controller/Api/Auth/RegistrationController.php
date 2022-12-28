@@ -44,8 +44,8 @@ class RegistrationController extends AbstractController
         $hashedPassword = $passwordHasher->hashPassword($user, $dto->password);
         $user->setPassword($hashedPassword);
 
-//        $entityManager->persist($user);
-//        $entityManager->flush();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         $token = $JWTManager->create($user);
 

@@ -5,7 +5,7 @@ const JWToken = `Bearer ${cookies.get('token') ?? ''}`
 
 export const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/',
-    timeout: 1000,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
         'Authorization': JWToken

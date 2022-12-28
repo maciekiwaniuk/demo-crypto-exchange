@@ -2,16 +2,18 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Tests\TestCase\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class EntryControllerTest extends WebTestCase
 {
     public function testIndex(): void
     {
-        $client = static::createClient();
+        $client = $this->createGuestApiClient();
         $client->request('GET', '/');
 
-        $this->assertResponseIsSuccessful('Successfully made request to entry point of app');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }
