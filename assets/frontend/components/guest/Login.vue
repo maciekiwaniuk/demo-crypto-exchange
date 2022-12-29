@@ -38,6 +38,11 @@ const login = async () => {
         await router.push({ name: 'home' });
 
     } catch (error) {
+        Swal({
+            title: error.response.data.message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
         console.log(error);
         console.log(error.response.data.message);
     }

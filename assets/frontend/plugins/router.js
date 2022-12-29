@@ -54,13 +54,13 @@ router.beforeEach((to, from) => {
 
     if (to.meta.requiredStatus === 'admin') {
         const roles = authStore.getRolesOfCurrentlyAuthenticatedUser(),
-              adminRule = 'ROLE_ADMIN';
+              adminRole = 'ROLE_ADMIN';
 
-        let foundAdminRule = false;
+        let foundAdminRole = false;
         roles.forEach(role => {
-            if (role === adminRule) foundAdminRule = true;
+            if (role === adminRole) foundAdminRole = true;
         });
 
-        if (!foundAdminRule) return false;
+        if (!foundAdminRole) return false;
     }
 })

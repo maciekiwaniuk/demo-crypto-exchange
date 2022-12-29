@@ -15,6 +15,7 @@ final class AuthenticationSuccessListener
         $roles = $user->getRoles();
 
         $finalData = [
+            'success' => true,
             'token' => $token,
             'roles' => $roles,
         ];

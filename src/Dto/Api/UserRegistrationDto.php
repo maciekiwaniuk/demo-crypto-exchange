@@ -12,8 +12,8 @@ class UserRegistrationDto extends BaseDto
 {
     #[NotBlank()]
     #[Length([
-        'min' => 5,
-        'minMessage' => 'Username should be at least 5 characters long.',
+        'min' => 3,
+        'minMessage' => 'Username should be at least 3 characters long.',
         'max' => 100,
         'maxMessage' => 'Username can be up to 100 characters long.'
     ])]

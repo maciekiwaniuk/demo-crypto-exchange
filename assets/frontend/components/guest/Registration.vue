@@ -19,8 +19,13 @@
 </template>
 
 <script setup>
-import { axiosInstance } from '../../plugins/axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../../stores/auth';
+import { axiosInstance } from '../../plugins/axios';
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref(''),
       username = ref(''),
@@ -37,9 +42,23 @@ const handleRegistration = async () => {
         password: password.value
     })
         .then(response => {
+            if (!response.data.success) {
+                Swal({
+                    title: 'Whoops...',
+                    text: Object.values(response.data.errors)[0],
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+                return;
+            }
+
+            authStore.authenticate(response.data.token, response.data.roles);
+            router.push({ name: 'home' });
+            console.log('response');
             console.log(response);
         })
         .catch(error => {
+            console.log('error');
             console.log(error);
         })
 }

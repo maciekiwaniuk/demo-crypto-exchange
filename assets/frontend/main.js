@@ -6,13 +6,19 @@ import { createApp } from 'vue';
 import { router } from './plugins/router';
 import { createPinia } from 'pinia';
 import { checkAuthentication } from './functions/checkAuthentication';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import './main.css';
 
 const pinia = createPinia();
 
-createApp(App)
-    .use(pinia)
+const app = createApp(App);
+
+app.use(pinia)
     .use(router)
+    .use(VueSweetalert2)
     .mount('#app');
+
+window.Swal = app.config.globalProperties.$swal;
 
 checkAuthentication();
