@@ -17,9 +17,14 @@ class RegistrationController extends AbstractController
 {
     /**
      * @param UserRegistrationDto $dto
+     * @var string $username
+     * @var string $email
+     * @var string $password
+     *
      * @param UserPasswordHasherInterface $passwordHasher
      * @param EntityManagerInterface $entityManager
      * @param JWTTokenManagerInterface $JWTManager
+     *
      * @return Response
      */
     #[Route('/register', name: 'register', methods: ['POST'])]

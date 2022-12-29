@@ -14,7 +14,7 @@ class RegistrationControllerTest extends WebTestCase
         $client = $this->createGuestApiClient();
         $data = [
             'username' => 'test1234',
-            'email' => 'test1234@wp.pl',
+            'email' => 'test1234@test.pl',
             'password' => 'test1234',
             'password_confirm' => 'test1234'
         ];

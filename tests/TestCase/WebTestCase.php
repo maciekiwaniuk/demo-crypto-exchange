@@ -13,7 +13,7 @@ class WebTestCase extends BaseWebTestCase
     protected function createGuestApiClient(): KernelBrowser
     {
         return static::createClient([], [
-            'Content-Type' => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
         ]);
     }
 
@@ -29,7 +29,7 @@ class WebTestCase extends BaseWebTestCase
         static::ensureKernelShutdown();
 
         return static::createClient([], [
-            'Content-Type' => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
             'Bearer' => 'Token ' . $token,
         ]);
     }
