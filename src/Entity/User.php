@@ -64,6 +64,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->transactions = new ArrayCollection();
     }
 
+    public function fillDataAfterSuccessfulAuthentication(string $ip, string $userAgent, \DateTime $time): void
+    {
+        $this->setLastLoginIp($ip);
+        $this->setLastUserAgent($userAgent);
+        $this->setLastLoginTime($time->format('Y-m-d h:i:s'));
+    }
+
     public function getId(): ?int
     {
         return $this->id;

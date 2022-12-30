@@ -9,10 +9,6 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener('lexik_jwt_authentication.on_authentication_failure')]
 final class AuthenticationFailureListener
 {
-    public function __construct(public LoggerInterface $logger)
-    {
-    }
-
     public function __invoke(AuthenticationFailureEvent $event): void
     {
         $response = $event->getResponse();

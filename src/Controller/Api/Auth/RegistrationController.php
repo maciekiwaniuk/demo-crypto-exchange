@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,6 +32,7 @@ class RegistrationController extends AbstractController
     public function register(
         UserRegistrationDto $dto,
         UserPasswordHasherInterface $passwordHasher,
+        Request $request,
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $JWTManager
     ): Response {
@@ -48,6 +50,11 @@ class RegistrationController extends AbstractController
 
         $hashedPassword = $passwordHasher->hashPassword($user, $dto->password);
         $user->setPassword($hashedPassword);
+
+        $ip = $request->getClientIp();
+        $userAgent = $request->headers->get('User-Agent');
+        $time = new \DateTime('now');
+        $user->fillDataAfterSuccessfulAuthentication($ip, $userAgent, $time);
 
         $entityManager->persist($user);
         $entityManager->flush();

@@ -33,9 +33,16 @@ const email = ref(''),
       password_confirm = ref('');
 
 const handleRegistration = async () => {
-    console.log(email.value);
-    console.log(username.value);
-    console.log(password.value);
+    if (password.value !== password_confirm.value) {
+        Swal({
+            title: 'Whoops...',
+            text: 'Confirmation of password was different than in password field.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        })
+        return;
+    }
+
     await axiosInstance.post('/api/register', {
         username: username.value,
         email: email.value,
