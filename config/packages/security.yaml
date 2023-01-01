@@ -27,7 +27,6 @@ security:
             provider: users
             jwt: ~
 
-
 #        main:
 #            lazy: true
 #            provider: users
@@ -35,8 +34,6 @@ security:
 #            logout:
 #                path: logout
 #                target: login
-
-
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -49,9 +46,11 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/login,    roles: PUBLIC_ACCESS }
+        - { path: ^/api/admin,    roles: ROLE_ADMIN }
+        - { path: ^/api/user,     roles: ROLE_USER }
 
 when@test:
     security:

@@ -19,6 +19,7 @@ app.use(pinia)
     .use(VueSweetalert2)
     .mount('#app');
 
+// assign global access of SweetAlert2 to variable Swal
 window.Swal = app.config.globalProperties.$swal;
 
 checkAuthentication();

@@ -6,6 +6,8 @@
 
         <router-link :to="{ name: 'registration' }" v-if="!authStore.isAuthenticated">Registration</router-link>
 
+        <router-link :to="{ name: 'user.settings' }" v-if="authStore.isAuthenticated">Settings</router-link>
+
         <br> <br> <hr>
     </nav>
 
