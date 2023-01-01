@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Validator\Constraints;
+namespace App\Constraint;
 
-use App\Validator\UniqueFieldInEntityValidator;
+use App\Constraint\Validators\UniqueFieldInEntityValidator;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute]

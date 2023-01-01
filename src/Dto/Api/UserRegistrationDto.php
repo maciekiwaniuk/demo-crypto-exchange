@@ -2,8 +2,8 @@
 
 namespace App\Dto\Api;
 
+use App\Constraint\UniqueFieldInEntity;
 use App\Entity\User;
-use App\Validator\Constraints\UniqueFieldInEntity;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
