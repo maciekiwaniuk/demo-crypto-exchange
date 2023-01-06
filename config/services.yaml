@@ -29,6 +29,10 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 255 }
 
     # value resolvers
-    App\ValueResolver\UserRegistrationValueResolver:
+    App\ValueResolver\Auth\UserRegistrationValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 150 }
+
+    App\ValueResolver\Admin\NewCryptocurrencyValueResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }

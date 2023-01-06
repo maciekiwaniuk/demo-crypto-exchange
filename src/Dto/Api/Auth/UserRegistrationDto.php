@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Dto\Api;
+namespace App\Dto\Api\Auth;
 
 use App\Constraint\UniqueFieldInEntity;
+use App\Dto\Api\BaseDto;
 use App\Entity\User;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;

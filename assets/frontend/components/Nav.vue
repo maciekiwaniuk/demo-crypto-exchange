@@ -1,12 +1,19 @@
 <template>
     <nav>
+        authStore.isauthenticated: ==> {{ authStore.isAuthenticated }} <br>
         <router-link :to="{ name: 'home' }">Home</router-link> <br>
 
         <router-link :to="{ name: 'login' }" v-if="!authStore.isAuthenticated">Login</router-link> <br>
 
-        <router-link :to="{ name: 'registration' }" v-if="!authStore.isAuthenticated">Registration</router-link>
+        <router-link :to="{ name: 'registration' }" v-if="!authStore.isAuthenticated">Registration</router-link> <br>
 
-        <router-link :to="{ name: 'user.settings' }" v-if="authStore.isAuthenticated">Settings</router-link>
+        <router-link :to="{ name: 'user.settings' }" v-if="authStore.isAuthenticated">Settings</router-link> <br>
+
+        <router-link
+            :to="{ name: 'admin.cryptocurrencies' }"
+            v-if="authStore.isAdmin()"
+            class="text-red-800"
+        >Cryptocurrencies</router-link>
 
         <br> <br> <hr>
     </nav>
@@ -18,6 +25,7 @@
 import { useAuthStore } from '../stores/auth';
 
 const authStore = useAuthStore();
+
 </script>
 
 <style>

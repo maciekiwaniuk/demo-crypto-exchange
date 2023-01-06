@@ -27,10 +27,10 @@ import { axiosInstance } from '../../plugins/axios';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const email = ref(''),
-      username = ref(''),
-      password = ref(''),
-      password_confirm = ref('');
+const email = ref(null),
+      username = ref(null),
+      password = ref(null),
+      password_confirm = ref(null);
 
 const handleRegistration = async () => {
     if (password.value !== password_confirm.value) {

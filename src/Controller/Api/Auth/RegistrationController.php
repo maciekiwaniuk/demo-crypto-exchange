@@ -2,11 +2,10 @@
 
 namespace App\Controller\Api\Auth;
 
-use App\Dto\Api\UserRegistrationDto;
+use App\Dto\Api\Auth\UserRegistrationDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

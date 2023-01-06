@@ -1,6 +1,5 @@
 <template>
     <div>
-        Token: {{ authStore.token }} <br>
         User logged in: {{ authStore.isAuthenticated ? 'yes' : 'no' }}
         <button v-if="authStore.isAuthenticated" @click="authStore.logout();">
             Logout

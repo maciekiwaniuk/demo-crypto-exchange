@@ -1,9 +1,8 @@
 <?php
 
-namespace App\ValueResolver;
+namespace App\ValueResolver\Auth;
 
-use App\Dto\Api\UserRegistrationDto;
-use Psr\Log\LoggerInterface;
+use App\Dto\Api\Auth\UserRegistrationDto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -13,7 +12,7 @@ class UserRegistrationValueResolver implements ArgumentValueResolverInterface
 {
     private ValidatorInterface $validator;
 
-    public function __construct(ValidatorInterface $validator, public LoggerInterface $logger)
+    public function __construct(ValidatorInterface $validator)
     {
         $this->validator = $validator;
     }

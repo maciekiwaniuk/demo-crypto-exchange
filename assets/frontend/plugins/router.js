@@ -3,6 +3,7 @@ import Home from '../components/Home.vue';
 import Login from '../components/guest/Login.vue';
 import Registration from '../components/guest/Registration.vue';
 import Settings from '../components/user/Settings.vue';
+import Cryptocurrencies from '../components/admin/Cryptocurrencies.vue';
 import { useAuthStore } from '../stores/auth';
 
 export const router = createRouter({
@@ -36,6 +37,14 @@ export const router = createRouter({
             meta: {
                 requiredStatus: 'user'
             }
+        },
+        {
+            path: '/admin/cryptocurrencies',
+            name: 'admin.cryptocurrencies',
+            component: Cryptocurrencies,
+            meta: {
+                requiredStatus: 'admin'
+            }
         }
     ]
 });
@@ -52,15 +61,8 @@ router.beforeEach((to, from) => {
         return false;
     }
 
-    if (to.meta.requiredStatus === 'admin') {
-        const roles = authStore.getRolesOfCurrentlyAuthenticatedUser(),
-              adminRole = 'ROLE_ADMIN';
-
-        let foundAdminRole = false;
-        roles.forEach(role => {
-            if (role === adminRole) foundAdminRole = true;
-        });
-
-        if (!foundAdminRole) return false;
+    if (to.meta.requiredStatus === 'admin' && !authStore.isAdmin()) {
+        console.log(authStore.getRolesOfCurrentlyAuthenticatedUser());
+        return false;
     }
 })

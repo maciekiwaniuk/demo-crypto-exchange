@@ -24,8 +24,8 @@ import { axiosInstance } from '../../plugins/axios';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const email = ref('');
-const password = ref('');
+const email = ref(null);
+const password = ref(null);
 
 const login = async () => {
     try {
