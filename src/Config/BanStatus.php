@@ -4,6 +4,6 @@ namespace App\Config;
 
 enum BanStatus
 {
-    const NOT_BANNED = 'not_banned';
-    const BANNED = 'banned';
+    public const NOT_BANNED = 'not_banned';
+    public const BANNED = 'banned';
 }

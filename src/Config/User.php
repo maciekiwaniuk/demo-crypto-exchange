@@ -4,8 +4,8 @@ namespace App\Config;
 
 enum User
 {
-    const DEFAULT_BALANCE = 100_000;
+    public const DEFAULT_BALANCE = 100_000;
 
-    const EMAIL_VERIFIED = 'verified';
-    const EMAIL_NOT_VERIFIED = 'not_verified';
+    public const EMAIL_VERIFIED = 'verified';
+    public const EMAIL_NOT_VERIFIED = 'not_verified';
 }
