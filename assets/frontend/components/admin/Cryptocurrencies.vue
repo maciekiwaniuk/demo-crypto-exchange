@@ -3,7 +3,7 @@
         <label for="symbol">Symbol</label>
         <input type="text" id="symbol" v-model="symbol"> <br>
 
-        <label for="active">Active</label>
+        <label for="active">Status</label>
         <select id="active" v-model="activeSelect">
             <option v-for="option in activeOptions" :value="option.value">
                 {{ option.key }}
@@ -12,8 +12,10 @@
 
         <br>
 
-        <button type="submit" class="bg-gray-800 text-white font-bold py-2 px-4 rounded-full">
-            Add
+        <button
+            type="submit"
+            class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+        >Add
         </button>
     </form>
 

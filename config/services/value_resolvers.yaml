@@ -1,0 +1,7 @@
+App\ValueResolver\Auth\UserRegistrationValueResolver:
+    tags:
+        - { name: controller.argument_value_resolver, priority: 150 }
+
+App\ValueResolver\Admin\NewCryptocurrencyValueResolver:
+    tags:
+        - { name: controller.argument_value_resolver, priority: 150 }
