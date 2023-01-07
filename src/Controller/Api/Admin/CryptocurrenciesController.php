@@ -47,6 +47,7 @@ class CryptocurrenciesController extends AbstractController
 
         return $this->json([
             'success' => true,
+            'message' => 'Successfully added cryptocurrency.',
             'cryptocurrency' => []
         ]);
     }

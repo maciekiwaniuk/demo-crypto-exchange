@@ -53,7 +53,7 @@ const newCryptocurrency = async () => {
             console.log(response);
             if (response.data.success) {
                 Swal({
-                    text: 'Successfully added cryptocurrency.',
+                    text: response.data.message,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 })

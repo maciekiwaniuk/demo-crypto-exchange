@@ -12,13 +12,17 @@ export const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: Home
+            component: Home,
+            meta: {
+                title: 'Home'
+            }
         },
         {
             path: '/login',
             name: 'login',
             component: Login,
             meta: {
+                title: 'Login',
                 requiredStatus: 'guest'
             }
         },
@@ -27,6 +31,7 @@ export const router = createRouter({
             name: 'registration',
             component: Registration,
             meta: {
+                title: 'Registration',
                 requiredStatus: 'guest'
             }
         },
@@ -35,6 +40,7 @@ export const router = createRouter({
             name: 'user.settings',
             component: Settings,
             meta: {
+                title: 'User - Settings',
                 requiredStatus: 'user'
             }
         },
@@ -43,6 +49,7 @@ export const router = createRouter({
             name: 'admin.cryptocurrencies',
             component: Cryptocurrencies,
             meta: {
+                title: 'Admin - Cryptocurrencies',
                 requiredStatus: 'admin'
             }
         }
@@ -62,7 +69,8 @@ router.beforeEach((to, from) => {
     }
 
     if (to.meta.requiredStatus === 'admin' && !authStore.isAdmin()) {
-        console.log(authStore.getRolesOfCurrentlyAuthenticatedUser());
         return false;
     }
+
+    document.title = to.meta.title;
 })

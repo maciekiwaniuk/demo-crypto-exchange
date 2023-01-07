@@ -1,10 +1,4 @@
 <template>
-    <div>
-        User logged in: {{ authStore.isAuthenticated ? 'yes' : 'no' }}
-        <button v-if="authStore.isAuthenticated" @click="authStore.logout();">
-            Logout
-        </button>
-    </div>
     <Nav />
     <router-view />
 </template>
