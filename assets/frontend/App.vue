@@ -1,13 +1,11 @@
 <template>
-    <Nav />
+    <Navbar />
     <router-view />
 </template>
 
 <script setup>
-import Nav from './components/Nav.vue';
-import { useAuthStore } from './stores/auth';
+import Navbar from './components/Navbar.vue';
 
-const authStore = useAuthStore();
 </script>
 
 <style lang="scss">

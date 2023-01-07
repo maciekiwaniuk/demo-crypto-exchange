@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import cookies from 'vue-cookies';
+import { router } from '../plugins/router/router';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -8,12 +9,14 @@ export const useAuthStore = defineStore('auth', {
         roles: null
     }),
     actions: {
-        authenticate(token, roles) {
+        async authenticate(token, roles) {
             this.isAuthenticated = true;
             this.token = token;
             this.roles = roles;
             cookies.set('token', JSON.stringify(`Bearer ${token}`), { expires: 7 });
             cookies.set('roles', JSON.stringify(roles), { expires: 7 });
+
+            await router.push({ name: 'home' });
         },
         staySignedIn(token, roles) {
             this.isAuthenticated = true;
@@ -35,12 +38,14 @@ export const useAuthStore = defineStore('auth', {
 
             return hasPermission;
         },
-        logout() {
+        async logout() {
             this.isAuthenticated = false;
             this.token = null;
             this.roles = null;
             cookies.remove('token');
             cookies.remove('roles');
+
+            await router.push({ name: 'home' });
         }
     }
 });

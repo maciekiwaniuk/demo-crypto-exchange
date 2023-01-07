@@ -34,10 +34,10 @@ const login = async () => {
             password: password.value
         });
         console.log(response);
-        authStore.authenticate(response.data.token, response.data.roles);
-        await router.push({ name: 'home' });
+        await authStore.authenticate(response.data.token, response.data.roles);
 
     } catch (error) {
+        console.log(error);
         Swal({
             title: error.response.data.message,
             icon: 'error',
