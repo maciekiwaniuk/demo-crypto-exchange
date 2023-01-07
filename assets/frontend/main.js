@@ -3,7 +3,7 @@ globalThis.__VUE_PROD_DEVTOOLS__ = false;
 
 import App from './App.vue';
 import { createApp } from 'vue';
-import { router } from './plugins/router';
+import { router } from './plugins/router/router';
 import { createPinia } from 'pinia';
 import { checkAuthentication } from './functions/checkAuthentication';
 import VueSweetalert2 from 'vue-sweetalert2';
