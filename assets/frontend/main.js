@@ -6,6 +6,8 @@ import { createApp } from 'vue';
 import { router } from './plugins/router/router';
 import { createPinia } from 'pinia';
 import { checkAuthentication } from './functions/checkAuthentication';
+import { LoadingPlugin } from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './main.css';
@@ -16,6 +18,7 @@ const app = createApp(App);
 
 app.use(pinia)
     .use(router)
+    .use(LoadingPlugin)
     .use(VueSweetalert2)
     .mount('#app');
 

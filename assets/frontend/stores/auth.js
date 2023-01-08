@@ -23,20 +23,17 @@ export const useAuthStore = defineStore('auth', {
             this.token = token;
             this.roles = roles;
         },
-        getRolesOfCurrentlyAuthenticatedUser() {
-            return this.roles;
-        },
         isAdmin() {
             if (this.roles === null) return false;
 
-            let hasPermission = false;
+            let havePermission = false;
             this.roles.forEach(role => {
                 if (role === 'ROLE_ADMIN') {
-                    hasPermission = true;
+                    havePermission = true;
                 }
             })
 
-            return hasPermission;
+            return havePermission;
         },
         async logout() {
             this.isAuthenticated = false;

@@ -18,6 +18,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { loading } from '../../plugins/loading';
 import { useAuthStore } from '../../stores/auth';
 import { axiosInstance } from '../../plugins/axios';
 
@@ -28,27 +29,42 @@ const email = ref(null);
 const password = ref(null);
 
 const login = async () => {
+    const loader = loading.show();
+
     try {
-        const response = await axiosInstance.post('/api/login_check', {
+        await axiosInstance.post('/api/login_check', {
             email: email.value,
             password: password.value
-        });
-        console.log(response);
-        await authStore.authenticate(response.data.token, response.data.roles);
+        })
+            .then(response => {
+                loader.hide();
+                authStore.authenticate(response.data.token, response.data.roles);
+            })
 
     } catch (error) {
         console.log(error);
+
+        loader.hide();
         Swal({
             title: error.response.data.message,
             icon: 'error',
             confirmButtonText: 'OK'
         });
-        console.log(error);
-        console.log(error.response.data.message);
     }
 }
 </script>
 
 <style scoped>
-
+.vld-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
