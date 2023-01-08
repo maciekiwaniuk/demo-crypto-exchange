@@ -26,7 +26,7 @@
             >Settings</router-link> <br>
 
             <button
-                @click="authStore.logout();"
+                @click="logout();"
                 class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Logout</button>
         </div>
@@ -69,9 +69,18 @@
 
 <script setup>
 import { useAuthStore } from '../stores/auth';
+import { loading } from '../plugins/loading';
 
 const authStore = useAuthStore();
 
+const logout = () => {
+    const loader = loading.show();
+
+    setTimeout(() => {
+        loader.hide();
+        authStore.logout();
+    }, 500);
+}
 </script>
 
 <style lang="scss" scoped>

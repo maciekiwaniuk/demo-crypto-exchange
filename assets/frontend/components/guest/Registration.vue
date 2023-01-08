@@ -21,6 +21,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { loading } from '../../plugins/loading';
 import { useAuthStore } from '../../stores/auth';
 import { axiosInstance } from '../../plugins/axios';
 
@@ -33,6 +34,8 @@ const email = ref(null),
       password_confirm = ref(null);
 
 const handleRegistration = async () => {
+    const loader = loading.show();
+
     if (password.value !== password_confirm.value) {
         Swal({
             title: 'Whoops...',
@@ -49,6 +52,8 @@ const handleRegistration = async () => {
         password: password.value
     })
         .then(response => {
+            loader.hide();
+
             if (!response.data.success) {
                 Swal({
                     title: 'Whoops...',
@@ -65,6 +70,7 @@ const handleRegistration = async () => {
             console.log(response);
         })
         .catch(error => {
+            loader.hide();
             console.log('error');
             console.log(error);
         })
