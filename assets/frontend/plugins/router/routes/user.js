@@ -1,4 +1,4 @@
-import Settings from '../../../components/user/Settings';
+const Settings = () => import('../../../components/user/Settings');
 
 export const userRoutes = [
     {

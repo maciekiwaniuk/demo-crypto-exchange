@@ -1,4 +1,4 @@
-import Cryptocurrencies from '../../../components/admin/Cryptocurrencies';
+const Cryptocurrencies = () => import('../../../components/admin/Cryptocurrencies');
 
 export const adminRoutes = [
     {

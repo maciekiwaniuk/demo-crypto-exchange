@@ -1,4 +1,4 @@
-import Home from '../../../components/Home';
+const Home = () => import('../../../components/Home');
 
 export const generalRoutes = [
     {

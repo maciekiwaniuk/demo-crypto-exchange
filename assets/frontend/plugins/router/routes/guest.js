@@ -1,5 +1,5 @@
-import Login from '../../../components/guest/Login';
-import Registration from '../../../components/guest/Registration';
+const Login = () => import('../../../components/guest/Login');
+const Registration = () => import('../../../components/guest/Registration');
 
 export const guestRoutes = [
     {
