@@ -43,7 +43,7 @@ const login = async () => {
 
     } catch (error) {
         console.log(error);
-
+        
         loader.hide();
         Swal({
             title: error.response.data.message,
@@ -54,17 +54,6 @@ const login = async () => {
 }
 </script>
 
-<style scoped>
-.vld-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+<style>
+
 </style>
