@@ -13,8 +13,8 @@ export const useAuthStore = defineStore('auth', {
             this.isAuthenticated = true;
             this.token = token;
             this.roles = roles;
-            cookies.set('token', JSON.stringify(`Bearer ${token}`), { expires: 7 });
-            cookies.set('roles', JSON.stringify(roles), { expires: 7 });
+            cookies.set('TOKEN', JSON.stringify(`Bearer ${token}`), { expires: 7 });
+            cookies.set('ROLES', JSON.stringify(roles), { expires: 7 });
 
             await router.push({ name: 'home' });
         },
@@ -39,8 +39,8 @@ export const useAuthStore = defineStore('auth', {
             this.isAuthenticated = false;
             this.token = null;
             this.roles = null;
-            cookies.remove('token');
-            cookies.remove('roles');
+            cookies.remove('TOKEN');
+            cookies.remove('ROLES');
 
             await router.push({ name: 'home' });
         }
