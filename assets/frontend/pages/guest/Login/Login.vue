@@ -18,9 +18,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { loading } from '../../plugins/loading';
-import { useAuthStore } from '../../stores/auth';
-import { axiosInstance } from '../../plugins/axios';
+import { loading } from '../../../plugins/loading';
+import { useAuthStore } from '../../../stores/auth';
+import { axiosInstance } from '../../../plugins/axios';
 
 const router = useRouter();
 const authStore = useAuthStore();

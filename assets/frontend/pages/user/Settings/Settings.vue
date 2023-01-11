@@ -16,7 +16,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { axiosInstance } from '../../plugins/axios';
+import { axiosInstance } from '../../../plugins/axios';
 
 const old_password = ref('');
 const new_password = ref('');

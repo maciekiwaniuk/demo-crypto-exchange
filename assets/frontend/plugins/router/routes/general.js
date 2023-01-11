@@ -1,4 +1,4 @@
-const Home = () => import('../../../components/Home');
+const Home = () => import('../../../pages/Home.vue');
 
 export const generalRoutes = [
     {

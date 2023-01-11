@@ -1,4 +1,4 @@
-const Settings = () => import('../../../components/user/Settings');
+const Settings = () => import('../../../pages/user/Settings/Settings.vue');
 
 export const userRoutes = [
     {

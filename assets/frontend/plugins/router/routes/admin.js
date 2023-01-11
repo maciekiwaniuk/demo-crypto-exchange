@@ -1,4 +1,4 @@
-const Cryptocurrencies = () => import('../../../components/admin/Cryptocurrencies');
+const Cryptocurrencies = () => import('../../../pages/admin/Cryptocurrencies/Cryptocurrencies.vue');
 
 export const adminRoutes = [
     {

@@ -1,5 +1,5 @@
-const Login = () => import('../../../components/guest/Login');
-const Registration = () => import('../../../components/guest/Registration');
+const Login = () => import('../../../pages/guest/Login/Login.vue');
+const Registration = () => import('../../../pages/guest/Registration/Registration.vue');
 
 export const guestRoutes = [
     {

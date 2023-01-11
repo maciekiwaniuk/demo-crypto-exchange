@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { axiosInstance } from '../../plugins/axios';
+import { axiosInstance } from '../../../plugins/axios';
 import {reactive, ref} from 'vue';
 
 const symbol = ref(''),
