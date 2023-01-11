@@ -17,10 +17,16 @@ const pinia = createPinia();
 const app = createApp(App);
 
 app.use(pinia)
+    // https://v3.router.vuejs.org/guide
     .use(router)
+
+    // https://github.com/ankurk91/vue-loading-overlay
     .use(LoadingPlugin)
-    .use(VueSweetalert2)
-    .mount('#app');
+
+    // https://sweetalert2.github.io/
+    .use(VueSweetalert2);
+
+app.mount('#app');
 
 // set global access to SweetAlert2 from variable Swal
 window.Swal = app.config.globalProperties.$swal;
