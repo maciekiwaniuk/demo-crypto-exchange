@@ -1,6 +1,10 @@
 <template>
     <Navbar />
-    <router-view />
+
+    <div class="container m-auto text-center mt-4">
+        <router-view />
+    </div>
+
 </template>
 
 <script setup>

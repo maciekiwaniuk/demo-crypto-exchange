@@ -9,22 +9,30 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/admin', name: 'api.admin.')]
 class CryptocurrenciesController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private SerializerInterface $serializer;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $this->entityManager = $entityManager;
+        $this->serializer = $serializer;
     }
 
     #[Route('/get_cryptocurrencies', name: 'get_cryptocurrencies', methods: ['GET'])]
     public function getList(): Response
     {
+        $cryptocurrencies = $this->entityManager
+            ->getRepository(Cryptocurrency::class)
+            ->findAll();
+
         return $this->json([
             'success' => true,
+            'cryptocurrencies' => $this->serializer->serialize($cryptocurrencies, 'json')
         ]);
     }
 
@@ -48,7 +56,7 @@ class CryptocurrenciesController extends AbstractController
         return $this->json([
             'success' => true,
             'message' => 'Successfully added cryptocurrency.',
-            'cryptocurrency' => []
+            'cryptocurrency' => $this->serializer->serialize($cryptocurrency, 'json')
         ]);
     }
 

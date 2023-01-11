@@ -17,9 +17,26 @@
             class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
         >Add
         </button>
+
+        <br>
+
+        List of crypto
+        <br>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>symbol</th>
+                <th>active</th>
+            </tr>
+
+            <tr v-for="crypto in cryptocurrencies">
+                <td>{{ crypto.id }}</td>
+                <td>{{ crypto.symbol }}</td>
+                <td>{{ crypto.active }}</td>
+            </tr>
+        </table>
     </form>
 
-    <button @click="test();">TEST</button>
 </template>
 
 <script setup>
@@ -29,6 +46,8 @@ import {reactive, ref} from 'vue';
 const symbol = ref(''),
       activeSelect = ref(''),
       activeOptions = reactive([]);
+
+const cryptocurrencies = reactive([]);
 
 axiosInstance.get('api/admin/options_for_active_select')
     .then(response => {
@@ -40,9 +59,10 @@ axiosInstance.get('api/admin/options_for_active_select')
         }
     });
 
-const test = () => {
-    console.log(activeSelect.value);
-}
+axiosInstance.get('api/admin/get_cryptocurrencies')
+    .then(response => {
+        Object.assign(cryptocurrencies, JSON.parse(response.data.cryptocurrencies));
+    });
 
 const newCryptocurrency = async () => {
     await axiosInstance.post('api/admin/new_cryptocurrency', {
@@ -55,9 +75,15 @@ const newCryptocurrency = async () => {
                 Swal({
                     text: response.data.message,
                     icon: 'success',
-                    confirmButtonText: 'OK'
                 })
+                const newCrypto = JSON.parse(response.data.cryptocurrency);
+                cryptocurrencies.push(newCrypto);
+                return;
             }
+            Swal({
+                text: Object.values(response.data.errors)[0],
+                icon: 'error',
+            })
         });
 }
 </script>
