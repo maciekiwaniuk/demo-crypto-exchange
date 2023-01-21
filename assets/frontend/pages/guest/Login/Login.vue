@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { loading } from '../../../plugins/loading';
 import { useAuthStore } from '../../../stores/auth';
@@ -24,9 +24,10 @@ import { axiosInstance } from '../../../plugins/axios';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const swal = inject('$swal');
 
-const email = ref(null);
-const password = ref(null);
+const email = ref('');
+const password = ref('');
 
 const login = async () => {
     const loader = loading.show();
@@ -45,7 +46,7 @@ const login = async () => {
         console.log(error);
         
         loader.hide();
-        Swal({
+        swal({
             title: error.response.data.message,
             icon: 'error',
             confirmButtonText: 'OK'

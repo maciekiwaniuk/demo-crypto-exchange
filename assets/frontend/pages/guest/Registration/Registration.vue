@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { loading } from '../../../plugins/loading';
 import { useAuthStore } from '../../../stores/auth';
@@ -27,6 +27,7 @@ import { axiosInstance } from '../../../plugins/axios';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const swal = inject('$swal');
 
 const email = ref(null),
       username = ref(null),
@@ -37,7 +38,7 @@ const handleRegistration = async () => {
     const loader = loading.show();
 
     if (password.value !== password_confirm.value) {
-        Swal({
+        swal({
             title: 'Whoops...',
             text: 'Confirmation of password was different than in password field.',
             icon: 'error',
@@ -55,7 +56,7 @@ const handleRegistration = async () => {
             loader.hide();
 
             if (!response.data.success) {
-                Swal({
+                swal({
                     title: 'Whoops...',
                     text: Object.values(response.data.errors)[0],
                     icon: 'error',

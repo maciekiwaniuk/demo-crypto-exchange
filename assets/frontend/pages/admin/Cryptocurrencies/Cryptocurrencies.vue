@@ -41,7 +41,9 @@
 
 <script setup>
 import { axiosInstance } from '../../../plugins/axios';
-import {reactive, ref} from 'vue';
+import { inject, reactive, ref } from 'vue';
+
+const swal = inject('$swal');
 
 const symbol = ref(''),
       activeSelect = ref(''),
@@ -72,7 +74,7 @@ const newCryptocurrency = async () => {
         .then(response => {
             console.log(response);
             if (response.data.success) {
-                Swal({
+                swal({
                     text: response.data.message,
                     icon: 'success',
                 })
@@ -80,7 +82,7 @@ const newCryptocurrency = async () => {
                 cryptocurrencies.push(newCrypto);
                 return;
             }
-            Swal({
+            swal({
                 text: Object.values(response.data.errors)[0],
                 icon: 'error',
             })
