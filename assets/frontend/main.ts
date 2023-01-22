@@ -3,7 +3,7 @@ globalThis.__VUE_PROD_DEVTOOLS__ = false;
 
 import App from './App.vue';
 import { createApp } from 'vue';
-import { router } from './plugins/router/router';
+import { router } from './router/router';
 import { createPinia } from 'pinia';
 import { useAuthenticator } from './composables/useAuthenticator';
 import { LoadingPlugin } from 'vue-loading-overlay';
