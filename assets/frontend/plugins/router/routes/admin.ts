@@ -1,6 +1,6 @@
 const Cryptocurrencies = () => import('../../../pages/admin/Cryptocurrencies/Cryptocurrencies.vue');
 
-export const adminRoutes = [
+export const adminRoutes: any = [
     {
         path: '/admin/cryptocurrencies',
         name: 'admin.cryptocurrencies',

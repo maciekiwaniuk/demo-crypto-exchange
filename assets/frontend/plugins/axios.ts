@@ -1,5 +1,5 @@
 import axios from 'axios';
-import cookies from 'vue-cookies';
+import { cookies } from '../plugins/cookies';
 
 const JWToken = `${JSON.parse(cookies.get('TOKEN')) ?? ''}`
 

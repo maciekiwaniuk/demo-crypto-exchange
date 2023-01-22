@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "strict": true,
+        "jsx": "preserve",
+        "importHelpers": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "types": ["vue", "node"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./assets/frontend/*"],
+            "/@/*": ["./assets/frontend/*"]
+        },
+        "noImplicitAny": false,
+        "allowJs": true
+    },
+    "include": ["assets/**/*.ts", "assets/**/*.vue"],
+    "exclude": ["node_modules"]
+}

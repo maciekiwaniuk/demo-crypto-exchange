@@ -4,7 +4,7 @@
     <p class="test1234">Welcome on home page!</p>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 </script>
 

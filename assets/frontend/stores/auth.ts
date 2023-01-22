@@ -1,20 +1,20 @@
 import { defineStore } from 'pinia';
-import cookies from 'vue-cookies';
+import { cookies } from '../plugins/cookies';
 import { router } from '../plugins/router/router';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        isAuthenticated: false,
-        token: null,
-        roles: null
+        isAuthenticated: false as boolean | null,
+        token: null as string | null,
+        roles: [] as [] | null
     }),
     actions: {
         async authenticate(token, roles) {
             this.isAuthenticated = true;
             this.token = token;
             this.roles = roles;
-            cookies.set('TOKEN', JSON.stringify(`Bearer ${token}`), { expires: 7 });
-            cookies.set('ROLES', JSON.stringify(roles), { expires: 7 });
+            cookies.set('TOKEN', JSON.stringify(`Bearer ${token}`), 7);
+            cookies.set('ROLES', JSON.stringify(roles), 7);
 
             await router.push({ name: 'home' });
         },

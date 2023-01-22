@@ -5,7 +5,7 @@ import App from './App.vue';
 import { createApp } from 'vue';
 import { router } from './plugins/router/router';
 import { createPinia } from 'pinia';
-import { checkAuthentication } from './functions/checkAuthentication';
+import { useAuthenticator } from './composables/useAuthenticator';
 import { LoadingPlugin } from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -13,6 +13,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import './main.css';
 
 const pinia = createPinia();
+const { checkAuthentication } = useAuthenticator();
 
 const app = createApp(App);
 

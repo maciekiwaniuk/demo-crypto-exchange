@@ -14,13 +14,13 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { axiosInstance } from '../../../plugins/axios';
 
-const old_password = ref('');
-const new_password = ref('');
-const new_password_confirm = ref('');
+const old_password = ref<string>('');
+const new_password = ref<string>('');
+const new_password_confirm = ref<string>('');
 
 const changePassword = async() => {
     try {

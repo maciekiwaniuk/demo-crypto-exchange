@@ -1,7 +1,7 @@
 const Login = () => import('../../../pages/guest/Login/Login.vue');
 const Registration = () => import('../../../pages/guest/Registration/Registration.vue');
 
-export const guestRoutes = [
+export const guestRoutes: any = [
     {
         path: '/login',
         name: 'login',

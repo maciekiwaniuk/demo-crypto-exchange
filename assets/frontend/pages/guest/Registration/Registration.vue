@@ -18,7 +18,7 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { loading } from '../../../plugins/loading';
@@ -27,12 +27,12 @@ import { axiosInstance } from '../../../plugins/axios';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const swal = inject('$swal');
+const swal = inject<any>('$swal');
 
-const email = ref(null),
-      username = ref(null),
-      password = ref(null),
-      password_confirm = ref(null);
+const email = ref<string>(''),
+      username = ref<string>(''),
+      password = ref<string>(''),
+      password_confirm = ref<string>('');
 
 const handleRegistration = async () => {
     const loader = loading.show();

@@ -15,7 +15,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { loading } from '../../../plugins/loading';
@@ -24,7 +24,7 @@ import { axiosInstance } from '../../../plugins/axios';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const swal = inject('$swal');
+const swal = inject<any>('$swal');
 
 const email = ref('');
 const password = ref('');
@@ -42,9 +42,9 @@ const login = async () => {
                 authStore.authenticate(response.data.token, response.data.roles);
             })
 
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
-        
+
         loader.hide();
         swal({
             title: error.response.data.message,

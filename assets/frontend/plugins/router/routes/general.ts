@@ -1,6 +1,6 @@
 const Home = () => import('../../../pages/Home.vue');
 
-export const generalRoutes = [
+export const generalRoutes: any = [
     {
         path: '/',
         name: 'home',

@@ -32,5 +32,6 @@ router.beforeEach((to, from) => {
         return false;
     }
 
+    // @ts-ignore
     document.title = to.meta.title;
 })
