@@ -13,7 +13,6 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import './main.css';
 
 const pinia = createPinia();
-const { checkAuthentication } = useAuthenticator();
 
 const app = createApp(App);
 
@@ -29,4 +28,5 @@ app.use(pinia)
 
 app.mount('#app');
 
+const { checkAuthentication } = useAuthenticator();
 checkAuthentication();

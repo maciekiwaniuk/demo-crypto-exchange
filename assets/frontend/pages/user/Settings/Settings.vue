@@ -22,7 +22,7 @@ const old_password = ref<string>('');
 const new_password = ref<string>('');
 const new_password_confirm = ref<string>('');
 
-const changePassword = async() => {
+const changePassword = async () => {
     try {
         const response = await axiosInstance.post('/api/user/change_password', {
             old_password: old_password.value,

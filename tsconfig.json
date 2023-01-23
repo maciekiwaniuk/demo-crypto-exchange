@@ -12,10 +12,6 @@
         "sourceMap": true,
         "types": ["vue", "node"],
         "baseUrl": ".",
-        "paths": {
-            "@/*": ["./assets/frontend/*"],
-            "/@/*": ["./assets/frontend/*"]
-        },
         "noImplicitAny": false,
         "allowJs": true
     },
