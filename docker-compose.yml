@@ -35,7 +35,6 @@ services:
 
     # mysql
     mysql8-service:
-        build: ./docker/mysql/
         image: mysql:8
         container_name: mysql8-container
         ports:

@@ -47,4 +47,25 @@ Start the local development server
 
 You can now access the server at http://127.0.0.1:8000
 
-Or simply use docker - SOON...
+Or use docker, firstly build containers, for the first time it might take some time
+
+    docker-compose up --build -d
+
+Set necessary configuration in .env for database connection
+
+    DATABASE_URL="mysql://root:@mysql8-service:3306/demo_crypto_exchange"
+
+After that you need to set permission in MySQL container
+
+    docker exec -it mysql8-container bash
+    mysql -u root --password=""
+    CREATE USER 'root'@'%' IDENTIFIED BY '';
+    GRANT ALL ON *.* TO 'root'@'%';
+
+Finally, you need to enter a few commands in php container
+
+    docker exec -it php81-container bash
+    composer install -n
+    bin/console lexik:jwt:generate-keypair --overwrite
+    bin/console doctrine:migrations:migrate --no-interaction
+    bin/console doctrine:fixtures:load --no-interaction
