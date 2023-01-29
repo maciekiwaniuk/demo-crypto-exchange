@@ -5,7 +5,7 @@
 - Backend is made in Symfony 6.
 - Frontend is made in Vue 3 using Composition API.
 
-# Installation
+# Manual configuration
 
 To successfully install you need to have installed [composer](https://getcomposer.org/download/), [npm](https://docs.npmjs.com/cli/v7/commands/npm-install), [PHP](https://www.php.net/downloads.php) with version >= 8.1, [Symfonu CLI](https://symfony.com/download) and database environment (for example [XAMPP](https://www.apachefriends.org/pl/index.html) - localhost).
 
@@ -47,7 +47,9 @@ Start the local development server
 
 You can now access the server at http://127.0.0.1:8000
 
-Or use docker, firstly build containers, for the first time it might take some time
+# Docker configuration
+
+Firstly build containers, for the first time it might take some time
 
     docker-compose up --build -d
 
@@ -69,3 +71,7 @@ Finally, you need to enter a few commands in php container
     bin/console lexik:jwt:generate-keypair --overwrite
     bin/console doctrine:migrations:migrate --no-interaction
     bin/console doctrine:fixtures:load --no-interaction
+    npm install
+    npm run dev
+
+Access server at http://127.0.0.1:8000
