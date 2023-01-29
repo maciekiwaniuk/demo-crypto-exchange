@@ -29,7 +29,7 @@ Run npm run dev command to compile js files
 
 	npm run dev
 
-Fill .env file to your needs
+Fill .env file to your needs and delete .env.local file
 
     DATABASE_URL="mysql://--USER--:--PASSWORD--@localhost/--DATABASE--?charset=utf8mb4"
 
@@ -51,7 +51,7 @@ Or use docker, firstly build containers, for the first time it might take some t
 
     docker-compose up --build -d
 
-Set necessary configuration in .env for database connection
+Set necessary configuration in .env.local for docker database connection
 
     DATABASE_URL="mysql://root:@mysql8-service:3306/demo_crypto_exchange"
 
