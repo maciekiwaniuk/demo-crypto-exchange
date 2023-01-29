@@ -53,9 +53,9 @@ Firstly build containers, for the first time it might take some time
 
     docker-compose up --build -d
 
-Set necessary configuration in .env.local for docker database connection
+Change environment to docker in .env
 
-    DATABASE_URL="mysql://root:@mysql8-service:3306/demo_crypto_exchange"
+    APP_ENV=docker
 
 After that you need to set permission in MySQL container
 
