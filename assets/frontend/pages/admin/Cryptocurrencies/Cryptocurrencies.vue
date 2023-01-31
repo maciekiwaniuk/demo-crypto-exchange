@@ -1,4 +1,6 @@
 <template>
+    <h1>Cryptocurrencies</h1> <br>
+
     <form @submit.prevent="newCryptocurrency();">
         <label for="symbol">Symbol</label>
         <input type="text" id="symbol" v-model="symbol"> <br>

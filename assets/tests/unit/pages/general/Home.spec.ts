@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
-import Home from '../../../frontend/pages/general/Home.vue';
+import Home from '../../../../frontend/pages/general/Home.vue';
 
-describe('Home', () => {
+describe('General - Home', () => {
     const wrapper = mount(Home);
 
     it('renders', () => {
