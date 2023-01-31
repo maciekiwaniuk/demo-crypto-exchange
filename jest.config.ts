@@ -3,13 +3,24 @@ import type { Config } from 'jest';
 const config: Config = {
     verbose: true,
     moduleFileExtensions: [
-        'js', 'ts', 'vue'
+        'js', 'jsx', 'ts', 'vue'
     ],
     transform: {
-        // process `*.js` files with `babel-jest`
-        ".*\\.(js)$": "babel-jest"
+        "^.+\\.(js|ts)$": "ts-jest",
+        "^.+\\.vue$": "@vue/vue3-jest"
     },
-    roots: ["<rootDir>/assets/tests/unit"]
+    transformIgnorePatterns: [
+        "/node_modules/(?![@autofiy/autofiyable|@autofiy/property]).+\\.js$",
+        "/node_modules/(?![@autofiy/autofiyable|@autofiy/property]).+\\.ts$",
+        "/node_modules/(?![@autofiy/autofiyable|@autofiy/property]).+\\.tsx$",
+    ],
+    roots: [
+        "<rootDir>/assets/tests/unit"
+    ],
+    testEnvironment: "jsdom",
+    testEnvironmentOptions: {
+        customExportConditions: ["node", "node-addons"],
+    },
 };
 
 export default config;
