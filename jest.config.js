@@ -1,6 +1,5 @@
-import type { Config } from 'jest';
-
-const config: Config = {
+/** @type {import('jest').Config} */
+const config = {
     verbose: true,
     moduleFileExtensions: [
         'js', 'jsx', 'ts', 'vue'
@@ -23,4 +22,4 @@ const config: Config = {
     },
 };
 
-export default config;
+module.exports = config;
