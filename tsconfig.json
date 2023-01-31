@@ -10,7 +10,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
-        "types": ["vue", "node"],
+        "types": ["vue", "node", "jest"],
         "baseUrl": ".",
         "noImplicitAny": false,
         "allowJs": true
