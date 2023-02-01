@@ -1,9 +1,9 @@
-const { defineConfig } = require("cypress")
+const { defineConfig } = require('cypress')
 
-const dir = "assets/tests/e2e";
+const dir = 'assets/tests/e2e';
 
 module.exports = defineConfig({
-    projectId: "2h35b2",
+    projectId: '2h35b2',
     e2e: {
         baseUrl: 'http://127.0.0.1:8000',
         downloadsFolder: `${dir}/downloads`,
