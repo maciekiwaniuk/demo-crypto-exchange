@@ -3,7 +3,7 @@
 > ### Project of the single page application demo cryptocurrencies exchange
 
 - Backend is made in Symfony 6.
-- Frontend is made in Vue 3 using Composition API.
+- Frontend is made in Vue 3 using Composition API with TypeScript.
 
 # Manual configuration
 
@@ -75,3 +75,17 @@ Finally, you need to enter a few commands in php container
     npm run dev
 
 Access server at http://127.0.0.1:8000
+
+# Testing
+
+Run frontend unit tests
+
+    npm run test
+
+Run E2E tests
+
+    npx cypress run
+
+Run backend tests
+
+    php bin/phpunit
