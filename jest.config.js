@@ -1,8 +1,8 @@
-/** @type {import('jest').Config} */
+/** @type {import("jest").Config} */
 const config = {
     verbose: true,
     moduleFileExtensions: [
-        'js', 'jsx', 'ts', 'vue'
+        "js", "jsx", "ts", "vue"
     ],
     transform: {
         "^.+\\.(js|ts)$": "ts-jest",
