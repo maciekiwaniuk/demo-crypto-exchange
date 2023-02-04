@@ -15,7 +15,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-###< php storm ###
+###> php storm ###
 .idea 
 ###< php storm ###
 
@@ -33,6 +33,11 @@ yarn-error.log
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###< docker ###
+###> docker ###
 /mysql
 ###< docker ###
+
+###> notepad++ ###
+README.md.bak
+###<
+
