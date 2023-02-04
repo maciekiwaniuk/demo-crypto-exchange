@@ -68,9 +68,9 @@ Finally, you need to enter a few commands in php container
 
     docker exec -it php81-container bash
     composer install -n
-    bin/console lexik:jwt:generate-keypair --overwrite
-    bin/console doctrine:migrations:migrate --no-interaction
-    bin/console doctrine:fixtures:load --no-interaction
+    php bin/console lexik:jwt:generate-keypair --overwrite
+    php bin/console doctrine:migrations:migrate --no-interaction
+    php bin/console doctrine:fixtures:load --no-interaction
     npm install
     npm run dev
 
