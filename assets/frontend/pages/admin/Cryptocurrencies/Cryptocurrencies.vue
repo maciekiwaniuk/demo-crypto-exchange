@@ -1,7 +1,7 @@
 <template>
     <h1>Cryptocurrencies</h1> <br>
 
-    <form @submit.prevent="newCryptocurrency();">
+    <form @submit.prevent="newCrypto();">
         <label for="symbol">Symbol</label>
         <input type="text" id="symbol" v-model="symbol"> <br>
 
@@ -22,21 +22,8 @@
 
         <br>
 
-        List of crypto
-        <br>
-        <table>
-            <tr>
-                <th>id</th>
-                <th>symbol</th>
-                <th>active</th>
-            </tr>
+        <CryptocurrenciesList :cryptos="cryptos" />
 
-            <tr v-for="crypto in cryptocurrencies">
-                <td>{{ crypto.id }}</td>
-                <td>{{ crypto.symbol }}</td>
-                <td>{{ crypto.active }}</td>
-            </tr>
-        </table>
     </form>
 
 </template>
@@ -44,6 +31,8 @@
 <script setup lang="ts">
 import { axiosInstance } from '../../../plugins/axios';
 import { inject, reactive, ref } from 'vue';
+import CryptocurrenciesList from "./CryptocurrenciesList.vue";
+import { Crypto } from '../../../interfaces/Crypto';
 
 const swal = inject('$swal') as any;
 
@@ -51,9 +40,9 @@ const symbol = ref<string>(''),
       activeSelect = ref<string>(''),
       activeOptions = reactive<any>([]);
 
-const cryptocurrencies = reactive<any>([]);
+const cryptos = reactive<Crypto[]>([]);
 
-axiosInstance.get('api/admin/options_for_active_select')
+axiosInstance.get('api/admin/get_options_for_active_select')
     .then(response => {
         for (const [key, value] of Object.entries(response.data.options)) {
             activeOptions.push({
@@ -63,33 +52,35 @@ axiosInstance.get('api/admin/options_for_active_select')
         }
     });
 
-axiosInstance.get('api/admin/get_cryptocurrencies')
+axiosInstance.get('api/admin/get_cryptos')
     .then(response => {
-        Object.assign(cryptocurrencies, JSON.parse(response.data.cryptocurrencies));
+        Object.assign(cryptos, JSON.parse(response.data.cryptos));
     });
 
-const newCryptocurrency = async () => {
-    await axiosInstance.post('api/admin/new_cryptocurrency', {
+const newCrypto = async () => {
+    await axiosInstance.post('api/admin/new_crypto', {
         symbol: symbol.value,
         active: activeSelect.value
     })
         .then(response => {
-            console.log(response);
-            if (response.data.success) {
+            if (!response.data.success) {
                 swal({
-                    text: response.data.message,
-                    icon: 'success',
-                })
-                const newCrypto: any = JSON.parse(response.data.cryptocurrency);
-                cryptocurrencies.push(newCrypto);
+                    text: Object.values(response.data.errors)[0],
+                    icon: 'error',
+                });
                 return;
             }
             swal({
-                text: Object.values(response.data.errors)[0],
-                icon: 'error',
-            })
+                text: response.data.message,
+                icon: 'success',
+            });
+            const newCrypto: any = JSON.parse(response.data.crypto);
+            cryptos.push(newCrypto);
         });
+    symbol.value = '';
 }
+
+
 </script>
 
 <style scoped>

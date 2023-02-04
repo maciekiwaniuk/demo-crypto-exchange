@@ -23,7 +23,7 @@ class CryptocurrenciesController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/get_cryptocurrencies', name: 'get_cryptocurrencies', methods: ['GET'])]
+    #[Route('/get_cryptos', name: 'get_cryptos', methods: ['GET'])]
     public function getList(): Response
     {
         $cryptocurrencies = $this->entityManager
@@ -32,11 +32,11 @@ class CryptocurrenciesController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'cryptocurrencies' => $this->serializer->serialize($cryptocurrencies, 'json')
+            'cryptos' => $this->serializer->serialize($cryptocurrencies, 'json')
         ]);
     }
 
-    #[Route('/new_cryptocurrency', name: 'new_cryptocurrency', methods: ['POST'])]
+    #[Route('/new_crypto', name: 'new_crypto', methods: ['POST'])]
     public function new(NewCryptocurrencyDto $dto): Response
     {
         if ($dto->hasErrors()) {
@@ -46,21 +46,21 @@ class CryptocurrenciesController extends AbstractController
             ]);
         }
 
-        $cryptocurrency = new Cryptocurrency();
-        $cryptocurrency->setSymbol($dto->symbol);
-        $cryptocurrency->setActive($dto->active);
+        $crypto = new Cryptocurrency();
+        $crypto->setSymbol($dto->symbol);
+        $crypto->setActive($dto->active);
 
-        $this->entityManager->persist($cryptocurrency);
+        $this->entityManager->persist($crypto);
         $this->entityManager->flush();
 
         return $this->json([
             'success' => true,
             'message' => 'Successfully added cryptocurrency.',
-            'cryptocurrency' => $this->serializer->serialize($cryptocurrency, 'json')
+            'crypto' => $this->serializer->serialize($crypto, 'json')
         ]);
     }
 
-    #[Route('/options_for_active_select', name: 'options_for_active_select', methods: ['GET'])]
+    #[Route('/get_options_for_active_select', name: 'get_options_for_active_select', methods: ['GET'])]
     public function optionsForActiveSelect(): Response
     {
         $options = [
@@ -69,6 +69,18 @@ class CryptocurrenciesController extends AbstractController
         ];
 
         return $this->json(['options' => $options]);
+    }
+
+    #[Route('/delete_crypto/{id}', name: 'delete_crypto', methods: ['DELETE'])]
+    public function delete(Cryptocurrency $crypto) : Response
+    {
+        $this->entityManager->remove($crypto);
+        $this->entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+            'message' => 'Successfully deleted crypto with symbol '.$crypto->getSymbol()
+        ]);
     }
 
 }
