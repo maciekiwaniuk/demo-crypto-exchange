@@ -4,7 +4,7 @@
     <table>
         <tr>
             <th>Symbol</th>
-            <th>Active</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
 

@@ -37,12 +37,12 @@ class Cryptocurrency
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function isActive(): string
     {
         return $this->active;
     }
 
-    public function setActive(bool $active): self
+    public function setActive(string $active): self
     {
         $this->active = $active;
 
