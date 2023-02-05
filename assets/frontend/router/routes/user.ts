@@ -1,4 +1,5 @@
 const Settings = () => import('../../pages/user/Settings/Settings.vue');
+const Transactions = () => import('../../pages/user/Transactions/Transactions.vue');
 
 export const userRoutes: any = [
     {
@@ -10,4 +11,13 @@ export const userRoutes: any = [
             requiredStatus: 'user'
         }
     },
+    {
+        path: '/user/transactions',
+        name: 'user.transactions',
+        component: Transactions,
+        meta: {
+            title: 'User - Transactions',
+            requiredStatus: 'user'
+        }
+    }
 ];
