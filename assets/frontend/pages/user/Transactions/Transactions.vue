@@ -32,7 +32,7 @@
     <br /> <br />
 
     <h2 class="text-3xl text-orange-400">Make transaction</h2>
-    Balance: 100 000$ <br />
+    Balance: {{ userStore.balance }}$ <br />
     <form @submit.prevent="runTransaction();">
         <label for="type">Type</label>
         <select v-model="type" id="type">
@@ -46,6 +46,7 @@
 
         <label for="cryptoBoughtSymbol">Crypto TO (buy or exchange)</label>
         <select v-model="cryptoBoughtSymbol">
+            <option value=""></option>
             <option v-for="crypto in cryptos" :value="crypto.symbol">
                 {{ crypto.symbol.replace('USDT', '') }}
             </option>
@@ -61,6 +62,7 @@
 
         <label for="cryptoSoldSymbol">Crypto FROM (sell or exchange)</label>
         <select v-model="cryptoSoldSymbol">
+            <option value=""></option>
             <option v-for="crypto in cryptos" :value="crypto.symbol">
                 {{ crypto.symbol.replace('USDT', '') }}
             </option>
@@ -89,6 +91,12 @@ import { TransactionOptionFormType } from '../../../interfaces/TransactionOption
 import { useCryptoDataFetcher } from '../../../composables/useCryptoDataFetcher';
 import { cryptoDataRefreshRate } from '../../../constants/app';
 import { round } from '../../../utils/round';
+import { useUserStore } from '../../../stores/user';
+
+const userStore = useUserStore();
+if (! userStore.isUserDataAlreadyFetched()) {
+    userStore.fetchUserData();
+}
 
 const transactions = reactive<any[]>([]),
       cryptos = reactive<any[]>([]),

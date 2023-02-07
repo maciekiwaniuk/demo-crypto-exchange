@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use App\Config\BanStatus;
 use App\Config\User as UserConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastUserAgent = null;
 
     #[ORM\Column]
-    private string $banStatus = BanStatus::NOT_BANNED;
+    private string $banStatus = UserConfig::NOT_BANNED;
 
     #[ORM\Column(length: 20, nullable: true)]
     private string $isVerified = UserConfig::EMAIL_NOT_VERIFIED;
@@ -207,26 +206,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBanStatus(): ?int
+    public function getBanStatus(): bool
     {
-        return $this->banStatus;
+        return $this->banStatus === UserConfig::BANNED;
     }
 
-    public function setBanStatus(int $banStatus): self
+    public function setBanStatus(bool $banStatus): self
     {
-        $this->banStatus = $banStatus;
+        $this->banStatus = $banStatus ? UserConfig::BANNED : UserConfig::NOT_BANNED;
 
         return $this;
     }
 
     public function isVerified(): bool
     {
-        return $this->isVerified;
+        return $this->isVerified === UserConfig::EMAIL_VERIFIED;
     }
 
     public function setIsVerified(bool $isVerified): self
     {
-        $this->isVerified = $isVerified;
+        $this->isVerified = $isVerified ? UserConfig::EMAIL_VERIFIED : UserConfig::EMAIL_NOT_VERIFIED;
 
         return $this;
     }

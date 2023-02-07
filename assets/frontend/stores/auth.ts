@@ -13,8 +13,10 @@ export const useAuthStore = defineStore('auth', {
             this.isAuthenticated = true;
             this.token = token;
             this.roles = roles;
-            cookies.set('TOKEN', JSON.stringify(`Bearer ${token}`), 60 * 60 * 24 * 7);
-            cookies.set('ROLES', JSON.stringify(roles), 60 * 60 * 24 * 7);
+
+            const cookieTerm = 60 * 60 * 24 * 7;
+            cookies.set('TOKEN', JSON.stringify(`Bearer ${token}`), cookieTerm);
+            cookies.set('ROLES', JSON.stringify(roles), cookieTerm);
 
             await router.push({ name: 'home' });
         },

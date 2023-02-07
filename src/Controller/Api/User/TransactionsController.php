@@ -3,6 +3,7 @@
 namespace App\Controller\Api\User;
 
 use App\Entity\Transaction;
+use App\Config\Transaction as TransactionConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,10 +53,13 @@ class TransactionsController extends AbstractController
     #[Route('/new', name: 'new', methods: ['POST'])]
     public function new(Request $request): Response
     {
-        
+        $data = json_decode($request->getContent(), true);
+
+        $this->logger->debug("new request debug", [$request->request]);
+
 
         return $this->json([
-
+            'success' => true
         ]);
     }
 }

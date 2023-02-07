@@ -67,12 +67,9 @@ const handleRegistration = async () => {
 
             authStore.authenticate(response.data.token, response.data.roles);
             router.push({ name: 'home' });
-            console.log('response');
-            console.log(response);
         })
         .catch(error => {
             loader.hide();
-            console.log('error');
             console.log(error);
         })
 }

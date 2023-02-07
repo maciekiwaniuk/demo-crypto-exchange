@@ -42,7 +42,7 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $finalData = [
             'success' => true,
             'token' => $token,
-            'roles' => $roles,
+            'roles' => $roles
         ];
 
         $event->setData($finalData);
