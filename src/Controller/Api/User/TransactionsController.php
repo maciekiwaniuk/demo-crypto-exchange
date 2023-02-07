@@ -41,18 +41,18 @@ class TransactionsController extends AbstractController
     /**
      * @param Request $request
      * @var string $type
-     * @var ?string $cryptoSoldSymbol
      * @var ?string $cryptoBoughtSymbol
-     * @var ?float $numberOfCryptoSold
+     * @var ?string $cryptoSoldSymbol
      * @var ?float $numberOfCryptoBought
-     * @var ?float $value
+     * @var ?float $numberOfCryptoSold
+     * @var float $value
      *
      * @return Response
      */
     #[Route('/new', name: 'new', methods: ['POST'])]
     public function new(Request $request): Response
     {
-
+        
 
         return $this->json([
 

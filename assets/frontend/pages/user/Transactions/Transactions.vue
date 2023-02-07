@@ -1,14 +1,25 @@
 <template>
-    <h1>Transactions</h1>
+    <h1 class="text-4xl text-yellow-400">Transactions page</h1>
 
-    <h2>Balance</h2>
-    100 000$
+    <br /> <br />
+
+    <h2>Your cryptocurrencies</h2>
+    <table class="table-auto m-auto">
+        <tr>
+            <th>Crypto</th>
+            <th>Number</th>
+            <th>Value</th>
+        </tr>
+        <tr v-for="userCrypto in userCryptos">
+
+        </tr>
+    </table>
 
     <br /> <br />
 
     <h2>Current crypto prices</h2>
     <div v-for="crypto in cryptos">
-        {{ crypto.symbol.replace('USDT', '') }} has price {{ crypto.price }} <br />
+        {{ crypto.symbol.replace('USDT', '') }} has price {{ round(crypto.price, 2) }}$ <br />
     </div>
 
     <br /> <br />
@@ -20,11 +31,9 @@
 
     <br /> <br />
 
-    <h2>Make transaction</h2>
-
-    <br />
-
-    <form @submit.prevent>
+    <h2 class="text-3xl text-orange-400">Make transaction</h2>
+    Balance: 100 000$ <br />
+    <form @submit.prevent="runTransaction();">
         <label for="type">Type</label>
         <select v-model="type" id="type">
             <option value="sold_for_money">Sell crypto for money</option>
@@ -33,7 +42,42 @@
         </select>
 
         <br />
+        <br />
 
+        <label for="cryptoBoughtSymbol">Crypto TO (buy or exchange)</label>
+        <select v-model="cryptoBoughtSymbol">
+            <option v-for="crypto in cryptos" :value="crypto.symbol">
+                {{ crypto.symbol.replace('USDT', '') }}
+            </option>
+        </select>
+
+        <br />
+
+        <label for="numberOfCryptoBought">Number of crypto to buy or exchange</label>
+        <input type="text" v-model="numberOfCryptoBought">
+
+        <br />
+        <br />
+
+        <label for="cryptoSoldSymbol">Crypto FROM (sell or exchange)</label>
+        <select v-model="cryptoSoldSymbol">
+            <option v-for="crypto in cryptos" :value="crypto.symbol">
+                {{ crypto.symbol.replace('USDT', '') }}
+            </option>
+        </select>
+
+        <br />
+
+        <label for="numberOfCryptoSold">Number of crypto to sell or exchange</label>
+        <input type="text" v-model="numberOfCryptoSold">
+
+        <br />
+        <br />
+
+        <button
+            type="submit"
+            class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+        >Make</button>
 
     </form>
 </template>
@@ -44,11 +88,18 @@ import { axiosInstance } from '../../../plugins/axios';
 import { TransactionOptionFormType } from '../../../interfaces/TransactionOptionFormType';
 import { useCryptoDataFetcher } from '../../../composables/useCryptoDataFetcher';
 import { cryptoDataRefreshRate } from '../../../constants/app';
+import { round } from '../../../utils/round';
 
-const transactions = reactive<any[]>([]);
-const cryptos = reactive<any[]>([]);
+const transactions = reactive<any[]>([]),
+      cryptos = reactive<any[]>([]),
+      userCryptos = reactive<[]>([]);
 
-let type = ref<null | TransactionOptionFormType>(null);
+let type = ref<null | TransactionOptionFormType>(null),
+    cryptoSoldSymbol = ref<null | string>(),
+    cryptoBoughtSymbol = ref<null | string>(),
+    numberOfCryptoSold = ref<null | number>(),
+    numberOfCryptoBought = ref<null | number>(),
+    value = ref<null | number>();
 
 const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
 
@@ -68,5 +119,14 @@ const getTransactions = async (): Promise<any> => {
         })
 }
 getTransactions();
+
+const runTransaction = async (): Promise<any> => {
+    await axiosInstance.post('/api/user/transactions/new', {
+
+    })
+        .then(response => {
+            console.log(response);
+        })
+}
 
 </script>
