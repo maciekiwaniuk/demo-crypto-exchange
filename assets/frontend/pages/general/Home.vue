@@ -13,17 +13,16 @@
 </template>
 
 <script setup lang="ts">
-import { axiosInstance } from '../../plugins/axios';
 import { reactive } from 'vue';
+import { useCryptoDataFetcher } from '../../composables/useCryptoDataFetcher';
 
 const cryptos = reactive<any[]>([]);
 
+const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
+
 const getCryptos = async () => {
-    axiosInstance.get('api/get_prices_of_active_cryptos')
-        .then(response => {
-            console.log(response);
-            Object.assign(cryptos, response.data.cryptos);
-        })
+    const fetchedCryptos = await getPricesOfActiveCryptos();
+    Object.assign(cryptos, fetchedCryptos);
 }
 getCryptos();
 

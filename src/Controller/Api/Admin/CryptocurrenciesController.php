@@ -31,7 +31,6 @@ class CryptocurrenciesController extends AbstractController
             ->findAll();
 
         return $this->json([
-            'success' => true,
             'cryptos' => $this->serializer->serialize($cryptocurrencies, 'json')
         ]);
     }

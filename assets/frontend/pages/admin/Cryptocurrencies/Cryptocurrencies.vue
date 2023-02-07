@@ -31,8 +31,7 @@
 <script setup lang="ts">
 import { axiosInstance } from '../../../plugins/axios';
 import { inject, reactive, ref } from 'vue';
-import CryptocurrenciesList from "./CryptocurrenciesList.vue";
-import { Crypto } from '../../../interfaces/Crypto';
+import CryptocurrenciesList from './CryptocurrenciesList.vue';
 
 const swal = inject('$swal') as any;
 
@@ -40,7 +39,7 @@ const symbol = ref<string>(''),
       activeSelect = ref<string>(''),
       activeOptions = reactive<any>([]);
 
-const cryptos = reactive<Crypto[]>([]);
+const cryptos = reactive<any[]>([]);
 
 axiosInstance.get('api/admin/get_options_for_active_select')
     .then(response => {
@@ -82,7 +81,3 @@ const newCrypto = async () => {
 
 
 </script>
-
-<style scoped>
-
-</style>

@@ -11,8 +11,8 @@
         <label for="password">Password</label>
         <input type="password" id="password" v-model="password"> <br>
 
-        <label for="password_confirm">Confirm password</label>
-        <input type="password" id="password_confirm" v-model="password_confirm"> <br>
+        <label for="passwordConfirm">Confirm password</label>
+        <input type="password" id="passwordConfirm" v-model="passwordConfirm"> <br>
 
         <button type="submit">Register</button>
     </form>
@@ -32,12 +32,12 @@ const swal = inject<any>('$swal');
 const email = ref<string>(''),
       username = ref<string>(''),
       password = ref<string>(''),
-      password_confirm = ref<string>('');
+      passwordConfirm = ref<string>('');
 
 const handleRegistration = async () => {
     const loader = loading.show();
 
-    if (password.value !== password_confirm.value) {
+    if (password.value !== passwordConfirm.value) {
         swal({
             title: 'Whoops...',
             text: 'Confirmation of password was different than in password field.',

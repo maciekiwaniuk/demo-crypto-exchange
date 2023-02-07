@@ -21,16 +21,13 @@
 <script setup lang="ts">
 import { axiosInstance } from '../../../plugins/axios';
 import { inject } from 'vue';
-import { Crypto } from '../../../interfaces/Crypto';
 
 const swal = inject('$swal') as any;
 
 interface Props {
-    cryptos: Crypto[],
+    cryptos: any[],
 }
 const props = defineProps<Props>();
-
-console.log(props.cryptos)
 
 const deleteCrypto = async (cryptoId: number, indexInArray: number) => {
     await axiosInstance.delete(`api/admin/delete_crypto/${cryptoId}`)

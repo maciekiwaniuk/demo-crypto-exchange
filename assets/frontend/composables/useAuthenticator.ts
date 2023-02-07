@@ -1,5 +1,5 @@
 import { useAuthStore } from '../stores/auth';
-import { cookies } from "../plugins/cookies";
+import { cookies } from '../plugins/cookies';
 
 export const useAuthenticator = (): any => {
     const checkAuthentication = (): void => {
