@@ -33,6 +33,8 @@ class CryptocurrenciesDataService
             $symbols[] = $crypto->getSymbol() . 'USDT';
         }
 
+        if (count($symbols) == 0) return [];
+
         return $this->binanceApiHttpClient
             ->fetchCurrentPricesOfPassedCryptoSymbols($symbols);
     }

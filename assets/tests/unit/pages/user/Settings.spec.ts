@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
-import Settings from '../../../../frontend/pages/user/Settings/Settings.vue';
+import Account from '../../../../frontend/pages/user/Account/Account.vue';
 import { expect } from '@jest/globals';
 
-describe('User - Settings', () => {
-    const wrapper = mount(Settings);
+describe('User - Account', () => {
+    const wrapper = mount(Account);
 
     it('renders', () => {
-        expect(wrapper.text()).toContain('Settings');
+        expect(wrapper.text()).toContain('Account');
     });
 });
 

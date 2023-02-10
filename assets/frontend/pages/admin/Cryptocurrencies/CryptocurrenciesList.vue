@@ -1,7 +1,7 @@
 <template>
     List of crypto
     <br>
-    <table>
+    <table class="m-auto">
         <tr>
             <th>Symbol</th>
             <th>Status</th>
