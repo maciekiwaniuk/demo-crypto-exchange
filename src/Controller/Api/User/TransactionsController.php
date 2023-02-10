@@ -62,4 +62,14 @@ class TransactionsController extends AbstractController
             'success' => true
         ]);
     }
+
+    #[Route('/')]
+    public function newBoughtForMoney(Request $request): Response
+    {
+
+
+        return $this->json([
+
+        ]);
+    }
 }

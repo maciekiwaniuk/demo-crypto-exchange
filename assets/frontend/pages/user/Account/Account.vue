@@ -24,7 +24,7 @@ const new_password_confirm = ref<string>('');
 
 const changePassword = async () => {
     try {
-        const response = await axiosInstance.post('/api/user/change_password', {
+        const response = await axiosInstance.post('/api/user/change-password', {
             old_password: old_password.value,
             new_password: new_password.value,
             new_password_confirm: new_password_confirm.value

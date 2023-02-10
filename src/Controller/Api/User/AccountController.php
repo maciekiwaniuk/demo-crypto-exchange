@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/user', name: 'api.user.')]
 class AccountController extends AbstractController
 {
-    #[Route('/change_password', name: 'change_password', methods: ['POST'])]
+    #[Route('/change-password', name: 'change-password', methods: ['POST'])]
     public function changePassword(): Response
     {
         return $this->json([

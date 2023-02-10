@@ -33,7 +33,7 @@ const login = async () => {
     const loader = loading.show();
 
     try {
-        await axiosInstance.post('/api/login_check', {
+        await axiosInstance.post('/api/login-check', {
             email: email.value,
             password: password.value
         })

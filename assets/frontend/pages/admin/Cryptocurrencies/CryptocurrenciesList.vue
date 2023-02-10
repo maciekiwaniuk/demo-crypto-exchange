@@ -30,7 +30,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const deleteCrypto = async (cryptoId: number, indexInArray: number) => {
-    await axiosInstance.delete(`api/admin/delete_crypto/${cryptoId}`)
+    await axiosInstance.delete(`api/admin/delete-crypto/${cryptoId}`)
         .then(response => {
             if (!response.data.success) {
                 swal({

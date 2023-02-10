@@ -4,7 +4,7 @@ export const useCryptoDataFetcher = (): any => {
     const getPricesOfActiveCryptos = async (): Promise<any[]> => {
         let cryptos: any[] = [];
 
-        await axiosInstance.get('api/get_prices_of_active_cryptos')
+        await axiosInstance.get('api/get-prices-of-active-cryptos')
             .then(response => {
                 cryptos = response.data.cryptos;
             })

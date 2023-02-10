@@ -23,7 +23,7 @@ class CryptocurrenciesController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/get_cryptos', name: 'get_cryptos', methods: ['GET'])]
+    #[Route('/get-cryptos', name: 'get-cryptos', methods: ['GET'])]
     public function getList(): Response
     {
         $cryptocurrencies = $this->entityManager
@@ -35,7 +35,7 @@ class CryptocurrenciesController extends AbstractController
         ]);
     }
 
-    #[Route('/new_crypto', name: 'new_crypto', methods: ['POST'])]
+    #[Route('/new-crypto', name: 'new-crypto', methods: ['POST'])]
     public function new(NewCryptocurrencyDto $dto): Response
     {
         if ($dto->hasErrors()) {
@@ -59,7 +59,7 @@ class CryptocurrenciesController extends AbstractController
         ]);
     }
 
-    #[Route('/get_options_for_active_select', name: 'get_options_for_active_select', methods: ['GET'])]
+    #[Route('/get-options-for-active-select', name: 'get-options-for-active-select', methods: ['GET'])]
     public function optionsForActiveSelect(): Response
     {
         $options = [
@@ -70,7 +70,7 @@ class CryptocurrenciesController extends AbstractController
         return $this->json(['options' => $options]);
     }
 
-    #[Route('/delete_crypto/{id}', name: 'delete_crypto', methods: ['DELETE'])]
+    #[Route('/delete-crypto/{id}', name: 'delete_crypto', methods: ['DELETE'])]
     public function delete(Cryptocurrency $crypto) : Response
     {
         $this->entityManager->remove($crypto);
