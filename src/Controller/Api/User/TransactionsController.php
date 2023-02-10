@@ -2,8 +2,11 @@
 
 namespace App\Controller\Api\User;
 
+use App\Entity\Cryptocurrency;
 use App\Entity\Transaction;
 use App\Config\Transaction as TransactionConfig;
+use App\Repository\CryptocurrencyRepository;
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,35 +44,78 @@ class TransactionsController extends AbstractController
 
     /**
      * @param Request $request
-     * @var string $type
-     * @var ?string $cryptoBoughtSymbol
-     * @var ?string $cryptoSoldSymbol
-     * @var ?float $numberOfCryptoBought
-     * @var ?float $numberOfCryptoSold
+     * @var string $cryptoBoughtSymbol
+     * @var float $numberOfCryptoBought
      * @var float $value
      *
      * @return Response
      */
-    #[Route('/new', name: 'new', methods: ['POST'])]
-    public function new(Request $request): Response
+    #[Route('/new-bought-for-money', name: 'new-bought-for-money', methods: ['POST'])]
+    public function newBoughtForMoney(Request $request, CryptocurrencyRepository $cryptocurrencyRepository): Response
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->logger->debug("new request debug", [$request->request]);
+        $this->logger->debug("debug123", [$data]);
 
+        $cryptoBoughtSymbol = str_replace('USDT', '', $data['cryptoBoughtSymbol']);
+        $numberOfCryptoBought = $data['numberOfCryptoBought'];
+        $value = $data['value'];
+
+
+        $transaction = new Transaction();
+        $transaction->setType(TransactionConfig::BOUGHT_FOR_MONEY);
+
+        $cryptoBought = $cryptocurrencyRepository->findOneBy(['symbol' => $cryptoBoughtSymbol]);
+        $transaction->setCryptoBought($cryptoBought);
+        $transaction->setNumberOfCryptoBought($numberOfCryptoBought);
+        $transaction->setValue($value);
+
+        $date = new \DateTimeImmutable();
+        $transaction->setCreatedAt($date);
+
+        $transaction->setUser($this->getUser());
+
+        $this->entityManager->persist($transaction);
+        $this->entityManager->flush();
 
         return $this->json([
             'success' => true
         ]);
     }
 
-    #[Route('/')]
-    public function newBoughtForMoney(Request $request): Response
+    /**
+     * @param Request $request
+     * @var string $cryptoSoldSymbol
+     * @var float $numberOfCryptoSold
+     * @var float $value
+     *
+     * @return Response
+     */
+    #[Route('/new-sold-for-money', name: 'new-sold-for-money', methods: ['POST'])]
+    public function newSoldForMoney(Request $request): Response
     {
 
+        return $this->json([
+            'success' => true
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @var string $cryptoBoughtSymbol
+     * @var string $cryptoSoldSymbol
+     * @var float $numberOfCryptoBought
+     * @var float $numberOfCryptoSold
+     * @var float $value
+     *
+     * @return Response
+     */
+    #[Route('/new-exchange-between-cryptos', name: 'new-exchange-between-cryptos', methods: ['POST'])]
+    public function newExchangeBetweenCryptos(Request $request): Response
+    {
 
         return $this->json([
-
+            'success' => true
         ]);
     }
 }

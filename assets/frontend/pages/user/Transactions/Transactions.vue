@@ -33,7 +33,7 @@
 
     <h2 class="text-3xl text-orange-400">Make transaction</h2>
     Balance: {{ userStore.balance }}$ <br />
-    <form @submit.prevent="runTransaction();">
+    <form @submit.prevent="newTransaction();">
         <label for="type">Type</label>
         <select v-model="type" id="type">
             <option value="sold_for_money">Sell crypto for money</option>
@@ -55,7 +55,9 @@
         <br />
 
         <label for="numberOfCryptoBought">Number of crypto to buy or exchange</label>
-        <input type="text" v-model="numberOfCryptoBought">
+        <input type="text" v-model="numberOfCryptoBought"> <br/>
+        <label for="estimatedValueOfCryptoToBuy">Estimated value - crypto to buy</label>
+        <input type="text" v-model="estimatedValueOfCryptoToBuy">
 
         <br />
         <br />
@@ -71,7 +73,9 @@
         <br />
 
         <label for="numberOfCryptoSold">Number of crypto to sell or exchange</label>
-        <input type="text" v-model="numberOfCryptoSold">
+        <input type="text" v-model="numberOfCryptoSold"> <br/>
+        <label for="estimatedValueOfCryptoToSell">Estimated value - crypto to sell</label>
+        <input type="text" v-model="estimatedValueOfCryptoToSell">
 
         <br />
         <br />
@@ -85,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref} from 'vue';
 import { axiosInstance } from '../../../plugins/axios';
 import { TransactionOptionFormType } from '../../../interfaces/TransactionOptionFormType';
 import { useCryptoDataFetcher } from '../../../composables/useCryptoDataFetcher';
@@ -109,6 +113,24 @@ let type = ref<null | TransactionOptionFormType>(null),
     numberOfCryptoBought = ref<null | number>(),
     value = ref<null | number>();
 
+let estimatedValueOfCryptoToBuy = computed(() => {
+    if (! cryptos.length || type.value === null) return;
+
+    let value = 0;
+    cryptos.forEach(crypto => {
+        if (crypto.symbol === cryptoBoughtSymbol.value) {
+            // @ts-ignore
+            value = numberOfCryptoBought.value * crypto.price;
+        }
+    });
+
+    return value;
+});
+
+let estimatedValueOfCryptoToSell = computed(() => {
+    return 40;
+});
+
 const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
 
 const getCryptos = async (): Promise<any> => {
@@ -128,13 +150,42 @@ const getTransactions = async (): Promise<any> => {
 }
 getTransactions();
 
-const runTransaction = async (): Promise<any> => {
-    await axiosInstance.post('/api/user/transactions/new', {
+interface transactionData {
+    cryptoSoldSymbol?: string | null,
+    cryptoBoughtSymbol?: string | null,
+    numberOfCryptoSold?: number | null,
+    numberOfCryptoBought?: number | null,
+    value?: number | null
+}
+const newTransaction = async (): Promise<any> => {
+    let newTransactionUrl: string = '/api/user/transactions';
+    const transactionData: transactionData = {};
 
-    })
+    if (type.value === 'sold_for_money') {
+        newTransactionUrl += '/new-sold-for-money';
+        transactionData.cryptoSoldSymbol = cryptoSoldSymbol.value;
+        transactionData.numberOfCryptoSold = numberOfCryptoSold.value;
+        transactionData.value = estimatedValueOfCryptoToSell.value;
+
+    } else if (type.value === 'bought_for_money') {
+        newTransactionUrl += '/new-bought-for-money';
+        transactionData.cryptoBoughtSymbol = cryptoBoughtSymbol.value;
+        transactionData.numberOfCryptoBought = numberOfCryptoBought.value;
+        transactionData.value = estimatedValueOfCryptoToBuy.value;
+
+    } else if (type.value === 'exchange_between_cryptos') {
+        newTransactionUrl += 'new-exchange-between-cryptos';
+        transactionData.cryptoSoldSymbol = cryptoSoldSymbol.value;
+        transactionData.numberOfCryptoSold = numberOfCryptoSold.value;
+        transactionData.cryptoBoughtSymbol = cryptoBoughtSymbol.value;
+        transactionData.numberOfCryptoBought = numberOfCryptoBought.value;
+        transactionData.value = estimatedValueOfCryptoToBuy.value;
+    }
+
+    axiosInstance.post(newTransactionUrl, transactionData)
         .then(response => {
             console.log(response);
         })
-}
 
+}
 </script>
