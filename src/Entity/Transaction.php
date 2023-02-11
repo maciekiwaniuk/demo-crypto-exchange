@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\TransactionRepository;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction
@@ -13,17 +15,20 @@ class Transaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'type')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'transactions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?User $user = null;
 
     #[ORM\Column(length: 50)]
     private ?string $type = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Cryptocurrency::class)]
+    #[Ignore]
     private ?Cryptocurrency $crypto_sold = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Cryptocurrency::class)]
+    #[Ignore]
     private ?Cryptocurrency $crypto_bought = null;
 
     #[ORM\Column(nullable: true)]

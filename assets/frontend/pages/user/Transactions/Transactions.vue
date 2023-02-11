@@ -25,8 +25,27 @@
     <br /> <br />
 
     List of your transactions:
-    <div v-for="transaction in transactions">
-        tako <br/>
+    <div>
+        <table class="m-auto">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>crypto bought</th>
+                <th>number bought</th>
+                <th>crypto sold</th>
+                <th>number sold</th>
+                <th>value</th>
+            </tr>
+            <tr v-for="transaction in transactions">
+                <td class="border border-slate-600">{{ transaction.id }}</td>
+                <td class="border border-slate-600">{{ transaction.type }}</td>
+                <td class="border border-slate-600">{{ transaction.cryptoBought }}</td>
+                <td class="border border-slate-600">{{ transaction.numberOfCryptoBought }}</td>
+                <td class="border border-slate-600">{{ transaction.cryptoSold }}</td>
+                <td class="border border-slate-600">{{ transaction.numberOfCryptoSold }}</td>
+                <td class="border border-slate-600">{{ transaction.value }}</td>
+            </tr>
+        </table>
     </div>
 
     <br /> <br />
@@ -146,6 +165,10 @@ const getTransactions = async (): Promise<any> => {
     await axiosInstance.get('/api/user/transactions/list')
         .then(response => {
             console.log(response);
+            Object.assign(transactions, JSON.parse(response.data.transactions));
+            transactions.forEach(trans => {
+                console.log(trans);
+            })
         })
 }
 getTransactions();

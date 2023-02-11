@@ -33,9 +33,15 @@ class TransactionsController extends AbstractController
     #[Route('/list', name: 'list', methods: ['GET'])]
     public function getList(): Response
     {
+        $this->logger->debug("get list", [$this->getUser()]);
+
         $transactions = $this->entityManager
             ->getRepository(Transaction::class)
-            ->findBy(['id' => $this->getUser()->getId()]);
+            ->findBy(['user' => $this->getUser()]);
+
+        $this->logger->debug("transactionsssss", [$transactions]);
+        $this->logger->debug('serializer', [$this->serializer->serialize($transactions, 'json')]);
+
 
         return $this->json([
             'transactions' => $this->serializer->serialize($transactions, 'json')
@@ -47,6 +53,8 @@ class TransactionsController extends AbstractController
      * @var string $cryptoBoughtSymbol
      * @var float $numberOfCryptoBought
      * @var float $value
+     *
+     *
      *
      * @return Response
      */
@@ -73,8 +81,13 @@ class TransactionsController extends AbstractController
         $date = new \DateTimeImmutable();
         $transaction->setCreatedAt($date);
 
-        $transaction->setUser($this->getUser());
+        $user = $this->getUser();
+        $balanceBeforeTransaction = $user->getBalance();
+        $balanceBeforeTransaction -= $value;
 
+        $transaction->setUser($user);
+
+        $this->entityManager->persist($user);
         $this->entityManager->persist($transaction);
         $this->entityManager->flush();
 

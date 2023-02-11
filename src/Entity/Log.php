@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LogRepository;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
@@ -13,7 +14,7 @@ class Log
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'logs')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'logs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

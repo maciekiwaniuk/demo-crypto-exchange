@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -51,10 +51,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20, nullable: true)]
     private string $isVerified = UserConfig::EMAIL_NOT_VERIFIED;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Log::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class, orphanRemoval: true)]
     private Collection $logs;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Transaction::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class, orphanRemoval: true)]
     private Collection $transactions;
 
     public function __construct()
@@ -103,7 +103,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -242,7 +241,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->logs->contains($log)) {
             $this->logs->add($log);
-            $log->setUserId($this);
+            $log->setUser($this);
         }
 
         return $this;
@@ -252,8 +251,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->logs->removeElement($log)) {
             // set the owning side to null (unless already changed)
-            if ($log->getUserId() === $this) {
-                $log->setUserId(null);
+            if ($log->getUser() === $this) {
+                $log->setUser(null);
             }
         }
 
@@ -272,7 +271,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->transactions->contains($transaction)) {
             $this->transactions->add($transaction);
-            $transaction->setUserId($this);
+            $transaction->setUser($this);
         }
 
         return $this;
@@ -282,8 +281,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
-            if ($transaction->getUserId() === $this) {
-                $transaction->setUserId(null);
+            if ($transaction->getUser() === $this) {
+                $transaction->setUser(null);
             }
         }
 
