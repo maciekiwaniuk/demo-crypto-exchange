@@ -11,7 +11,9 @@
             <th>Value</th>
         </tr>
         <tr v-for="userCrypto in userCryptos">
-
+            <td class="border border-slate-600">{{ userCrypto[0] }}</td>
+            <td class="border border-slate-600">{{ userCrypto[1] }}</td>
+            <td class="border border-slate-600">???</td>
         </tr>
     </table>
 
@@ -39,9 +41,9 @@
             <tr v-for="transaction in transactions">
                 <td class="border border-slate-600">{{ transaction.id }}</td>
                 <td class="border border-slate-600">{{ transaction.type }}</td>
-                <td class="border border-slate-600">{{ transaction.cryptoBought }}</td>
+                <td class="border border-slate-600">{{ transaction.cryptoBought.symbol }}</td>
                 <td class="border border-slate-600">{{ transaction.numberOfCryptoBought }}</td>
-                <td class="border border-slate-600">{{ transaction.cryptoSold }}</td>
+                <td class="border border-slate-600">{{ transaction.cryptoSold?.symbol }}</td>
                 <td class="border border-slate-600">{{ transaction.numberOfCryptoSold }}</td>
                 <td class="border border-slate-600">{{ transaction.value }}</td>
             </tr>
@@ -123,7 +125,7 @@ if (! userStore.isUserDataAlreadyFetched()) {
 
 const transactions = reactive<any[]>([]),
       cryptos = reactive<any[]>([]),
-      userCryptos = reactive<[]>([]);
+      userCryptos = reactive<any[]>([]);
 
 let type = ref<null | TransactionOptionFormType>(null),
     cryptoSoldSymbol = ref<null | string>(),
@@ -161,14 +163,19 @@ setInterval(() => {
     getCryptos();
 }, cryptoDataRefreshRate);
 
+const getUserCryptos = async(): Promise<any> => {
+    axiosInstance.get('/api/user/total-owned-crypto')
+        .then(response => {
+            const cryptos = JSON.parse(response.data.cryptos);
+            Object.assign(userCryptos, Object.entries(cryptos));
+        });
+}
+getUserCryptos();
+
 const getTransactions = async (): Promise<any> => {
     await axiosInstance.get('/api/user/transactions/list')
         .then(response => {
-            console.log(response);
             Object.assign(transactions, JSON.parse(response.data.transactions));
-            transactions.forEach(trans => {
-                console.log(trans);
-            })
         })
 }
 getTransactions();
@@ -197,7 +204,7 @@ const newTransaction = async (): Promise<any> => {
         transactionData.value = estimatedValueOfCryptoToBuy.value;
 
     } else if (type.value === 'exchange_between_cryptos') {
-        newTransactionUrl += 'new-exchange-between-cryptos';
+        newTransactionUrl += '/new-exchange-between-cryptos';
         transactionData.cryptoSoldSymbol = cryptoSoldSymbol.value;
         transactionData.numberOfCryptoSold = numberOfCryptoSold.value;
         transactionData.cryptoBoughtSymbol = cryptoBoughtSymbol.value;
@@ -207,7 +214,9 @@ const newTransaction = async (): Promise<any> => {
 
     axiosInstance.post(newTransactionUrl, transactionData)
         .then(response => {
-            console.log(response);
+            if (response.data.success) {
+                transactions.push(JSON.parse(response.data.transaction));
+            }
         })
 
 }

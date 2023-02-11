@@ -82,8 +82,9 @@ class TransactionsController extends AbstractController
         $transaction->setCreatedAt($date);
 
         $user = $this->getUser();
-        $balanceBeforeTransaction = $user->getBalance();
-        $balanceBeforeTransaction -= $value;
+        $balance = $user->getBalance();
+        $balance -= $value;
+        $user->setBalance($balance);
 
         $transaction->setUser($user);
 
@@ -92,7 +93,8 @@ class TransactionsController extends AbstractController
         $this->entityManager->flush();
 
         return $this->json([
-            'success' => true
+            'success' => true,
+            'transaction' => $this->serializer->serialize($transaction, 'json')
         ]);
     }
 

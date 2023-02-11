@@ -24,11 +24,9 @@ class Transaction
     private ?string $type = null;
 
     #[ORM\ManyToOne(targetEntity: Cryptocurrency::class)]
-    #[Ignore]
     private ?Cryptocurrency $crypto_sold = null;
 
     #[ORM\ManyToOne(targetEntity: Cryptocurrency::class)]
-    #[Ignore]
     private ?Cryptocurrency $crypto_bought = null;
 
     #[ORM\Column(nullable: true)]
