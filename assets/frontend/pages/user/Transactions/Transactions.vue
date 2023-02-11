@@ -10,12 +10,14 @@
             <th>Number</th>
             <th>Value</th>
         </tr>
-        <tr v-for="userCrypto in userCryptos">
-            <td class="border border-slate-600">{{ userCrypto[0] }}</td>
-            <td class="border border-slate-600">{{ userCrypto[1] }}</td>
-            <td class="border border-slate-600">???</td>
+        <tr v-for="(crypto, index) in userCryptos" :key="index">
+            <td class="border border-slate-600">{{ crypto[0] }}</td>
+            <td class="border border-slate-600">{{ crypto[1].number }}</td>
+            <td class="border border-slate-600">{{ crypto[1].value }}</td>
         </tr>
     </table>
+
+    <p>Value in total: {{ totalValueOfOwnedCryptos }}</p>
 
     <br /> <br />
 
@@ -119,9 +121,6 @@ import { round } from '../../../utils/round';
 import { useUserStore } from '../../../stores/user';
 
 const userStore = useUserStore();
-if (! userStore.isUserDataAlreadyFetched()) {
-    userStore.fetchUserData();
-}
 
 const transactions = reactive<any[]>([]),
       cryptos = reactive<any[]>([]),
@@ -150,6 +149,14 @@ let estimatedValueOfCryptoToBuy = computed(() => {
 
 let estimatedValueOfCryptoToSell = computed(() => {
     return 40;
+});
+
+let totalValueOfOwnedCryptos = computed(() => {
+    let value = 0;
+    userCryptos.forEach(crypto => {
+        value += crypto[1].value;
+    })
+    return value;
 });
 
 const { getPricesOfActiveCryptos } = useCryptoDataFetcher();

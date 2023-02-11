@@ -32,25 +32,31 @@ class CryptocurrenciesController extends AbstractController
             if ($cryptoBought) {
                 $cryptoBoughtSymbol = $cryptoBought->getSymbol();
                 if (! array_key_exists($cryptoBoughtSymbol, $totaledCrypto)) {
-                    $totaledCrypto[$cryptoBoughtSymbol] = 0;
+                    $totaledCrypto[$cryptoBoughtSymbol] = [
+                        'number' => 0,
+                        'value' => 0
+                    ];
                 }
             }
 
             $cryptoSold = $transaction->getCryptoSold();
             if ($cryptoSold) {
                 $cryptoSoldSymbol = $cryptoSold->getSymbol();
-                if (! array_key_exists($cryptoSoldSymbol, $totaledCrypto)) {
-                    $totaledCrypto[$cryptoSoldSymbol] = 0;
-                }
             }
 
             if ($transaction->getType() === TransactionConfig::BOUGHT_FOR_MONEY) {
-                $totaledCrypto[$cryptoBoughtSymbol] += $transaction->getNumberOfCryptoBought();
+                $totaledCrypto[$cryptoBoughtSymbol]['number'] += $transaction->getNumberOfCryptoBought();
+                $totaledCrypto[$cryptoBoughtSymbol]['value'] += $transaction->getValue();
 
             } else if ($transaction->getType() === TransactionConfig::SOLD_FOR_MONEY) {
+                $totaledCrypto[$cryptoSoldSymbol]['number'] -= $transaction->getNumberOfCryptoSold();
+                $totaledCrypto[$cryptoSoldSymbol]['value'] -= $transaction->getValue();
 
             } else if ($transaction->getType() === TransactionConfig::EXCHANGE_BETWEEN_CRYPTOS) {
-
+                $totaledCrypto[$cryptoBoughtSymbol]['number'] += $transaction->getNumberOfCryptoBought();
+                $totaledCrypto[$cryptoBoughtSymbol]['value'] += $transaction->getValue();
+                $totaledCrypto[$cryptoSoldSymbol]['number'] -= $transaction->getNumberOfCryptoSold();
+                $totaledCrypto[$cryptoSoldSymbol]['value'] -= $transaction->getValue();
             }
         }
 

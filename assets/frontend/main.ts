@@ -27,6 +27,3 @@ app.use(pinia)
     .use(VueSweetalert2);
 
 app.mount('#app');
-
-const { checkAuthentication } = useAuthenticator();
-checkAuthentication();
