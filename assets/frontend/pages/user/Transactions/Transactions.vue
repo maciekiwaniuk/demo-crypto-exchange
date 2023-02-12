@@ -3,24 +3,6 @@
 
     <br /> <br />
 
-    <h2>Your cryptocurrencies</h2>
-    <table class="table-auto m-auto">
-        <tr>
-            <th>Crypto</th>
-            <th>Number</th>
-            <th>Value</th>
-        </tr>
-        <tr v-for="(crypto, index) in userCryptos" :key="index">
-            <td class="border border-slate-600">{{ crypto[0] }}</td>
-            <td class="border border-slate-600">{{ crypto[1].number }}</td>
-            <td class="border border-slate-600">{{ crypto[1].value }}</td>
-        </tr>
-    </table>
-
-    <p>Value in total: {{ totalValueOfOwnedCryptos }}</p>
-
-    <br /> <br />
-
     List of your transactions:
     <div>
         <table class="m-auto">
@@ -116,8 +98,7 @@ import { useUserStore } from '../../../stores/user';
 const userStore = useUserStore();
 
 const transactions = reactive<any[]>([]),
-      cryptos = reactive<any[]>([]),
-      userCryptos = reactive<any[]>([]);
+      cryptos = reactive<any[]>([]);
 
 let type = ref<null | TransactionOptionFormType>(null),
     cryptoSoldSymbol = ref<null | string>(),
@@ -154,13 +135,7 @@ let estimatedValueOfCryptoToSell = computed(() => {
     return value;
 });
 
-let totalValueOfOwnedCryptos = computed(() => {
-    let value = 0;
-    userCryptos.forEach(crypto => {
-        value += crypto[1].value;
-    })
-    return value;
-});
+
 
 const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
 
@@ -173,14 +148,6 @@ setInterval(() => {
     getCryptos();
 }, cryptoDataRefreshRate);
 
-const getUserCryptos = async(): Promise<any> => {
-    axiosInstance.get('/api/user/total-owned-crypto')
-        .then(response => {
-            const cryptos = JSON.parse(response.data.cryptos);
-            Object.assign(userCryptos, Object.entries(cryptos));
-        });
-}
-getUserCryptos();
 
 const getTransactions = async (): Promise<any> => {
     await axiosInstance.get('/api/user/transactions/list')

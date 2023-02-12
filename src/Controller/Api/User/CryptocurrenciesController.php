@@ -32,10 +32,7 @@ class CryptocurrenciesController extends AbstractController
             if ($cryptoBought) {
                 $cryptoBoughtSymbol = $cryptoBought->getSymbol();
                 if (! array_key_exists($cryptoBoughtSymbol, $totaledCrypto)) {
-                    $totaledCrypto[$cryptoBoughtSymbol] = [
-                        'number' => 0,
-                        'value' => 0
-                    ];
+                    $totaledCrypto[$cryptoBoughtSymbol] = 0;
                 }
             }
 
@@ -45,18 +42,14 @@ class CryptocurrenciesController extends AbstractController
             }
 
             if ($transaction->getType() === TransactionConfig::BOUGHT_FOR_MONEY) {
-                $totaledCrypto[$cryptoBoughtSymbol]['number'] += $transaction->getNumberOfCryptoBought();
-                $totaledCrypto[$cryptoBoughtSymbol]['value'] += $transaction->getValue();
+                $totaledCrypto[$cryptoBoughtSymbol] += $transaction->getNumberOfCryptoBought();
 
             } else if ($transaction->getType() === TransactionConfig::SOLD_FOR_MONEY) {
-                $totaledCrypto[$cryptoSoldSymbol]['number'] -= $transaction->getNumberOfCryptoSold();
-                $totaledCrypto[$cryptoSoldSymbol]['value'] -= $transaction->getValue();
+                $totaledCrypto[$cryptoSoldSymbol] -= $transaction->getNumberOfCryptoSold();
 
             } else if ($transaction->getType() === TransactionConfig::EXCHANGE_BETWEEN_CRYPTOS) {
-                $totaledCrypto[$cryptoBoughtSymbol]['number'] += $transaction->getNumberOfCryptoBought();
-                $totaledCrypto[$cryptoBoughtSymbol]['value'] += $transaction->getValue();
-                $totaledCrypto[$cryptoSoldSymbol]['number'] -= $transaction->getNumberOfCryptoSold();
-                $totaledCrypto[$cryptoSoldSymbol]['value'] -= $transaction->getValue();
+                $totaledCrypto[$cryptoBoughtSymbol] += $transaction->getNumberOfCryptoBought();
+                $totaledCrypto[$cryptoSoldSymbol] -= $transaction->getNumberOfCryptoSold();
             }
         }
 

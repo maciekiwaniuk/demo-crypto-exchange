@@ -21,23 +21,28 @@
             class="flex text-red-800"
         >
             <router-link
+                :to="{ name: 'user.wallet' }"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+            >Wallet</router-link> <br>
+
+            <router-link
                 :to="{ name: 'user.market' }"
-                class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Market</router-link> <br>
 
             <router-link
                 :to="{ name: 'user.transactions' }"
-                class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Transactions</router-link> <br>
 
             <router-link
                 :to="{ name: 'user.security' }"
-                class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Security</router-link> <br>
 
             <button
                 @click="logout();"
-                class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Logout</button>
         </div>
 
