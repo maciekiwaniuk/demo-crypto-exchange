@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/user', name: 'api.user.')]
-class AccountController extends AbstractController
+class SecurityController extends AbstractController
 {
     #[Route('/change-password', name: 'change-password', methods: ['POST'])]
     public function changePassword(): Response

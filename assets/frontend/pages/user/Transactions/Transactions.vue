@@ -43,7 +43,7 @@
             <tr v-for="transaction in transactions">
                 <td class="border border-slate-600">{{ transaction.id }}</td>
                 <td class="border border-slate-600">{{ transaction.type }}</td>
-                <td class="border border-slate-600">{{ transaction.cryptoBought.symbol }}</td>
+                <td class="border border-slate-600">{{ transaction.cryptoBought?.symbol }}</td>
                 <td class="border border-slate-600">{{ transaction.numberOfCryptoBought }}</td>
                 <td class="border border-slate-600">{{ transaction.cryptoSold?.symbol }}</td>
                 <td class="border border-slate-600">{{ transaction.numberOfCryptoSold }}</td>
@@ -148,7 +148,17 @@ let estimatedValueOfCryptoToBuy = computed(() => {
 });
 
 let estimatedValueOfCryptoToSell = computed(() => {
-    return 40;
+    if (! cryptos.length || type.value === null) return;
+
+    let value = 0;
+    cryptos.forEach(crypto => {
+        if (crypto.symbol === cryptoSoldSymbol.value) {
+            // @ts-ignore
+            value = numberOfCryptoSold.value * crypto.price;
+        }
+    });
+
+    return value;
 });
 
 let totalValueOfOwnedCryptos = computed(() => {

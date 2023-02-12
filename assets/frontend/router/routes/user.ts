@@ -1,13 +1,13 @@
-const Account = () => import('../../pages/user/Account/Account.vue');
+const Security = () => import('../../pages/user/Security/Security.vue');
 const Transactions = () => import('../../pages/user/Transactions/Transactions.vue');
 
 export const userRoutes: any = [
     {
-        path: '/user/account',
-        name: 'user.account',
-        component: Account,
+        path: '/user/security',
+        name: 'user.security',
+        component: Security,
         meta: {
-            title: 'User - Account',
+            title: 'User - Security',
             requiredStatus: 'user'
         }
     },

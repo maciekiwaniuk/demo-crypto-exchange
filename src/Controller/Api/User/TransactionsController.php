@@ -33,15 +33,9 @@ class TransactionsController extends AbstractController
     #[Route('/list', name: 'list', methods: ['GET'])]
     public function getList(): Response
     {
-        $this->logger->debug("get list", [$this->getUser()]);
-
         $transactions = $this->entityManager
             ->getRepository(Transaction::class)
             ->findBy(['user' => $this->getUser()]);
-
-        $this->logger->debug("transactionsssss", [$transactions]);
-        $this->logger->debug('serializer', [$this->serializer->serialize($transactions, 'json')]);
-
 
         return $this->json([
             'transactions' => $this->serializer->serialize($transactions, 'json')
@@ -63,12 +57,9 @@ class TransactionsController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->logger->debug("debug123", [$data]);
-
         $cryptoBoughtSymbol = str_replace('USDT', '', $data['cryptoBoughtSymbol']);
         $numberOfCryptoBought = $data['numberOfCryptoBought'];
         $value = $data['value'];
-
 
         $transaction = new Transaction();
         $transaction->setType(TransactionConfig::BOUGHT_FOR_MONEY);
@@ -107,11 +98,39 @@ class TransactionsController extends AbstractController
      * @return Response
      */
     #[Route('/new-sold-for-money', name: 'new-sold-for-money', methods: ['POST'])]
-    public function newSoldForMoney(Request $request): Response
+    public function newSoldForMoney(Request $request, CryptocurrencyRepository $cryptocurrencyRepository): Response
     {
+        $data = json_decode($request->getContent(), true);
+
+        $cryptoSoldSymbol = str_replace('USDT', '', $data['cryptoSoldSymbol']);
+        $numberOfCryptoSold = $data['numberOfCryptoSold'];
+        $value = $data['value'];
+
+        $transaction = new Transaction();
+        $transaction->setType(TransactionConfig::SOLD_FOR_MONEY);
+
+        $cryptoSold = $cryptocurrencyRepository->findOneBy(['symbol' => $cryptoSoldSymbol]);
+        $transaction->setCryptoSold($cryptoSold);
+        $transaction->setNumberOfCryptoSold($numberOfCryptoSold);
+        $transaction->setValue($value);
+
+        $date = new \DateTimeImmutable();
+        $transaction->setCreatedAt($date);
+
+        $user = $this->getUser();
+        $balance = $user->getBalance();
+        $balance += $value;
+        $user->setBalance($balance);
+
+        $transaction->setUser($user);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->persist($transaction);
+        $this->entityManager->flush();
 
         return $this->json([
-            'success' => true
+            'success' => true,
+            'transaction' => $this->serializer->serialize($transaction, 'json')
         ]);
     }
 

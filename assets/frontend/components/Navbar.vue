@@ -26,9 +26,9 @@
             >Transactions</router-link> <br>
 
             <router-link
-                :to="{ name: 'user.account' }"
+                :to="{ name: 'user.security' }"
                 class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
-            >Account</router-link> <br>
+            >Security</router-link> <br>
 
             <button
                 @click="logout();"

@@ -1,5 +1,5 @@
 <template>
-    <h1>Account</h1>
+    <h1>Security</h1>
     <form @submit.prevent="changePassword();">
         <label for="old_password">Old password</label>
         <input type="password" id="old_password" v-model="old_password"> <br>
