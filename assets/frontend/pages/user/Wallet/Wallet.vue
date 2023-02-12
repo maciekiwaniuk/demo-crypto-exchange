@@ -9,12 +9,16 @@
             <th>Amount</th>
             <th>Value</th>
         </tr>
-        <tr v-for="crypto in summedWallet" :key="crypto.symbol">
+        <tr v-for="crypto in summedCryptoWallet" :key="crypto.symbol">
             <td class="border border-slate-600">{{ crypto.symbol }}</td>
             <td class="border border-slate-600">{{ crypto.amount }}</td>
             <td class="border border-slate-600">{{ crypto.value }} USD</td>
         </tr>
     </table>
+    
+    <br />
+    
+    Total value of owned crypto: {{ totalValueOfCrypto }} USD
 
 </template>
 
@@ -44,14 +48,12 @@ const getUserCryptos = async(): Promise<any> => {
     axiosInstance.get('/api/user/total-owned-crypto')
         .then(response => {
             const cryptos = JSON.parse(response.data.cryptos);
-            console.log(cryptos);
-            console.log(Object.entries(cryptos));
             Object.assign(userCryptos, Object.entries(cryptos));
         });
 }
 getUserCryptos();
 
-const summedWallet = computed(() => {
+const summedCryptoWallet = computed(() => {
    if (!userCryptos.length || !cryptoPrices.length) {
        return [];
    }
@@ -72,6 +74,18 @@ const summedWallet = computed(() => {
    });
 
    return wallet;
+});
+
+const totalValueOfCrypto = computed(() => {
+   if (!summedCryptoWallet.value.length)  {
+       return 0;
+   }
+   
+   let totalValue = 0;
+   summedCryptoWallet.value.forEach(crypto => {
+       totalValue += crypto.value;
+   });
+    return totalValue;
 });
 
 </script>
