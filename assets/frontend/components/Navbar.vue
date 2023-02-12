@@ -21,6 +21,11 @@
             class="flex text-red-800"
         >
             <router-link
+                :to="{ name: 'user.market' }"
+                class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+            >Market</router-link> <br>
+
+            <router-link
                 :to="{ name: 'user.transactions' }"
                 class="px-4 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Transactions</router-link> <br>

@@ -21,13 +21,6 @@
 
     <br /> <br />
 
-    <h2>Current crypto prices</h2>
-    <div v-for="crypto in cryptos">
-        {{ crypto.symbol.replace('USDT', '') }} has price {{ round(crypto.price, 2) }}$ <br />
-    </div>
-
-    <br /> <br />
-
     List of your transactions:
     <div>
         <table class="m-auto">

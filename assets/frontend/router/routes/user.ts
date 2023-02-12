@@ -1,5 +1,6 @@
 const Security = () => import('../../pages/user/Security/Security.vue');
 const Transactions = () => import('../../pages/user/Transactions/Transactions.vue');
+const Market = () => import('../../pages/user/Market/Market.vue');
 
 export const userRoutes: any = [
     {
@@ -8,6 +9,15 @@ export const userRoutes: any = [
         component: Security,
         meta: {
             title: 'User - Security',
+            requiredStatus: 'user'
+        }
+    },
+    {
+        path: '/user/market',
+        name: 'user.market',
+        component: Market,
+        meta: {
+            title: 'User - Market',
             requiredStatus: 'user'
         }
     },
