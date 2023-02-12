@@ -21,14 +21,19 @@
             class="flex text-red-800"
         >
             <router-link
-                :to="{ name: 'user.wallet' }"
-                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
-            >Wallet</router-link> <br>
-
-            <router-link
                 :to="{ name: 'user.market' }"
                 class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
             >Market</router-link> <br>
+
+            <router-link
+                :to="{ name: 'user.trade' }"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+            >Trade</router-link> <br>
+
+            <router-link
+                :to="{ name: 'user.wallet' }"
+                class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
+            >Wallet</router-link> <br>
 
             <router-link
                 :to="{ name: 'user.transactions' }"
