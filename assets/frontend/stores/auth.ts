@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', {
         roles: [] as string[] | null
     }),
     actions: {
-        async authenticate(token: string, roles: string[]): Promise<any> {
+        async authenticate(token: string, roles: string[]): Promise<void> {
             this.isAuthenticated = true;
             this.token = token;
             this.roles = roles;
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
 
             return havePermission;
         },
-        async logout(): Promise<any> {
+        async logout(): Promise<void> {
             this.isAuthenticated = false;
             this.token = null;
             this.roles = null;

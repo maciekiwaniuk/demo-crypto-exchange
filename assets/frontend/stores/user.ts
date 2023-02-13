@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { axiosInstance } from '../plugins/axios';
+import { useAuthStore } from './auth';
 
 interface UserData {
     balance: number,
@@ -32,6 +33,10 @@ export const useUserStore = defineStore('user', {
                     this.lastLoginIp = userData.lastLoginIp;
                     this.lastLoginTime = userData.lastLoginTime;
                 })
+                .catch(error => {
+                    const authStore = useAuthStore();
+                    authStore.logout();
+                });
         }
     }
 });
