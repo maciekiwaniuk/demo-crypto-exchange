@@ -25,14 +25,14 @@ import { reactive } from 'vue';
 import { useCryptoDataFetcher } from '../../../composables/useCryptoDataFetcher';
 import { cryptoDataRefreshRate } from '../../../constants/app';
 import { round } from '../../../utils/round';
-import { useModal } from 'vue-final-modal'
-import ModalNewOrder from "./ModalNewOrder.vue";
+import { useModal } from 'vue-final-modal';
+import ModalNewOrder from './ModalNewOrder.vue';
 
 const cryptos = reactive<any[]>([]);
 
 const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
 
-const getCryptos = async (): Promise<any> => {
+const getCryptos = async (): Promise<void> => {
     const fetchedCryptos = await getPricesOfActiveCryptos();
     Object.assign(cryptos, fetchedCryptos);
 }
@@ -41,10 +41,11 @@ setInterval(() => {
     getCryptos();
 }, cryptoDataRefreshRate);
 
-const { open, close } = useModal({
+const { open, close, options } = useModal({
     component: ModalNewOrder,
     attrs: {
-        title: 'Hello World!',
+        title: 'Place new order',
+        cryptos: cryptos,
         onConfirm() {
             close()
         },
