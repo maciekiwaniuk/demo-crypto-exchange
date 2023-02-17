@@ -12,8 +12,6 @@ class CryptocurrenciesDataService
     private EntityManagerInterface $entityManager;
     private BinanceApiHttpClient $binanceApiHttpClient;
 
-    private array $activeCryptos = [];
-
     public function __construct(
         EntityManagerInterface $entityManager,
         BinanceApiHttpClient $binanceApiHttpClient
@@ -21,15 +19,17 @@ class CryptocurrenciesDataService
         $this->entityManager = $entityManager;
         $this->binanceApiHttpClient = $binanceApiHttpClient;
 
-        $this->activeCryptos = $this->entityManager
-            ->getRepository(Cryptocurrency::class)
-            ->findBy(['active' => CryptocurrencyConfig::ACTIVE]);
+
     }
 
     public function getActiveCryptoData(): array
     {
+        $activeCryptos = $this->entityManager
+            ->getRepository(Cryptocurrency::class)
+            ->findBy(['active' => CryptocurrencyConfig::ACTIVE]);
+
         $symbols = [];
-        foreach ($this->activeCryptos as $crypto) {
+        foreach ($activeCryptos as $crypto) {
             $symbols[] = $crypto->getSymbol() . 'USDT';
         }
 
@@ -37,5 +37,11 @@ class CryptocurrenciesDataService
 
         return $this->binanceApiHttpClient
             ->fetchCurrentPricesOfPassedCryptoSymbols($symbols);
+    }
+
+    public function fetchPriceBySymbol(string $symbol): float
+    {
+        return $this->binanceApiHttpClient
+            ->fetchCurrentPriceOfPassedCryptoSymbol($symbol);
     }
 }

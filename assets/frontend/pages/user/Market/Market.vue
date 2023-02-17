@@ -9,7 +9,11 @@
             <th class="border-2 border-black p-2">Cryptocurrency</th>
             <th class="border-2 border-black p-2">Price</th>
         </tr>
-        <tr v-for="crypto in cryptos">
+        <tr
+            v-for="crypto in cryptos"
+            @click="showNewOrderModal(crypto.symbol);"
+            class="bg-sky-500 hover:bg-sky-700 cursor-pointer"
+        >
             <td class="border-2 border-black p-2">{{ crypto.symbol.replace('USDT', '') }}</td>
             <td class="border-2 border-black p-2">{{ round(crypto.price, 2) }} USD</td>
         </tr>
@@ -21,14 +25,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useCryptoDataFetcher } from '../../../composables/useCryptoDataFetcher';
 import { cryptoDataRefreshRate } from '../../../constants/app';
 import { round } from '../../../utils/round';
 import { useModal } from 'vue-final-modal';
 import ModalNewOrder from './ModalNewOrder.vue';
 
-const cryptos = reactive<any[]>([]);
+const cryptos = reactive<any[]>([]),
+      symbol = ref<string>('');
 
 const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
 
@@ -44,8 +49,8 @@ setInterval(() => {
 const { open, close, options } = useModal({
     component: ModalNewOrder,
     attrs: {
-        title: 'Place new order',
         cryptos: cryptos,
+        symbol: symbol,
         onConfirm() {
             close()
         },
@@ -54,4 +59,9 @@ const { open, close, options } = useModal({
         default: '<p>UseModal: The content of the modal</p>',
     },
 });
+
+const showNewOrderModal = async (newSymbol: string) => {
+    symbol.value = newSymbol;
+    open();
+}
 </script>
