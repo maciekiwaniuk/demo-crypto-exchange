@@ -27,6 +27,9 @@ class Order
     #[ORM\Column]
     private ?string $status = null;
 
+    #[ORM\Column]
+    private ?int $attempts = 0;
+
     #[ORM\ManyToOne(targetEntity: Cryptocurrency::class)]
     private ?Cryptocurrency $cryptoToSell = null;
 
@@ -85,6 +88,25 @@ class Order
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAttempts(): ?int
+    {
+        return $this->attempts;
+    }
+
+    public function increaseAttempts(): self
+    {
+        $this->attempts += 1;
+
+        return $this;
+    }
+
+    public function setAttempts(int $attempts): self
+    {
+        $this->attempts = $attempts;
 
         return $this;
     }

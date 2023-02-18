@@ -13,5 +13,8 @@ enum Order
     public const COMPLETED = 'completed';
     public const CANCELED = 'canceled';
     public const PENDING = 'pending';
-    public const FAILED = 'failed';
+    public const TOO_MANY_ATTEMPTS = 'too_many_attempts';
+
+    // attempts
+    public const MAX_ATTEMPTS = 2;
 }

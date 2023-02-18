@@ -7,9 +7,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class BinanceApiHttpClient
 {
-    private HttpClientInterface $client;
-
     const URL = 'https://api.binance.com/api/v3';
+
+    private HttpClientInterface $client;
 
     public function __construct(HttpClientInterface $client, public LoggerInterface $logger)
     {
