@@ -38,6 +38,7 @@ import { axiosInstance } from '../../../plugins/axios';
 const props = defineProps<{
     symbol: string
     cryptos: any[]
+    orders: any[]
 }>();
 
 const emit = defineEmits<{
@@ -62,7 +63,7 @@ const newOrder = async (): Promise<void> => {
         value: valueOfOrder.value
     })
         .then(response => {
-            console.log(response);
+            props.orders.push(JSON.parse(response.data.order));
         })
         .catch(error => {
             console.log(error);

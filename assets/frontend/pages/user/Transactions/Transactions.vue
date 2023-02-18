@@ -4,28 +4,26 @@
     <br /> <br />
 
     List of your transactions:
-    <div>
-        <table class="m-auto">
-            <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>crypto bought</th>
-                <th>number bought</th>
-                <th>crypto sold</th>
-                <th>number sold</th>
-                <th>value</th>
-            </tr>
-            <tr v-for="transaction in transactions">
-                <td class="border border-slate-600">{{ transaction.id }}</td>
-                <td class="border border-slate-600">{{ transaction.type }}</td>
-                <td class="border border-slate-600">{{ transaction.cryptoBought?.symbol }}</td>
-                <td class="border border-slate-600">{{ transaction.numberOfCryptoBought }}</td>
-                <td class="border border-slate-600">{{ transaction.cryptoSold?.symbol }}</td>
-                <td class="border border-slate-600">{{ transaction.numberOfCryptoSold }}</td>
-                <td class="border border-slate-600">{{ transaction.value }}</td>
-            </tr>
-        </table>
-    </div>
+    <table class="m-auto">
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>crypto bought</th>
+            <th>number bought</th>
+            <th>crypto sold</th>
+            <th>number sold</th>
+            <th>value</th>
+        </tr>
+        <tr v-for="transaction in transactions">
+            <td class="border border-slate-600">{{ transaction.id }}</td>
+            <td class="border border-slate-600">{{ transaction.type }}</td>
+            <td class="border border-slate-600">{{ transaction.cryptoBought?.symbol }}</td>
+            <td class="border border-slate-600">{{ transaction.numberOfCryptoBought }}</td>
+            <td class="border border-slate-600">{{ transaction.cryptoSold?.symbol }}</td>
+            <td class="border border-slate-600">{{ transaction.numberOfCryptoSold }}</td>
+            <td class="border border-slate-600">{{ transaction.value }}</td>
+        </tr>
+    </table>
 
     <br /> <br />
 

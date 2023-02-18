@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/user/market', name: 'api.user.market.')]
 class MarketController extends AbstractController
@@ -36,7 +37,7 @@ class MarketController extends AbstractController
         MessageBusInterface $bus,
         CryptocurrencyRepository $cryptocurrencyRepository,
         EntityManagerInterface $entityManager,
-        LoggerInterface $logger
+        SerializerInterface $serializer
     ): Response {
         $data = json_decode($request->getContent(), true);
 
@@ -61,18 +62,35 @@ class MarketController extends AbstractController
         $bus->dispatch(new BuyOrder($orderId));
 
         return $this->json([
-            'success' => true
+            'success' => true,
+            'order' => $serializer->serialize($order, 'json')
         ]);
     }
 
+    #[Route('/new-sell-order', name: 'new-sell-order', methods: ['POST'])]
     public function newSellOrder(
         Request $request,
         MessageBusInterface $bus,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
     ): Response {
 
         return $this->json([
             'success' => true
+        ]);
+    }
+
+    #[Route('/get-orders', name: 'get-orders', methods: ['GET'])]
+    public function getOrders(OrderRepository $orderRepository, SerializerInterface $serializer): Response
+    {
+        $orders = $orderRepository->findBy(
+            [
+                'user' => $this->getUser(),
+                'type' => [OrderConfig::BUY_FOR_MONEY, OrderConfig::SELL_FOR_MONEY]
+            ],
+        );
+
+        return $this->json([
+            'orders' => $serializer->serialize($orders, 'json')
         ]);
     }
 }

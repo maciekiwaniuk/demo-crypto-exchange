@@ -20,8 +20,32 @@
     </table>
 
     <br />
+    <br />
 
-    <button @click="open();">Open Modal</button>
+    <h2>Orders</h2>
+    <table class="m-auto">
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>crypto to buy</th>
+            <th>number to buy</th>
+            <th>crypto to sell</th>
+            <th>number to sell</th>
+            <th>value</th>
+            <th>status</th>
+        </tr>
+        <tr v-for="order in orders">
+            <td class="border border-slate-600">{{ order.id }}</td>
+            <td class="border border-slate-600">{{ order.type }}</td>
+            <td class="border border-slate-600">{{ order.cryptoToBuy?.symbol }}</td>
+            <td class="border border-slate-600">{{ order.amountOfCryptoToBuy }}</td>
+            <td class="border border-slate-600">{{ order.cryptoToSell?.symbol }}</td>
+            <td class="border border-slate-600">{{ order.amountOfCryptoToSell }}</td>
+            <td class="border border-slate-600">{{ order.value }}</td>
+            <td class="border border-slate-600">{{ order.status }}</td>
+        </tr>
+    </table>
+    
 </template>
 
 <script setup lang="ts">
@@ -30,6 +54,7 @@ import { useCryptoDataFetcher } from '../../../composables/useCryptoDataFetcher'
 import { cryptoDataRefreshRate } from '../../../constants/app';
 import { round } from '../../../utils/round';
 import { useModal } from 'vue-final-modal';
+import { axiosInstance } from '../../../plugins/axios';
 import ModalNewOrder from './ModalNewOrder.vue';
 
 const cryptos = reactive<any[]>([]),
@@ -46,17 +71,24 @@ setInterval(() => {
     getCryptos();
 }, cryptoDataRefreshRate);
 
+const orders = reactive<any[]>([]);
+const getOrders = async (): Promise<void> => {
+    axiosInstance.get('/api/user/market/get-orders')
+        .then(response => {
+            Object.assign(orders, JSON.parse(response.data.orders))
+        });
+}
+getOrders();
+
 const { open, close, options } = useModal({
     component: ModalNewOrder,
     attrs: {
         cryptos: cryptos,
         symbol: symbol,
+        orders: orders,
         onConfirm() {
             close()
         },
-    },
-    slots: {
-        default: '<p>UseModal: The content of the modal</p>',
     },
 });
 
