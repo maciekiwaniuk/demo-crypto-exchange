@@ -4,7 +4,7 @@ namespace App\Controller\Api\User;
 
 use App\Entity\Order;
 use App\Config\Order as OrderConfig;
-use App\Message\PurchaseOrder;
+use App\Message\BuyOrder;
 use App\Repository\CryptocurrencyRepository;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +25,8 @@ class MarketController extends AbstractController
      * @var float $value
      *
      * @param MessageBusInterface $bus
-     * @param OrderRepository $orderRepository
+     * @param CryptocurrencyRepository $cryptocurrencyRepository
+     * @param EntityManagerInterface $entityManager
      *
      * @return Response
      */
@@ -33,7 +34,6 @@ class MarketController extends AbstractController
     public function newBuyOrder(
         Request $request,
         MessageBusInterface $bus,
-        OrderRepository $orderRepository,
         CryptocurrencyRepository $cryptocurrencyRepository,
         EntityManagerInterface $entityManager,
         LoggerInterface $logger
@@ -58,7 +58,7 @@ class MarketController extends AbstractController
         $entityManager->flush();
 
         $orderId = $order->getId();
-        $bus->dispatch(new PurchaseOrder($orderId));
+        $bus->dispatch(new BuyOrder($orderId));
 
         return $this->json([
             'success' => true

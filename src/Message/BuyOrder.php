@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-class PurchaseOrder
+class BuyOrder
 {
     private int $orderId;
 

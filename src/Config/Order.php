@@ -16,5 +16,5 @@ enum Order
     public const TOO_MANY_ATTEMPTS = 'too_many_attempts';
 
     // attempts
-    public const MAX_ATTEMPTS = 2;
+    public const MAX_ATTEMPTS = 10;
 }

@@ -3,7 +3,7 @@
 namespace App\MessageHandler;
 
 use App\Config\Order as OrderConfig;
-use App\Message\PurchaseOrder;
+use App\Message\BuyOrder;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Service\CryptocurrenciesDataService;
@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class PurchaseOrderHandler
+class BuyOrderHandler
 {
     private CryptocurrenciesDataService $cryptoDataService;
     private OrderRepository $orderRepository;
@@ -32,9 +32,9 @@ class PurchaseOrderHandler
         $this->entityManager = $entityManager;
     }
 
-    public function __invoke(PurchaseOrder $purchaseOrder): void
+    public function __invoke(BuyOrder $buyOrder): void
     {
-        $order = $this->orderRepository->find($purchaseOrder->getOrderId());
+        $order = $this->orderRepository->find($buyOrder->getOrderId());
         $order->increaseAttempts();
 
         if ($order->getAttempts() >= OrderConfig::MAX_ATTEMPTS) {
@@ -42,7 +42,7 @@ class PurchaseOrderHandler
             $this->entityManager->persist($order);
             $this->entityManager->flush();
 
-            throw new \Exception('Too many attempts for purchase order');
+            throw new \Exception('Too many attempts for buy order');
         }
 
         $symbol = $order->getCryptoToBuy()->getSymbol();
@@ -55,7 +55,7 @@ class PurchaseOrderHandler
         $user = $this->userRepository->find($order->getUser()->getId());
         $balance = $user->getBalance();
 
-        if ($fetchedPrice >= $orderPrice && $balance >= $totalOrderValue) {
+        if ($orderPrice >= $fetchedPrice && $balance >= $totalOrderValue) {
             $balance -= $totalOrderValue;
             $user->setBalance($balance);
 
@@ -69,7 +69,7 @@ class PurchaseOrderHandler
         $this->entityManager->flush();
 
         if (! isset($success)) {
-            throw new \Exception('Purchase order failed');
+            throw new \Exception('Buy order failed');
         }
     }
 }
