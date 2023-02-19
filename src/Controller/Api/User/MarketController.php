@@ -5,10 +5,10 @@ namespace App\Controller\Api\User;
 use App\Entity\Order;
 use App\Config\Order as OrderConfig;
 use App\Message\BuyOrder;
+use App\Message\SellOrder;
 use App\Repository\CryptocurrencyRepository;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +28,7 @@ class MarketController extends AbstractController
      * @param MessageBusInterface $bus
      * @param CryptocurrencyRepository $cryptocurrencyRepository
      * @param EntityManagerInterface $entityManager
+     * @param SerializerInterface $serializer
      *
      * @return Response
      */
@@ -67,15 +68,52 @@ class MarketController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @var string $cryptoToSellSymbol
+     * @var float $amountOfCryptoToSell
+     * @var float $value
+     *
+     * @param MessageBusInterface $bus
+     * @param CryptocurrencyRepository $cryptocurrencyRepository
+     * @param EntityManagerInterface $entityManager
+     * @param SerializerInterface $serializer
+     *
+     * @return Response
+     */
     #[Route('/new-sell-order', name: 'new-sell-order', methods: ['POST'])]
     public function newSellOrder(
         Request $request,
         MessageBusInterface $bus,
-        OrderRepository $orderRepository,
+        CryptocurrencyRepository $cryptocurrencyRepository,
+        EntityManagerInterface $entityManager,
+        SerializerInterface $serializer
     ): Response {
+        $data = json_decode($request->getContent(), true);
+
+        $order = new Order();
+
+        $cryptoSymbol = str_replace('USDT', '', $data['cryptoToSellSymbol']);
+        $crypto = $cryptocurrencyRepository->findOneBy(['symbol' => $cryptoSymbol]);
+
+        $order->setUser($this->getUser())
+            ->setCryptoToSell($crypto)
+            ->setAmountOfCryptoToSell($data['amountOfCryptoToSell'])
+            ->setValue($data['value'])
+            ->setType(OrderConfig::SELL_FOR_MONEY)
+            ->setStatus(OrderConfig::PENDING)
+            ->setDoneAt(new \DateTimeImmutable())
+            ->setCreatedAt(new \DateTimeImmutable());
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        $orderId = $order->getId();
+        $bus->dispatch(new SellOrder($orderId));
 
         return $this->json([
-            'success' => true
+            'success' => true,
+            'order' => $serializer->serialize($order, 'json')
         ]);
     }
 

@@ -8,7 +8,7 @@
             Place order for {{ selectedCrypto.symbol }}
         </h1>
 
-        <form @submit.prevent="newOrder();">
+        <form>
             <label for="price">Price</label>
             <input type="price" v-model="price">
 
@@ -21,7 +21,17 @@
             <input type="valueOfOrder" v-model="valueOfOrder">
 
             <br /> <br />
-            <button class="mt-1 ml-auto px-2 border rounded-lg" type="submit">New order</button>
+            <button
+                type="button"
+                class="mt-1 ml-auto px-2 border rounded-lg"
+                @click="newBuyOrder();"
+            >New buy order</button>
+
+            <button
+                type="button"
+                class="mt-1 ml-auto px-2 border rounded-lg"
+                @click="newSellOrder();"
+            >New sell order</button>
         </form>
 
         <button class="mt-1 ml-auto px-2 border rounded-lg" @click="emit('confirm')">
@@ -56,10 +66,24 @@ const valueOfOrder: any = computed(() => {
     return price.value * amount.value;
 });
 
-const newOrder = async (): Promise<void> => {
+const newBuyOrder = async (): Promise<void> => {
     await axiosInstance.post('/api/user/market/new-buy-order', {
         cryptoToBuySymbol: selectedCrypto.value.symbol,
         amountOfCryptoToBuy: amount.value,
+        value: valueOfOrder.value
+    })
+        .then(response => {
+            props.orders.push(JSON.parse(response.data.order));
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+const newSellOrder = async (): Promise<void> => {
+    await axiosInstance.post('/api/user/market/new-sell-order', {
+        cryptoToSellSymbol: selectedCrypto.value.symbol,
+        amountOfCryptoToSell: amount.value,
         value: valueOfOrder.value
     })
         .then(response => {

@@ -17,6 +17,7 @@ framework:
         routing:
             # Route your messages to the transports
              'App\Message\BuyOrder': async
+             'App\Message\SellOrder': async
 
 # when@test:
 #    framework:
