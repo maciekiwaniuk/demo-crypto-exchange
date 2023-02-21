@@ -52,9 +52,7 @@ class MarketController extends AbstractController
             ->setAmountOfCryptoToBuy($data['amountOfCryptoToBuy'])
             ->setValue($data['value'])
             ->setType(OrderConfig::BUY_FOR_MONEY)
-            ->setStatus(OrderConfig::PENDING)
-            ->setDoneAt(new \DateTimeImmutable())
-            ->setCreatedAt(new \DateTimeImmutable());
+            ->setStatus(OrderConfig::PENDING);
 
         $entityManager->persist($order);
         $entityManager->flush();
@@ -101,9 +99,7 @@ class MarketController extends AbstractController
             ->setAmountOfCryptoToSell($data['amountOfCryptoToSell'])
             ->setValue($data['value'])
             ->setType(OrderConfig::SELL_FOR_MONEY)
-            ->setStatus(OrderConfig::PENDING)
-            ->setDoneAt(new \DateTimeImmutable())
-            ->setCreatedAt(new \DateTimeImmutable());
+            ->setStatus(OrderConfig::PENDING);
 
         $entityManager->persist($order);
         $entityManager->flush();

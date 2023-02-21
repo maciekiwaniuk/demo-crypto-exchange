@@ -10,7 +10,7 @@
 
         <tr v-for="(crypto, index) in cryptos">
             <td>{{ crypto.symbol }}</td>
-            <td>{{ crypto.active }}</td>
+            <td>{{ crypto.status }}</td>
             <td>
                 <button type="button" @click="deleteCrypto(crypto.id, index);">Delete</button>
             </td>
@@ -29,7 +29,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const deleteCrypto = async (cryptoId: number, indexInArray: number) => {
+const deleteCrypto = async (cryptoId: number, indexInArray: number): Promise<void> => {
     await axiosInstance.delete(`api/admin/delete-crypto/${cryptoId}`)
         .then(response => {
             if (!response.data.success) {

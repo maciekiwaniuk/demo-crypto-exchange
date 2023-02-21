@@ -26,7 +26,7 @@ class CryptocurrenciesDataService
     {
         $activeCryptos = $this->entityManager
             ->getRepository(Cryptocurrency::class)
-            ->findBy(['active' => CryptocurrencyConfig::ACTIVE]);
+            ->findBy(['status' => CryptocurrencyConfig::ACTIVE]);
 
         $symbols = [];
         foreach ($activeCryptos as $crypto) {

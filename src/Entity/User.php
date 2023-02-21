@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -49,7 +50,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $banStatus = UserConfig::NOT_BANNED;
 
     #[ORM\Column(length: 20, nullable: true)]
-    private string $isVerified = UserConfig::EMAIL_NOT_VERIFIED;
+    private string $emailVerificationStatus = UserConfig::EMAIL_NOT_VERIFIED;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class, orphanRemoval: true)]
     private Collection $logs;
@@ -64,6 +71,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->logs = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function fillDataAfterSuccessfulAuthentication(string $ip, string $userAgent, \DateTime $time): void
@@ -220,16 +240,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isVerified(): bool
+    public function isEmailVerified(): bool
     {
-        return $this->isVerified === UserConfig::EMAIL_VERIFIED;
+        return $this->emailVerificationStatus === UserConfig::EMAIL_VERIFIED;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    public function setEmailVerificationStatus(bool $emailVerificationStatus): self
     {
-        $this->isVerified = $isVerified ? UserConfig::EMAIL_VERIFIED : UserConfig::EMAIL_NOT_VERIFIED;
+        $this->emailVerificationStatus = $emailVerificationStatus ? UserConfig::EMAIL_VERIFIED : UserConfig::EMAIL_NOT_VERIFIED;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
     }
 
     /**

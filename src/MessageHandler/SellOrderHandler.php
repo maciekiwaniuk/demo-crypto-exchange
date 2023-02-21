@@ -32,6 +32,9 @@ class SellOrderHandler
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function __invoke(SellOrder $sellOrder): void
     {
         $order = $this->orderRepository->find($sellOrder->getOrderId());
@@ -60,6 +63,7 @@ class SellOrderHandler
             $user->setBalance($balance);
 
             $order->setStatus(OrderConfig::COMPLETED);
+            $order->setDoneAt(new \DateTimeImmutable());
 
             $success = true;
         }

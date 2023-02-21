@@ -7,6 +7,8 @@ use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`log`")]
 class Log
 {
     #[ORM\Id]
@@ -28,7 +30,23 @@ class Log
     private ?string $ip = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -85,13 +103,11 @@ class Log
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        $this->created_at = $created_at;
-
-        return $this;
+        return $this->updatedAt;
     }
 }

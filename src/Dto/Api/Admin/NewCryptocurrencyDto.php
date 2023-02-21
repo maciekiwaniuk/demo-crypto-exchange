@@ -28,5 +28,5 @@ class NewCryptocurrencyDto extends BaseDto
         'min' => 1,
         'max' => 255,
     ])]
-    public string $active;
+    public string $status;
 }

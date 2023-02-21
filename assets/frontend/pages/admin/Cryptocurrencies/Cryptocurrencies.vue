@@ -59,7 +59,7 @@ axiosInstance.get('api/admin/get-cryptos')
 const newCrypto = async () => {
     await axiosInstance.post('api/admin/new-crypto', {
         symbol: symbol.value,
-        active: activeSelect.value
+        status: activeSelect.value
     })
         .then(response => {
             if (!response.data.success) {

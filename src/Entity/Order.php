@@ -8,6 +8,7 @@ use App\Config\Order as OrderConfig;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "`order`")]
 class Order
 {
@@ -50,6 +51,12 @@ class Order
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -186,12 +193,5 @@ class Order
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 }

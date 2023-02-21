@@ -7,6 +7,8 @@ use App\Config\Cryptocurrency as CryptocurrencyConfig;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CryptocurrencyRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "`cryptocurrency`")]
 class Cryptocurrency
 {
     #[ORM\Id]
@@ -18,7 +20,19 @@ class Cryptocurrency
     private ?string $symbol = null;
 
     #[ORM\Column]
-    private string $active = CryptocurrencyConfig::ACTIVE;
+    private string $status = CryptocurrencyConfig::ACTIVE;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -37,15 +51,32 @@ class Cryptocurrency
         return $this;
     }
 
-    public function isActive(): string
+    public function isStatus(): string
     {
-        return $this->active;
+        return $this->status;
     }
 
-    public function setActive(string $active): self
+    public function setStatus(string $status): self
     {
-        $this->active = $active;
+        $this->status = $status;
 
         return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

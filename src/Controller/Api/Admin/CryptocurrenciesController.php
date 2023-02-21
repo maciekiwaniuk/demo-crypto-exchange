@@ -47,7 +47,7 @@ class CryptocurrenciesController extends AbstractController
 
         $crypto = new Cryptocurrency();
         $crypto->setSymbol($dto->symbol);
-        $crypto->setActive($dto->active);
+        $crypto->setStatus($dto->status);
 
         $this->entityManager->persist($crypto);
         $this->entityManager->flush();
@@ -71,7 +71,7 @@ class CryptocurrenciesController extends AbstractController
     }
 
     #[Route('/delete-crypto/{id}', name: 'delete_crypto', methods: ['DELETE'])]
-    public function delete(Cryptocurrency $crypto) : Response
+    public function delete(Cryptocurrency $crypto): Response
     {
         $this->entityManager->remove($crypto);
         $this->entityManager->flush();
