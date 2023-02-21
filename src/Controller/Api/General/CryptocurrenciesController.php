@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api', name: 'api.')]
+#[Route('/api/crypto', name: 'api.crypto.')]
 class CryptocurrenciesController extends AbstractController
 {
     private CryptocurrenciesDataService $cryptoDataService;

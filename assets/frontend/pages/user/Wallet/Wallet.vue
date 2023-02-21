@@ -34,7 +34,6 @@ const { getPricesOfActiveCryptos } = useCryptoDataFetcher();
 
 const getCryptoPrices = async (): Promise<any> => {
     const fetchedCryptoPrices = await getPricesOfActiveCryptos();
-    console.log(fetchedCryptoPrices);
     Object.assign(cryptoPrices, fetchedCryptoPrices);
 }
 getCryptoPrices();
@@ -45,7 +44,7 @@ setInterval(() => {
 const userCryptos = reactive<any[]>([]);
 
 const getUserCryptos = async(): Promise<any> => {
-    axiosInstance.get('/api/user/total-owned-crypto')
+    axiosInstance.get('/api/user/crypto/total-owned-crypto')
         .then(response => {
             const cryptos = JSON.parse(response.data.cryptos);
             Object.assign(userCryptos, Object.entries(cryptos));
