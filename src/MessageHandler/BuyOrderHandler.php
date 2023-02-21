@@ -7,8 +7,6 @@ use App\Message\BuyOrder;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Service\CryptocurrenciesDataService;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -17,19 +15,15 @@ class BuyOrderHandler
     private CryptocurrenciesDataService $cryptoDataService;
     private OrderRepository $orderRepository;
     private UserRepository $userRepository;
-    private EntityManagerInterface $entityManager;
 
     public function __construct(
         CryptocurrenciesDataService $cryptoDataService,
         OrderRepository $orderRepository,
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
-        public LoggerInterface $logger
     ) {
         $this->cryptoDataService = $cryptoDataService;
         $this->orderRepository = $orderRepository;
         $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -42,8 +36,7 @@ class BuyOrderHandler
 
         if ($order->getAttempts() >= OrderConfig::MAX_ATTEMPTS) {
             $order->setStatus(OrderConfig::TOO_MANY_ATTEMPTS);
-            $this->entityManager->persist($order);
-            $this->entityManager->flush();
+            $this->orderRepository->save($order, true);
 
             throw new \Exception('Too many attempts for buy order');
         }
@@ -68,9 +61,8 @@ class BuyOrderHandler
             $success = true;
         }
 
-        $this->entityManager->persist($order);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->orderRepository->save($order, true);
+        $this->userRepository->save($user, true);
 
         if (! isset($success)) {
             throw new \Exception('Buy order failed');

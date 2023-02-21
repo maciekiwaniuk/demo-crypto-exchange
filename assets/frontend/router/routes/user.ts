@@ -1,5 +1,5 @@
 const Security = () => import('../../pages/user/Security/Security.vue');
-const Transactions = () => import('../../pages/user/Transactions/Transactions.vue');
+const TransactionHistory = () => import('../../pages/user/TransactionHistory/TransactionHistory.vue');
 const Market = () => import('../../pages/user/Market/Market.vue');
 const Trade = () => import('../../pages/user/Trade/Trade.vue');
 const Wallet = () => import('../../pages/user/Wallet/Wallet.vue');
@@ -42,11 +42,11 @@ export const userRoutes: any = [
         }
     },
     {
-        path: '/user/transactions',
-        name: 'user.transactions',
-        component: Transactions,
+        path: '/user/transaction-history',
+        name: 'user.transaction-history',
+        component: TransactionHistory,
         meta: {
-            title: 'User - Transactions',
+            title: 'User - Transaction history',
             requiredStatus: 'user'
         }
     }

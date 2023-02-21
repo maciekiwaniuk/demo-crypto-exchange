@@ -120,7 +120,7 @@ class MarketController extends AbstractController
             [
                 'user' => $this->getUser(),
                 'type' => [OrderConfig::BUY_FOR_MONEY, OrderConfig::SELL_FOR_MONEY]
-            ],
+            ]
         );
 
         return $this->json([

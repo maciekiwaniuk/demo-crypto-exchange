@@ -36,9 +36,9 @@
             >Wallet</router-link> <br>
 
             <router-link
-                :to="{ name: 'user.transactions' }"
+                :to="{ name: 'user.transaction-history' }"
                 class="px-1 py-2 font-semibold text-white hover:bg-gray-700 mr-4"
-            >Transactions</router-link> <br>
+            >Transaction history</router-link> <br>
 
             <router-link
                 :to="{ name: 'user.security' }"

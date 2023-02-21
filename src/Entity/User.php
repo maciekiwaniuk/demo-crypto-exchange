@@ -61,16 +61,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class, orphanRemoval: true)]
     private Collection $logs;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class, orphanRemoval: true)]
-    private Collection $transactions;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class, orphanRemoval: true)]
     private Collection $orders;
 
     public function __construct()
     {
         $this->logs = new ArrayCollection();
-        $this->transactions = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -293,29 +290,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Transaction>
+     * @return Collection<int, Order>
      */
-    public function getTransactions(): Collection
+    public function getOrders(): Collection
     {
-        return $this->transactions;
+        return $this->orders;
     }
 
-    public function addTransaction(Transaction $transaction): self
+    public function addOrder(Order $order): self
     {
-        if (!$this->transactions->contains($transaction)) {
-            $this->transactions->add($transaction);
-            $transaction->setUser($this);
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeTransaction(Transaction $transaction): self
+    public function removeOrder(Order $order): self
     {
-        if ($this->transactions->removeElement($transaction)) {
+        if ($this->orders->removeElement($order)) {
             // set the owning side to null (unless already changed)
-            if ($transaction->getUser() === $this) {
-                $transaction->setUser(null);
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
             }
         }
 
