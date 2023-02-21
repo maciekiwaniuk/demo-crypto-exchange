@@ -26,7 +26,7 @@ class TransactionHistoryController extends AbstractController
         $transactionHistory = $orderRepository
             ->findBy(
                 [
-                    'user' => $this->getUser(),
+                    'user'   => $this->getUser(),
                     'status' => OrderConfig::COMPLETED
                 ]
             );

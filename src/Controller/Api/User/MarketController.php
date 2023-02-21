@@ -8,7 +8,6 @@ use App\Message\BuyOrder;
 use App\Message\SellOrder;
 use App\Repository\CryptocurrencyRepository;
 use App\Repository\OrderRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +25,8 @@ class MarketController extends AbstractController
      * @var float $value
      *
      * @param MessageBusInterface $bus
-     * @param CryptocurrencyRepository $cryptocurrencyRepository
-     * @param EntityManagerInterface $entityManager
+     * @param CryptocurrencyRepository $cryptoRepository
+     * @param OrderRepository $orderRepository
      * @param SerializerInterface $serializer
      *
      * @return Response
@@ -36,8 +35,8 @@ class MarketController extends AbstractController
     public function newBuyOrder(
         Request $request,
         MessageBusInterface $bus,
-        CryptocurrencyRepository $cryptocurrencyRepository,
-        EntityManagerInterface $entityManager,
+        CryptocurrencyRepository $cryptoRepository,
+        OrderRepository $orderRepository,
         SerializerInterface $serializer
     ): Response {
         $data = json_decode($request->getContent(), true);
@@ -45,7 +44,7 @@ class MarketController extends AbstractController
         $order = new Order();
 
         $cryptoSymbol = str_replace('USDT', '', $data['cryptoToBuySymbol']);
-        $crypto = $cryptocurrencyRepository->findOneBy(['symbol' => $cryptoSymbol]);
+        $crypto = $cryptoRepository->findOneBy(['symbol' => $cryptoSymbol]);
 
         $order->setUser($this->getUser())
             ->setCryptoToBuy($crypto)
@@ -54,8 +53,7 @@ class MarketController extends AbstractController
             ->setType(OrderConfig::BUY_FOR_MONEY)
             ->setStatus(OrderConfig::PENDING);
 
-        $entityManager->persist($order);
-        $entityManager->flush();
+        $orderRepository->save($order, true);
 
         $orderId = $order->getId();
         $bus->dispatch(new BuyOrder($orderId));
@@ -73,8 +71,8 @@ class MarketController extends AbstractController
      * @var float $value
      *
      * @param MessageBusInterface $bus
-     * @param CryptocurrencyRepository $cryptocurrencyRepository
-     * @param EntityManagerInterface $entityManager
+     * @param CryptocurrencyRepository $cryptoRepository
+     * @param OrderRepository $orderRepository
      * @param SerializerInterface $serializer
      *
      * @return Response
@@ -83,8 +81,8 @@ class MarketController extends AbstractController
     public function newSellOrder(
         Request $request,
         MessageBusInterface $bus,
-        CryptocurrencyRepository $cryptocurrencyRepository,
-        EntityManagerInterface $entityManager,
+        CryptocurrencyRepository $cryptoRepository,
+        OrderRepository $orderRepository,
         SerializerInterface $serializer
     ): Response {
         $data = json_decode($request->getContent(), true);
@@ -92,7 +90,7 @@ class MarketController extends AbstractController
         $order = new Order();
 
         $cryptoSymbol = str_replace('USDT', '', $data['cryptoToSellSymbol']);
-        $crypto = $cryptocurrencyRepository->findOneBy(['symbol' => $cryptoSymbol]);
+        $crypto = $cryptoRepository->findOneBy(['symbol' => $cryptoSymbol]);
 
         $order->setUser($this->getUser())
             ->setCryptoToSell($crypto)
@@ -101,8 +99,7 @@ class MarketController extends AbstractController
             ->setType(OrderConfig::SELL_FOR_MONEY)
             ->setStatus(OrderConfig::PENDING);
 
-        $entityManager->persist($order);
-        $entityManager->flush();
+        $orderRepository->save($order, true);
 
         $orderId = $order->getId();
         $bus->dispatch(new SellOrder($orderId));

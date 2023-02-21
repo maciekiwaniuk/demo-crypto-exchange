@@ -6,6 +6,7 @@ use App\Config\Cryptocurrency as CryptocurrencyConfig;
 use App\Entity\Cryptocurrency;
 use App\HttpClient\BinanceApiHttpClient;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class CryptocurrenciesDataService
 {
@@ -14,12 +15,10 @@ class CryptocurrenciesDataService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        BinanceApiHttpClient $binanceApiHttpClient
+        BinanceApiHttpClient $binanceApiHttpClient,
     ) {
         $this->entityManager = $entityManager;
         $this->binanceApiHttpClient = $binanceApiHttpClient;
-
-
     }
 
     public function getActiveCryptoData(): array
@@ -35,8 +34,15 @@ class CryptocurrenciesDataService
 
         if (count($symbols) == 0) return [];
 
-        return $this->binanceApiHttpClient
+        $cryptoData = $this->binanceApiHttpClient
             ->fetchCurrentPricesOfPassedCryptoSymbols($symbols);
+
+        foreach ($cryptoData as &$crypto) {
+            $symbol = $crypto['symbol'];
+            $crypto['symbol'] = str_replace('USDT', '', $symbol);
+        }
+
+        return $cryptoData;
     }
 
     public function fetchPriceBySymbol(string $symbol): float

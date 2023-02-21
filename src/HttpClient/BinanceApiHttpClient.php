@@ -18,12 +18,10 @@ class BinanceApiHttpClient
 
     public function fetchCurrentPriceOfPassedCryptoSymbol(string $cryptoSymbol): float
     {
-        $param = 'symbol= '. $cryptoSymbol . 'USDT';
+        $param = 'symbol='. $cryptoSymbol . 'USDT';
         $url = self::URL . '/ticker/price?' . $param;
 
-        $this->logger->debug('CRUPTO SYMBOL', [$url]);
-
-        $response = $this->client->request('GET', 'https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT');
+        $response = $this->client->request('GET', $url);
 
         return $response->toArray()['price'];
     }
