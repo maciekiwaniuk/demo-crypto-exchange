@@ -28,7 +28,7 @@ class NewCryptocurrencyValueResolver implements ArgumentValueResolverInterface
 
         $dto = new NewCryptocurrencyDto();
         $dto->symbol = $data['symbol'];
-        $dto->active = $data['active'];
+        $dto->status = $data['status'];
 
         $errors = $this->validator->validate($dto);
         if (count($errors) > 0) {

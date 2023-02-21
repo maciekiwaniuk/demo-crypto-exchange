@@ -5,7 +5,7 @@ import { useAuthStore } from './auth';
 interface UserData {
     balance: number,
     banStatus: boolean,
-    isVerified: boolean,
+    isEmailVerified: boolean,
     lastLoginIp: string,
     lastLoginTime: string
 }
@@ -14,7 +14,7 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         balance: null as null | number,
         banStatus: null as null | boolean,
-        isVerified: null as null | boolean,
+        isEmailVerified: null as null | boolean,
         lastLoginIp: null as null | string,
         lastLoginTime: null as null | string
     }),
@@ -29,7 +29,7 @@ export const useUserStore = defineStore('user', {
 
                     this.balance = userData.balance;
                     this.banStatus = userData.banStatus;
-                    this.isVerified = userData.isVerified;
+                    this.isEmailVerified = userData.isEmailVerified;
                     this.lastLoginIp = userData.lastLoginIp;
                     this.lastLoginTime = userData.lastLoginTime;
                 })

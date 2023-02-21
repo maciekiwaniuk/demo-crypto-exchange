@@ -18,7 +18,7 @@ class UserController extends AbstractController
         $userData->balance = $user->getBalance();
         $userData->lastLoginTime = $user->getLastLoginTime();
         $userData->lastLoginIp = $user->getLastLoginIp();
-        $userData->isVerified = $user->isVerified();
+        $userData->isEmailVerified = $user->isEmailVerified();
         $userData->banStatus = $user->getBanStatus();
 
         return $this->json([
