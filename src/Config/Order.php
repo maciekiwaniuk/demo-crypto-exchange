@@ -10,9 +10,9 @@ enum Order
     public const SELL_FOR_MONEY = 'sell_for_money';
 
     // status
-    public const COMPLETED = 'completed';
-    public const CANCELED = 'canceled';
     public const PENDING = 'pending';
+    public const CANCELED = 'canceled';
+    public const COMPLETED = 'completed';
     public const TOO_MANY_ATTEMPTS = 'too_many_attempts';
 
     // attempts

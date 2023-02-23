@@ -59,10 +59,10 @@ const summedCryptoWallet = computed(() => {
 
    const wallet: any[] = [];
    userCryptos.forEach((userCrypto) => {
-       const symbol = userCrypto[0].replace('USDT', ''),
+       const symbol = userCrypto[0],
              amount = userCrypto[1],
              crypto = cryptoPrices.find(
-                 crypto => crypto.symbol.replace('USDT', '') === symbol
+                 crypto => crypto.symbol === symbol
              );
 
        wallet.push({

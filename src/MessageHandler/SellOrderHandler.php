@@ -36,6 +36,7 @@ class SellOrderHandler
 
         if ($order->getAttempts() >= OrderConfig::MAX_ATTEMPTS) {
             $order->setStatus(OrderConfig::TOO_MANY_ATTEMPTS);
+            $order->setDoneAt(new \DateTimeImmutable());
             $this->orderRepository->save($order, true);
 
             throw new \Exception('Too many attempts for sell order');
