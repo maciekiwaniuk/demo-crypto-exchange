@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Config\User as UserConfig;
 use App\Entity\User;
+use App\Factory\CryptocurrencyFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -20,6 +21,10 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        CryptocurrencyFactory::createOne(['symbol' => 'BTC']);
+        CryptocurrencyFactory::createOne(['symbol' => 'ETH']);
+        CryptocurrencyFactory::createOne(['symbol' => 'DOGE']);
+
         UserFactory::createMany(10);
         UserFactory::createOne([
             'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
@@ -30,6 +35,8 @@ class AppFixtures extends Fixture
             ),
             'roles' => [UserConfig::ROLE_ADMIN]
         ]);
+
+
         
         $manager->flush();
     }
