@@ -56,11 +56,12 @@ final class OrderFactory extends ModelFactory
             'value' => self::faker()->randomFloat(2, 100, 50_000),
         ];
 
+        $symbols = ['BTC', 'ETH', 'DOGE'];
         if ($drawnType == OrderConfig::BUY_FOR_MONEY) {
             $drawnData = [
                 'type' => OrderConfig::BUY_FOR_MONEY,
-                'cryptoToBuy' => CryptocurrencyFactory::new([
-                    'symbol' => array_rand(['BTC', 'ETH', 'DOGE'])
+                'cryptoToBuy' => CryptocurrencyFactory::randomOrCreate([
+                    'symbol' => $symbols[array_rand($symbols)]
                 ]),
                 'amountOfCryptoToBuy' => self::faker()->randomFloat(2, 0.05, 10)
             ];
@@ -68,8 +69,8 @@ final class OrderFactory extends ModelFactory
         } else if ($drawnType == OrderConfig::SELL_FOR_MONEY) {
             $drawnData = [
                 'type' => OrderConfig::SELL_FOR_MONEY,
-                'cryptoToSell' => CryptocurrencyFactory::new([
-                    'symbol' => array_rand(['BTC', 'ETH', 'DOGE'])
+                'cryptoToSell' => CryptocurrencyFactory::randomOrCreate([
+                    'symbol' => $symbols[array_rand($symbols)]
                 ]),
                 'amountOfCryptoToSell' => self::faker()->randomFloat(2, 0.05, 10)
             ];

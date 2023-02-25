@@ -26,8 +26,8 @@ class AppFixtures extends Fixture
         CryptocurrencyFactory::createOne(['symbol' => 'ETH']);
         CryptocurrencyFactory::createOne(['symbol' => 'DOGE']);
 
-        UserFactory::createMany(10);
-        UserFactory::createOne([
+        //UserFactory::createMany(10);
+        $admin = UserFactory::createOne([
             'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
             'username' => UserConfig::DEFAULT_ADMIN_USERNAME,
             'password' => $this->passwordHasher->hashPassword(
@@ -37,7 +37,9 @@ class AppFixtures extends Fixture
             'roles' => [UserConfig::ROLE_ADMIN]
         ]);
 
-        OrderFactory::createOne();
+        OrderFactory::createMany(25, [
+            'user' => $admin
+        ]);
         
         $manager->flush();
     }
