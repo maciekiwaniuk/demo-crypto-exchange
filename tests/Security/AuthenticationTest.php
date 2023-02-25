@@ -7,21 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticationTest extends WebTestCase
 {
-    const URL = '/api/login_check';
-
-    public function testUserCanLoginWithValidCredentials()
-    {
-        $client = $this->createGuestApiClient();
-        $data = [
-            'email' => 'test1234@wp.pl',
-            'password' => 'test1234',
-        ];
-        $client->request('POST', self::URL, [], [], [], json_encode($data));
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-    }
+    const URL = '/api/login-check';
 
     public function testUserCantLoginWithInvalidCredentials()
     {
@@ -39,5 +25,19 @@ class AuthenticationTest extends WebTestCase
         $this->assertArrayHasKey('success', $data);
         $this->assertSame($data['success'], false);
         $this->assertArrayHasKey('message', $data);
+    }
+
+    public function testUserCanLoginWithValidCredentials()
+    {
+        $client = $this->createGuestApiClient();
+        $data = [
+            'email' => 'test1234@test.pl',
+            'password' => 'test1234',
+        ];
+        $client->request('POST', self::URL, [], [], [], json_encode($data));
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }

@@ -103,6 +103,7 @@
         "symfony/phpunit-bridge": "^6.2",
         "symfony/stopwatch": "6.1.*",
         "symfony/var-dumper": "6.1.*",
-        "symfony/web-profiler-bundle": "6.1.*"
+        "symfony/web-profiler-bundle": "6.1.*",
+        "zenstruck/foundry": "^1.28"
     }
 }

@@ -30,7 +30,7 @@ class WebTestCase extends BaseWebTestCase
 
         return static::createClient([], [
             'CONTENT_TYPE' => 'application/json',
-            'Bearer' => 'Token ' . $token,
+            'Authorization' => 'Bearer ' . $token,
         ]);
     }
 }
