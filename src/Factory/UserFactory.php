@@ -62,7 +62,10 @@ final class UserFactory extends ModelFactory
             'roles' => [],
             'banStatus' => UserConfig::NOT_BANNED,
             'emailVerificationStatus' => UserConfig::EMAIL_NOT_VERIFIED,
-            'balance' => self::faker()->randomFloat(),
+            'balance' => self::faker()->randomFloat(2, 0, UserConfig::DEFAULT_BALANCE),
+            'lastLoginIp' => self::faker()->ipv6(),
+            'lastLoginTime' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
+            'lastUserAgent' => self::faker()->userAgent()
         ];
     }
 
