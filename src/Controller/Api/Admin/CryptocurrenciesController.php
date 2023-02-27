@@ -70,7 +70,7 @@ class CryptocurrenciesController extends AbstractController
         return $this->json(['options' => $options]);
     }
 
-    #[Route('/delete-crypto/{id}', name: 'delete_crypto', methods: ['DELETE'])]
+    #[Route('/delete-crypto/{id}', name: 'delete-crypto', methods: ['DELETE'])]
     public function delete(Cryptocurrency $crypto): Response
     {
         $this->entityManager->remove($crypto);

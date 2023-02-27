@@ -18,7 +18,7 @@ class CryptocurrenciesController extends AbstractController
         $this->cryptoDataService = $cryptoDataService;
     }
 
-    #[Route('/get-prices-of-active-cryptos', name: 'get_prices_of_active_cryptos', methods: ['GET'])]
+    #[Route('/get-prices-of-active-cryptos', name: 'get-prices-of-active-cryptos', methods: ['GET'])]
     public function getPricesOfActiveCryptos(): Response
     {
         return $this->json([

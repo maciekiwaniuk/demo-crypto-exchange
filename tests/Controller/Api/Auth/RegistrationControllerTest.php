@@ -23,7 +23,7 @@ class RegistrationControllerTest extends WebTestCase
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertArrayHasKey('success', $responseData);
         $this->assertArrayHasKey('token', $responseData);
         $this->assertArrayHasKey('roles', $responseData);
