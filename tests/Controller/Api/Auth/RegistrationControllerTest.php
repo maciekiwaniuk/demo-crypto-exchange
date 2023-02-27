@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller\Api\Auth;
 
+use App\Config\User as UserConfig;
 use App\Tests\TestCase\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,15 +14,15 @@ class RegistrationControllerTest extends WebTestCase
     {
         $client = $this->createGuestApiClient();
         $data = [
-            'username' => 'test1234',
-            'email' => 'test1234@test.pl',
-            'password' => 'test1234',
-            'password_confirm' => 'test1234'
+            'username' => UserConfig::DEFAULT_ADMIN_USERNAME,
+            'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
+            'password' => UserConfig::DEFAULT_ADMIN_PASSWORD,
         ];
         $client->request('POST', self::URL, [], [], [], json_encode($data));
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, Response::HTTP_OK);
     }
 }

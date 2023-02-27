@@ -3,13 +3,17 @@
 namespace App\Tests\TestCase;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Factory\UserFactory;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
 class WebTestCase extends BaseWebTestCase
 {
+    use ResetDatabase, Factories;
+
     protected function createGuestApiClient(): KernelBrowser
     {
         return static::createClient([], [
@@ -17,9 +21,9 @@ class WebTestCase extends BaseWebTestCase
         ]);
     }
 
-    protected function createAuthenticatedUserApiClient(string $user = 'test@wp.pl'): KernelBrowser
+    protected function createAuthenticatedUserApiClient(): KernelBrowser
     {
-        $user = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => $user]);
+        $user = static::getContainer()->get(UserFactory::createOne());
 
         if (!$user instanceof User) {
             throw new \InvalidArgumentException('User not found.');
@@ -30,7 +34,7 @@ class WebTestCase extends BaseWebTestCase
 
         return static::createClient([], [
             'CONTENT_TYPE' => 'application/json',
-            'Authorization' => 'Bearer ' . $token,
+            'AUTHORIZATION' => 'Bearer ' . $token,
         ]);
     }
 }
