@@ -9,7 +9,7 @@ class CryptocurrenciesControllerTest extends WebTestCase
 {
     public const URL = '/api/crypto';
 
-    public function testGettingPricesOfActiveCryptos()
+    public function testGettingPricesOfActiveCryptos(): void
     {
         $client = self::createGuestApiClient();
 

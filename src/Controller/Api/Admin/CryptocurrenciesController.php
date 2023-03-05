@@ -35,6 +35,13 @@ class CryptocurrenciesController extends AbstractController
         ]);
     }
 
+    /**
+     * @param NewCryptocurrencyDto $dto
+     * @var string $symbol
+     * @var string $status
+     *
+     * @return Response
+     */
     #[Route('/new-crypto', name: 'new-crypto', methods: ['POST'])]
     public function new(NewCryptocurrencyDto $dto): Response
     {

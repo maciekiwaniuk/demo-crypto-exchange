@@ -2,11 +2,14 @@
 
 namespace App\Tests\TestCase;
 
+use App\Config\User as UserConfig;
 use App\Entity\User;
 use App\Factory\UserFactory;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
@@ -23,18 +26,74 @@ class WebTestCase extends BaseWebTestCase
 
     protected function createAuthenticatedUserApiClient(): KernelBrowser
     {
-        $user = static::getContainer()->get(UserFactory::createOne());
+        $container = static::getContainer();
 
-        if (!$user instanceof User) {
-            throw new \InvalidArgumentException('User not found.');
-        }
+        $passwordHasher = $container->get(UserPasswordHasherInterface::class);
 
-        $token = static::getContainer()->get(JWTTokenManagerInterface::class)->create($user);
+        $container->get(UserFactory::class)
+            ->createOne([
+                'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
+                'password' => $passwordHasher->hashPassword(
+                    new User(), UserConfig::DEFAULT_ADMIN_PASSWORD
+                )
+            ]);
+
         static::ensureKernelShutdown();
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/login-check',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
+                'password' => UserConfig::DEFAULT_ADMIN_PASSWORD,
+            ])
+        );
 
-        return static::createClient([], [
-            'CONTENT_TYPE' => 'application/json',
-            'AUTHORIZATION' => 'Bearer ' . $token,
-        ]);
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
     }
+
+    protected function createAuthenticatedAdminApiClient(): KernelBrowser
+    {
+        $container = static::getContainer();
+
+        $passwordHasher = $container->get(UserPasswordHasherInterface::class);
+
+        $container->get(UserFactory::class)
+            ->createOne([
+                'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
+                'password' => $passwordHasher->hashPassword(
+                    new User(), UserConfig::DEFAULT_ADMIN_PASSWORD
+                ),
+                'roles' => [UserConfig::ROLE_ADMIN]
+            ]);
+
+        static::ensureKernelShutdown();
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/login-check',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'email' => UserConfig::DEFAULT_ADMIN_EMAIL,
+                'password' => UserConfig::DEFAULT_ADMIN_PASSWORD,
+            ])
+        );
+
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
+    }
+
+
 }

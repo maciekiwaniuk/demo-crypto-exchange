@@ -23,4 +23,9 @@ enum User
     public const DEFAULT_ADMIN_EMAIL = 'test1234@wp.pl';
     public const DEFAULT_ADMIN_USERNAME = 'test1234@wp.pl';
     public const DEFAULT_ADMIN_PASSWORD = 'test1234@wp.pl';
+
+    // default field for account with user permission
+    public const DEFAULT_USER_EMAIL = 'test4321@wp.pl';
+    public const DEFAULT_USER_USERNAME = 'test4321@wp.pl';
+    public const DEFAULT_USER_PASSWORD = 'test4321@wp.pl';
 }

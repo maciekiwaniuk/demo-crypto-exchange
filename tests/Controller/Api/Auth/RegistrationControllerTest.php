@@ -10,7 +10,7 @@ class RegistrationControllerTest extends WebTestCase
 {
     const URL = '/api/register';
 
-    public function testRegistrationWithValidData()
+    public function testRegistrationWithValidData(): void
     {
         $client = $this->createGuestApiClient();
         $data = [
