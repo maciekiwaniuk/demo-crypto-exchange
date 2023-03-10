@@ -28,8 +28,7 @@ class Cryptocurrency
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\PrePersist]
-    public function setCreatedAtValue(): void
+    public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
@@ -58,7 +57,7 @@ class Cryptocurrency
         return $this;
     }
 
-    public function isStatus(): string
+    public function getStatus(): string
     {
         return $this->status;
     }

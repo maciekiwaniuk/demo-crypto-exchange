@@ -38,5 +38,7 @@ class UserTest extends KernelTestCase
         $this->assertSame($lastLoginIp, $user->getLastLoginIp());
         $this->assertSame($lastLoginTime, $user->getLastLoginTime());
         $this->assertSame($lastUserAgent, $user->getLastUserAgent());
+        $this->assertNotEmpty($user->getCreatedAt());
+        $this->assertNotEmpty($user->getUpdatedAt());
     }
 }
