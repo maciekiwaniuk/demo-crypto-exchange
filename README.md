@@ -78,6 +78,19 @@ Access server at http://127.0.0.1:8000
 
 # Testing
 
+## Backend
+
+Configure database for testing
+
+    php bin/console --env=test doctrine:database:create
+    php bin/console --env=test doctrine:schema:create
+
+Run backend tests
+
+    php bin/phpunit
+
+## Frontend
+
 Run frontend unit tests
 
     npm run test
@@ -86,6 +99,3 @@ Run E2E tests
 
     npx cypress run
 
-Run backend tests
-
-    php bin/phpunit
