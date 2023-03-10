@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "`order`")]
 class Order
 {
@@ -49,10 +48,9 @@ class Order
     private ?\DateTimeImmutable $doneAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt;
 
-    #[ORM\PrePersist]
-    public function setCreatedAt(): void
+    public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
     }

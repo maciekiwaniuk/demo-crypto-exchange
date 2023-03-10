@@ -6,9 +6,12 @@ use App\Config\Log as LogConfig;
 use App\Entity\Log;
 use App\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
 class LogTest extends KernelTestCase
 {
+    use ResetDatabase;
+
     public function testCreatingInstance(): void
     {
         $userFactory = self::getContainer()->get(UserFactory::class);
