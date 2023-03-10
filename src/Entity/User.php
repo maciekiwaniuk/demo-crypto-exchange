@@ -68,11 +68,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->logs = new ArrayCollection();
         $this->orders = new ArrayCollection();
-    }
-
-    #[ORM\PrePersist]
-    public function setCreatedAtValue(): void
-    {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
