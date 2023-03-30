@@ -59,14 +59,14 @@ Change environment to docker in .env
 
 After that you need to set permission in MySQL container
 
-    docker exec -it mysql8-container bash
+    docker exec -it mysql bash
     mysql -u root --password=""
     CREATE USER 'root'@'%' IDENTIFIED BY '';
     GRANT ALL ON *.* TO 'root'@'%';
 
 Finally, you need to enter a few commands in php container
 
-    docker exec -it php81-container bash
+    docker exec -it php bash
     composer install -n
     php bin/console lexik:jwt:generate-keypair --overwrite
     php bin/console doctrine:migrations:migrate --no-interaction
