@@ -5,27 +5,26 @@ networks:
 
 services:
 
-    # nginx
-    nginx-service:
+    nginx:
         image: nginx:stable-alpine
-        container_name: nginx-container
+        container_name: nginx
         ports:
             - "8000:80"
         volumes:
             - .:/var/www/project
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
         depends_on:
-            - php81-service
-            - mysql8-service
+            - php
+            - mysql
         networks:
             - nginx-php81-mysql8-node
 
     # php
-    php81-service:
+    php:
+        container_name: php
         build:
             context: .
             dockerfile: ./docker/php/Dockerfile
-        container_name: php81-container
         ports:
             - "9000:9000"
         volumes:
@@ -33,10 +32,9 @@ services:
         networks:
             - nginx-php81-mysql8-node
 
-    # mysql
-    mysql8-service:
+    mysql:
         image: mysql:8
-        container_name: mysql8-container
+        container_name: mysql
         ports:
             - "3306:3306"
         volumes:
@@ -53,7 +51,7 @@ services:
     # node
     node-service:
         image: node:latest
-        container_name: node-container
+        container_name: node
         volumes:
             - .:/var/www/project
         working_dir: /var/www/project
