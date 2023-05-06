@@ -5,26 +5,21 @@ namespace App\Service;
 use App\Config\Cryptocurrency as CryptocurrencyConfig;
 use App\Entity\Cryptocurrency;
 use App\HttpClient\BinanceApiHttpClient;
+use App\Repository\CryptocurrencyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class CryptocurrenciesDataService
 {
-    private EntityManagerInterface $entityManager;
-    private BinanceApiHttpClient $binanceApiHttpClient;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        BinanceApiHttpClient $binanceApiHttpClient,
+        private readonly BinanceApiHttpClient $binanceApiHttpClient,
+        private readonly CryptocurrencyRepository $cryptoRepository
     ) {
-        $this->entityManager = $entityManager;
-        $this->binanceApiHttpClient = $binanceApiHttpClient;
     }
 
     public function getActiveCryptoData(): array
     {
-        $activeCryptos = $this->entityManager
-            ->getRepository(Cryptocurrency::class)
+        $activeCryptos = $this->cryptoRepository
             ->findBy(['status' => CryptocurrencyConfig::ACTIVE]);
 
         $symbols = [];
