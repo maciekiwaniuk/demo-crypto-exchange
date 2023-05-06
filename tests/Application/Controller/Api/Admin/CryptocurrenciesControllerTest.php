@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Tests\Controller\Api\Admin;
+namespace App\Tests\Application\Controller\Api\Admin;
 
 use App\Config\Cryptocurrency as CryptocurrencyConfig;
-use App\Factory\CryptocurrencyFactory;
-use App\Tests\TestCase\WebTestCase;
+use App\Tests\Application\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class CryptocurrenciesControllerTest extends WebTestCase

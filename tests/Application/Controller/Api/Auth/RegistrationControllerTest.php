@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Controller\Api\Auth;
+namespace App\Tests\Application\Controller\Api\Auth;
 
 use App\Config\User as UserConfig;
-use App\Tests\TestCase\WebTestCase;
+use App\Tests\Application\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegistrationControllerTest extends WebTestCase

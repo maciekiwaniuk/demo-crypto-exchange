@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Security;
+namespace App\Tests\Application\Security;
 
 use App\Config\User as UserConfig;
 use App\Entity\User;
 use App\Factory\UserFactory;
-use App\Tests\TestCase\WebTestCase;
+use App\Tests\Application\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 

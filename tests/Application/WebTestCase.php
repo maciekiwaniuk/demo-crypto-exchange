@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Tests\TestCase;
+namespace App\Tests\Application;
 
 use App\Config\User as UserConfig;
 use App\Entity\User;
 use App\Factory\UserFactory;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

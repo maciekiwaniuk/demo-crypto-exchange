@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Controller\Api\General;
+namespace App\Tests\Application\Controller\Api\General;
 
-use App\Tests\TestCase\WebTestCase;
+use App\Tests\Application\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class CryptocurrenciesControllerTest extends WebTestCase

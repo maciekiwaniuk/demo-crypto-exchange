@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Entity;
+namespace App\Tests\Unit\Entity;
 
 use App\Config\Cryptocurrency as CryptocurrencyConfig;
 use App\Entity\Cryptocurrency;
