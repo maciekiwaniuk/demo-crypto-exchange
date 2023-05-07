@@ -6,13 +6,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-final class UniqueFieldInEntityValidator extends ConstraintValidator
+class UniqueFieldInEntityValidator extends ConstraintValidator
 {
-    private ManagerRegistry $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine)
-    {
-        $this->doctrine = $doctrine;
+    public function __construct(
+        private readonly ManagerRegistry $doctrine
+    ) {
     }
 
     public function validate(mixed $value, Constraint $constraint)

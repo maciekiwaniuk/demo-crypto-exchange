@@ -5,6 +5,7 @@ namespace App\Controller\Api\Admin;
 use App\Dto\Api\Admin\NewCryptocurrencyDto;
 use App\Entity\Cryptocurrency;
 use App\Config\Cryptocurrency as CryptocurrencyConfig;
+use App\Repository\CryptocurrencyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,20 +15,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[Route('/api/admin', name: 'api.admin.')]
 class CryptocurrenciesController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private SerializerInterface $serializer;
-
-    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
-    {
-        $this->entityManager = $entityManager;
-        $this->serializer = $serializer;
+    public function __construct(
+        private readonly CryptocurrencyRepository $cryptoRepository,
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     #[Route('/get-cryptos', name: 'get-cryptos', methods: ['GET'])]
     public function getList(): Response
     {
-        $cryptocurrencies = $this->entityManager
-            ->getRepository(Cryptocurrency::class)
+        $cryptocurrencies = $this->cryptoRepository
             ->findAll();
 
         return $this->json([
@@ -56,8 +53,7 @@ class CryptocurrenciesController extends AbstractController
         $crypto->setSymbol($dto->symbol);
         $crypto->setStatus($dto->status);
 
-        $this->entityManager->persist($crypto);
-        $this->entityManager->flush();
+        $this->cryptoRepository->save($crypto, true);
 
         return $this->json([
             'success' => true,
@@ -80,8 +76,7 @@ class CryptocurrenciesController extends AbstractController
     #[Route('/delete-crypto/{id}', name: 'delete-crypto', methods: ['DELETE'])]
     public function delete(Cryptocurrency $crypto): Response
     {
-        $this->entityManager->remove($crypto);
-        $this->entityManager->flush();
+        $this->cryptoRepository->remove($crypto, true);
 
         return $this->json([
             'success' => true,
