@@ -6,7 +6,6 @@ use App\Dto\Api\Admin\NewCryptocurrencyDto;
 use App\Entity\Cryptocurrency;
 use App\Config\Cryptocurrency as CryptocurrencyConfig;
 use App\Repository\CryptocurrencyRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
