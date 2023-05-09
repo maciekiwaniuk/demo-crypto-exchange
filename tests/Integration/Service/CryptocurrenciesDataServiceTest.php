@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CryptocurrenciesDataServiceTest extends KernelTestCase
 {
+    protected BinanceApiHttpClient $binanceApiHttpClient;
+    protected CryptocurrencyRepository $cryptoRepository;
+
     public function setUp(): void
     {
         $this->binanceApiHttpClient = $this->createMock(BinanceApiHttpClient::class);

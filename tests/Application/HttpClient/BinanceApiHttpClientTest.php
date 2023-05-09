@@ -2,6 +2,7 @@
 
 namespace App\Tests\Application\HttpClient;
 
+use App\HttpClient\BinanceApiHttpClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BinanceApiHttpClientTest extends WebTestCase
@@ -11,7 +12,7 @@ class BinanceApiHttpClientTest extends WebTestCase
         $client = static::createClient();
         $container = $client->getContainer();
 
-        $this->binanceApiHttpClient = $container->get('App\HttpClient\BinanceApiHttpClient');
+        $this->binanceApiHttpClient = $container->get(BinanceApiHttpClient::class);
     }
 
     public function testFetchCurrentPriceOfPassedCryptoSymbol(): void

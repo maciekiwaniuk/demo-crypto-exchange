@@ -1,0 +1,177 @@
+<?php
+
+namespace App\Tests\Integration\MessageHandler;
+
+use App\Entity\Cryptocurrency;
+use App\Entity\Order;
+use App\Entity\User;
+use App\Config\Order as OrderConfig;
+use App\Exception\OrderFailedException;
+use App\Exception\TooManyAttemptsOnOrderException;
+use App\Message\BuyOrder;
+use App\MessageHandler\BuyOrderHandler;
+use App\Repository\OrderRepository;
+use App\Repository\UserRepository;
+use App\Service\CryptocurrenciesDataService;
+use App\Tests\Tools\PrivateProperty;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
+class BuyOrderHandlerTest extends KernelTestCase
+{
+    protected CryptocurrenciesDataService $cryptoDataService;
+    protected OrderRepository $orderRepository;
+    protected UserRepository $userRepository;
+    protected BuyOrder $buyOrder;
+    protected Order $order;
+    protected User $user;
+
+    protected function setUp(): void
+    {
+        $this->cryptoDataService = $this->createMock(CryptocurrenciesDataService::class);
+        $this->orderRepository = $this->createMock(OrderRepository::class);
+        $this->userRepository = $this->createMock(UserRepository::class);
+
+        $this->buyOrder = new BuyOrder(2023);
+        $crypto = new Cryptocurrency();
+        $crypto->setSymbol('BTC');
+
+        $this->user = new User();
+        PrivateProperty::set($this->user, 123, 'id');
+
+        $this->order = new Order();
+        $this->order
+            ->setUser($this->user)
+            ->setCryptoToBuy($crypto);
+    }
+
+    public function testSuccessfulRunOfHandler(): void
+    {
+        $this->orderRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->order);
+
+        $currentPriceOfCrypto = 100.0;
+        $this->cryptoDataService
+            ->expects($this->atLeastOnce())
+            ->method('fetchPriceBySymbol')
+            ->willReturn($currentPriceOfCrypto);
+
+        $requestedPriceOfCryptoToBuy = 110;
+        $this->order
+            ->setValue($requestedPriceOfCryptoToBuy)
+            ->setAmountOfCryptoToBuy(1);
+
+        $this->user->setBalance(1000);
+        $this->userRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->user);
+
+        $handler = new BuyOrderHandler(
+            $this->cryptoDataService,
+            $this->orderRepository,
+            $this->userRepository
+        );
+
+        $handler->__invoke($this->buyOrder);
+    }
+
+    public function testFailingTooManyAttempts(): void
+    {
+        $this->order->setAttempts(OrderConfig::MAX_ATTEMPTS);
+
+        $this->orderRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->order);
+
+        $this->cryptoDataService
+            ->expects($this->never())
+            ->method($this->anything());
+
+        $this->userRepository
+            ->expects($this->never())
+            ->method($this->anything());
+
+        $handler = new BuyOrderHandler(
+            $this->cryptoDataService,
+            $this->orderRepository,
+            $this->userRepository
+        );
+
+        $this->expectException(TooManyAttemptsOnOrderException::class);
+
+        $handler->__invoke($this->buyOrder);
+    }
+
+    public function testFailingInsufficientBalance(): void
+    {
+        $this->orderRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->order);
+
+        $currentPriceOfCrypto = 100.0;
+        $this->cryptoDataService
+            ->expects($this->atLeastOnce())
+            ->method('fetchPriceBySymbol')
+            ->willReturn($currentPriceOfCrypto);
+
+        $requestedPriceOfCryptoToBuy = 110;
+        $this->order
+            ->setValue($requestedPriceOfCryptoToBuy)
+            ->setAmountOfCryptoToBuy(1);
+
+        $this->user->setBalance(10);
+        $this->userRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->user);
+
+        $handler = new BuyOrderHandler(
+            $this->cryptoDataService,
+            $this->orderRepository,
+            $this->userRepository
+        );
+
+        $this->expectException(OrderFailedException::class);
+
+        $handler->__invoke($this->buyOrder);
+    }
+
+    public function testFailingOrderPriceHigherThanFetchedPrice(): void
+    {
+        $this->orderRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->order);
+
+        $currentPriceOfCrypto = 100.0;
+        $this->cryptoDataService
+            ->expects($this->atLeastOnce())
+            ->method('fetchPriceBySymbol')
+            ->willReturn($currentPriceOfCrypto);
+
+        $requestedPriceOfCryptoToBuy = 90;
+        $this->order
+            ->setValue($requestedPriceOfCryptoToBuy)
+            ->setAmountOfCryptoToBuy(1);
+
+        $this->user->setBalance(1000);
+        $this->userRepository
+            ->expects($this->atLeastOnce())
+            ->method('find')
+            ->willReturn($this->user);
+
+        $handler = new BuyOrderHandler(
+            $this->cryptoDataService,
+            $this->orderRepository,
+            $this->userRepository
+        );
+
+        $this->expectException(OrderFailedException::class);
+
+        $handler->__invoke($this->buyOrder);
+    }
+}

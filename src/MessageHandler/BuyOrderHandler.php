@@ -3,31 +3,28 @@
 namespace App\MessageHandler;
 
 use App\Config\Order as OrderConfig;
+use App\Exception\OrderFailedException;
+use App\Exception\TooManyAttemptsOnOrderException;
 use App\Message\BuyOrder;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Service\CryptocurrenciesDataService;
+use DateTimeImmutable;
+use Exception;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class BuyOrderHandler
 {
-    private CryptocurrenciesDataService $cryptoDataService;
-    private OrderRepository $orderRepository;
-    private UserRepository $userRepository;
-
     public function __construct(
-        CryptocurrenciesDataService $cryptoDataService,
-        OrderRepository $orderRepository,
-        UserRepository $userRepository,
+        private readonly CryptocurrenciesDataService $cryptoDataService,
+        private readonly OrderRepository $orderRepository,
+        private readonly UserRepository $userRepository,
     ) {
-        $this->cryptoDataService = $cryptoDataService;
-        $this->orderRepository = $orderRepository;
-        $this->userRepository = $userRepository;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __invoke(BuyOrder $buyOrder): void
     {
@@ -36,10 +33,10 @@ class BuyOrderHandler
 
         if ($order->getAttempts() >= OrderConfig::MAX_ATTEMPTS) {
             $order->setStatus(OrderConfig::TOO_MANY_ATTEMPTS);
-            $order->setDoneAt(new \DateTimeImmutable());
+            $order->setDoneAt(new DateTimeImmutable());
             $this->orderRepository->save($order, true);
 
-            throw new \Exception('Too many attempts for buy order');
+            throw new TooManyAttemptsOnOrderException('Too many attempts for buy order');
         }
 
         $symbol = $order->getCryptoToBuy()->getSymbol();
@@ -57,7 +54,7 @@ class BuyOrderHandler
             $user->setBalance($balance);
 
             $order->setStatus(OrderConfig::COMPLETED);
-            $order->setDoneAt(new \DateTimeImmutable());
+            $order->setDoneAt(new DateTimeImmutable());
 
             $success = true;
         }
@@ -66,7 +63,7 @@ class BuyOrderHandler
         $this->userRepository->save($user, true);
 
         if (! isset($success)) {
-            throw new \Exception('Buy order failed');
+            throw new OrderFailedException('Buy order failed');
         }
     }
 }
