@@ -4,24 +4,24 @@ namespace App\Tests\Integration\MessageHandler;
 
 use App\Entity\Cryptocurrency;
 use App\Entity\Order;
-use App\Entity\User;
 use App\Config\Order as OrderConfig;
+use App\Entity\User;
 use App\Exception\OrderFailedException;
 use App\Exception\TooManyAttemptsOnOrderException;
-use App\Message\BuyOrder;
-use App\MessageHandler\BuyOrderHandler;
+use App\Message\SellOrder;
+use App\MessageHandler\SellOrderHandler;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Service\CryptocurrenciesDataService;
 use App\Tests\Tools\PrivateProperty;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class BuyOrderHandlerTest extends KernelTestCase
+class SellOrderHandlerTest extends KernelTestCase
 {
     protected CryptocurrenciesDataService $cryptoDataService;
     protected OrderRepository $orderRepository;
     protected UserRepository $userRepository;
-    protected BuyOrder $buyOrder;
+    protected SellOrder $sellOrder;
     protected Order $order;
     protected User $user;
 
@@ -31,7 +31,7 @@ class BuyOrderHandlerTest extends KernelTestCase
         $this->orderRepository = $this->createMock(OrderRepository::class);
         $this->userRepository = $this->createMock(UserRepository::class);
 
-        $this->buyOrder = new BuyOrder(2023);
+        $this->sellOrder = new SellOrder(2023);
         $crypto = new Cryptocurrency();
         $crypto->setSymbol('BTC');
 
@@ -41,7 +41,7 @@ class BuyOrderHandlerTest extends KernelTestCase
         $this->order = new Order();
         $this->order
             ->setUser($this->user)
-            ->setCryptoToBuy($crypto);
+            ->setCryptoToSell($crypto);
     }
 
     public function testSuccessfulRunOfHandler(): void
@@ -57,10 +57,10 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->method('fetchPriceBySymbol')
             ->willReturn($currentPriceOfCrypto);
 
-        $requestedPriceOfCryptoToBuy = 110;
+        $requestedPriceOfCryptoToSell = 90;
         $this->order
-            ->setValue($requestedPriceOfCryptoToBuy)
-            ->setAmountOfCryptoToBuy(1);
+            ->setValue($requestedPriceOfCryptoToSell)
+            ->setAmountOfCryptoToSell(1);
 
         $this->user->setBalance(1000);
         $this->userRepository
@@ -68,13 +68,13 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->method('find')
             ->willReturn($this->user);
 
-        $handler = new BuyOrderHandler(
+        $handler = new SellOrderHandler(
             $this->cryptoDataService,
             $this->orderRepository,
             $this->userRepository
         );
 
-        $handler->__invoke($this->buyOrder);
+        $handler->__invoke($this->sellOrder);
     }
 
     public function testFailingTooManyAttempts(): void
@@ -94,7 +94,7 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->expects($this->never())
             ->method($this->anything());
 
-        $handler = new BuyOrderHandler(
+        $handler = new SellOrderHandler(
             $this->cryptoDataService,
             $this->orderRepository,
             $this->userRepository
@@ -102,10 +102,10 @@ class BuyOrderHandlerTest extends KernelTestCase
 
         $this->expectException(TooManyAttemptsOnOrderException::class);
 
-        $handler->__invoke($this->buyOrder);
+        $handler->__invoke($this->sellOrder);
     }
 
-    public function testFailingInsufficientBalance(): void
+    public function testFailingSellPriceHigherThanFetchedPrice(): void
     {
         $this->orderRepository
             ->expects($this->atLeastOnce())
@@ -118,45 +118,10 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->method('fetchPriceBySymbol')
             ->willReturn($currentPriceOfCrypto);
 
-        $requestedPriceOfCryptoToBuy = 110;
+        $requestedPriceOfCryptoToSell = 110;
         $this->order
-            ->setValue($requestedPriceOfCryptoToBuy)
-            ->setAmountOfCryptoToBuy(1);
-
-        $this->user->setBalance(10);
-        $this->userRepository
-            ->expects($this->atLeastOnce())
-            ->method('find')
-            ->willReturn($this->user);
-
-        $handler = new BuyOrderHandler(
-            $this->cryptoDataService,
-            $this->orderRepository,
-            $this->userRepository
-        );
-
-        $this->expectException(OrderFailedException::class);
-
-        $handler->__invoke($this->buyOrder);
-    }
-
-    public function testFailingBuyPriceLowerThanFetchedPrice(): void
-    {
-        $this->orderRepository
-            ->expects($this->atLeastOnce())
-            ->method('find')
-            ->willReturn($this->order);
-
-        $currentPriceOfCrypto = 100.0;
-        $this->cryptoDataService
-            ->expects($this->atLeastOnce())
-            ->method('fetchPriceBySymbol')
-            ->willReturn($currentPriceOfCrypto);
-
-        $requestedPriceOfCryptoToBuy = 90;
-        $this->order
-            ->setValue($requestedPriceOfCryptoToBuy)
-            ->setAmountOfCryptoToBuy(1);
+            ->setValue($requestedPriceOfCryptoToSell)
+            ->setAmountOfCryptoToSell(1);
 
         $this->user->setBalance(1000);
         $this->userRepository
@@ -164,7 +129,7 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->method('find')
             ->willReturn($this->user);
 
-        $handler = new BuyOrderHandler(
+        $handler = new SellOrderHandler(
             $this->cryptoDataService,
             $this->orderRepository,
             $this->userRepository
@@ -172,6 +137,6 @@ class BuyOrderHandlerTest extends KernelTestCase
 
         $this->expectException(OrderFailedException::class);
 
-        $handler->__invoke($this->buyOrder);
+        $handler->__invoke($this->sellOrder);
     }
 }

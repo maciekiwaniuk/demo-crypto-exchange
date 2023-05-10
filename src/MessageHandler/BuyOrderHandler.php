@@ -10,7 +10,6 @@ use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Service\CryptocurrenciesDataService;
 use DateTimeImmutable;
-use Exception;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -23,9 +22,6 @@ class BuyOrderHandler
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     public function __invoke(BuyOrder $buyOrder): void
     {
         $order = $this->orderRepository->find($buyOrder->getOrderId());
