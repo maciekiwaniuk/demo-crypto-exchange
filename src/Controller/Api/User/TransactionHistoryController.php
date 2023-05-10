@@ -12,12 +12,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[Route('/api/user/transaction-history', name: 'api.user.transaction-history.')]
 class TransactionHistoryController extends AbstractController
 {
-    private SerializerInterface $serializer;
-
     public function __construct(
-        SerializerInterface $serializer,
+        private readonly SerializerInterface $serializer,
     ) {
-        $this->serializer = $serializer;
     }
 
     #[Route('/get-list', name: 'get-list', methods: ['GET'])]

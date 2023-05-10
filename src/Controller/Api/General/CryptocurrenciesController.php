@@ -10,12 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/crypto', name: 'api.crypto.')]
 class CryptocurrenciesController extends AbstractController
 {
-    private CryptocurrenciesDataService $cryptoDataService;
-
     public function __construct(
-        CryptocurrenciesDataService $cryptoDataService,
+        private readonly CryptocurrenciesDataService $cryptoDataService,
     ) {
-        $this->cryptoDataService = $cryptoDataService;
     }
 
     #[Route('/get-prices-of-active-cryptos', name: 'get-prices-of-active-cryptos', methods: ['GET'])]

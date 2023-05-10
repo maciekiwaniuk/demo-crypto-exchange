@@ -12,12 +12,11 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class AuthenticationSuccessSubscriber implements EventSubscriberInterface
 {
-    private EntityManagerInterface $entityManager;
     private Request $request;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {
     }
 
     public function onKernelRequest(RequestEvent $event)

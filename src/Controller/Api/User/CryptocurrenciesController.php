@@ -12,11 +12,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[Route('/api/user/crypto', name: 'api.user.crypto.')]
 class CryptocurrenciesController extends AbstractController
 {
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     #[Route('/total-owned-crypto', name: 'total-owned-crypto')]

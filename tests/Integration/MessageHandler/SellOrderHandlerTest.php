@@ -57,12 +57,14 @@ class SellOrderHandlerTest extends KernelTestCase
             ->method('fetchPriceBySymbol')
             ->willReturn($currentPriceOfCrypto);
 
-        $requestedPriceOfCryptoToSell = 90;
+        $requestedPriceOfCrypto = 90;
+        $requestAmountOfCrypto = 1;
         $this->order
-            ->setValue($requestedPriceOfCryptoToSell)
-            ->setAmountOfCryptoToSell(1);
+            ->setValue($requestedPriceOfCrypto)
+            ->setAmountOfCryptoToSell($requestAmountOfCrypto);
 
-        $this->user->setBalance(1000);
+        $userBalance = 1000;
+        $this->user->setBalance($userBalance);
         $this->userRepository
             ->expects($this->atLeastOnce())
             ->method('find')
@@ -75,6 +77,10 @@ class SellOrderHandlerTest extends KernelTestCase
         );
 
         $handler->__invoke($this->sellOrder);
+
+        $finalProfit = $requestAmountOfCrypto * $requestedPriceOfCrypto;
+        $balanceAfterTransaction = $userBalance + $finalProfit;
+        $this->assertEquals($balanceAfterTransaction, $this->user->getBalance());
     }
 
     public function testFailingTooManyAttempts(): void
