@@ -2,20 +2,19 @@
 
 namespace App\EventSubscriber;
 
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class AuthenticationSuccessSubscriber implements EventSubscriberInterface
 {
     private Request $request;
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly UserRepository $userRepository
     ) {
     }
 
@@ -33,8 +32,7 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $time = new \DateTime('now');
         $user->fillDataAfterSuccessfulAuthentication($ip, $userAgent, $time);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->userRepository->save($user, true);
 
         $token = $event->getData()['token'];
         $roles = $user->getRoles();

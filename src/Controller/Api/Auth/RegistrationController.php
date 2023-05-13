@@ -4,6 +4,7 @@ namespace App\Controller\Api\Auth;
 
 use App\Dto\Api\Auth\UserRegistrationDto;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,8 @@ class RegistrationController extends AbstractController
      * @var string $password
      *
      * @param UserPasswordHasherInterface $passwordHasher
-     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @param Request $request
      * @param JWTTokenManagerInterface $JWTManager
      *
      * @return Response
@@ -31,8 +33,8 @@ class RegistrationController extends AbstractController
     public function register(
         UserRegistrationDto $dto,
         UserPasswordHasherInterface $passwordHasher,
+        UserRepository $userRepository,
         Request $request,
-        EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $JWTManager
     ): Response {
 
@@ -55,8 +57,7 @@ class RegistrationController extends AbstractController
         $time = new \DateTime('now');
         $user->fillDataAfterSuccessfulAuthentication($ip, $userAgent, $time);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $userRepository->save($user, true);
 
         $token = $JWTManager->create($user);
 
