@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/api/admin', name: 'api.admin.')]
+#[Route('/api/admin/crypto', name: 'api.admin.')]
 class CryptocurrenciesController extends AbstractController
 {
     public function __construct(
@@ -20,7 +20,7 @@ class CryptocurrenciesController extends AbstractController
     ) {
     }
 
-    #[Route('/get-cryptos', name: 'get-cryptos', methods: ['GET'])]
+    #[Route('/get-all', name: 'get-all', methods: ['GET'])]
     public function getList(): Response
     {
         $cryptocurrencies = $this->cryptoRepository
@@ -38,7 +38,7 @@ class CryptocurrenciesController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/new-crypto', name: 'new-crypto', methods: ['POST'])]
+    #[Route('/new', name: 'new', methods: ['POST'])]
     public function new(NewCryptocurrencyDto $dto): Response
     {
         if ($dto->hasErrors()) {
@@ -72,7 +72,7 @@ class CryptocurrenciesController extends AbstractController
         return $this->json(['options' => $options]);
     }
 
-    #[Route('/delete-crypto/{id}', name: 'delete-crypto', methods: ['DELETE'])]
+    #[Route('/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Cryptocurrency $crypto): Response
     {
         $this->cryptoRepository->remove($crypto, true);

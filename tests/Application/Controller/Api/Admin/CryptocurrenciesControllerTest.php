@@ -9,13 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CryptocurrenciesControllerTest extends WebTestCase
 {
-    public const URL = '/api/admin';
+    public const URL = '/api/admin/crypto';
 
     public function testGettingCryptosAsGuest(): void
     {
         $client = self::createGuestApiClient();
 
-        $client->request('GET', self::URL . '/get-cryptos');
+        $client->request('GET', self::URL . '/get-all');
 
         $response = $client->getResponse();
 
@@ -26,7 +26,7 @@ class CryptocurrenciesControllerTest extends WebTestCase
     {
         $client = self::createAuthenticatedUserApiClient();
 
-        $client->request('GET', self::URL . '/get-cryptos');
+        $client->request('GET', self::URL . '/get-all');
 
         $response = $client->getResponse();
 
@@ -37,7 +37,7 @@ class CryptocurrenciesControllerTest extends WebTestCase
     {
         $client = self::createAuthenticatedAdminApiClient();
 
-        $client->request('GET', self::URL . '/get-cryptos');
+        $client->request('GET', self::URL . '/get-all');
 
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent(), true);
@@ -54,7 +54,7 @@ class CryptocurrenciesControllerTest extends WebTestCase
             'symbol' => 'BTC',
             'status' => CryptocurrencyConfig::ACTIVE
         ];
-        $url = self::URL . '/new-crypto';
+        $url = self::URL . '/new';
         $client->request('POST', $url, [], [], [], json_encode($data));
 
         $response = $client->getResponse();
@@ -74,7 +74,7 @@ class CryptocurrenciesControllerTest extends WebTestCase
             'symbol' => 'BTC',
             'status' => 'invalid_status'
         ];
-        $url = self::URL . '/new-crypto';
+        $url = self::URL . '/new';
         $client->request('POST', $url, [], [], [], json_encode($data));
 
         $response = $client->getResponse();
@@ -106,14 +106,14 @@ class CryptocurrenciesControllerTest extends WebTestCase
             'symbol' => 'DOGE',
             'status' => CryptocurrencyConfig::ACTIVE
         ];
-        $createUrl = self::URL . '/new-crypto';
+        $createUrl = self::URL . '/new';
         $client->request('POST', $createUrl, [], [], [], json_encode($data));
 
         $createResponse = $client->getResponse();
         $createResponseData = json_decode($createResponse->getContent(), true);
         $cryptoData = json_decode($createResponseData['crypto']);
 
-        $deleteUrl = self::URL . '/delete-crypto/' . $cryptoData->id;
+        $deleteUrl = self::URL . '/delete/' . $cryptoData->id;
         $client->reload();
         $client->request('DELETE', $deleteUrl);
         $deleteResponse = $client->getResponse();

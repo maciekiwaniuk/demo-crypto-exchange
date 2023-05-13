@@ -41,7 +41,7 @@ const symbol = ref<string>(''),
 
 const cryptos = reactive<any[]>([]);
 
-axiosInstance.get('api/admin/get-options-for-active-select')
+axiosInstance.get('api/admin/crypto/get-options-for-active-select')
     .then(response => {
         for (const [key, value] of Object.entries(response.data.options)) {
             activeOptions.push({
@@ -51,13 +51,13 @@ axiosInstance.get('api/admin/get-options-for-active-select')
         }
     });
 
-axiosInstance.get('api/admin/get-cryptos')
+axiosInstance.get('api/admin/crypto/get-all')
     .then(response => {
         Object.assign(cryptos, JSON.parse(response.data.cryptos));
     });
 
 const newCrypto = async () => {
-    await axiosInstance.post('api/admin/new-crypto', {
+    await axiosInstance.post('api/admin/crypto/new', {
         symbol: symbol.value,
         status: activeSelect.value
     })

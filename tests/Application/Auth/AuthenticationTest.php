@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\Security;
+namespace App\Tests\Application\Auth;
 
 use App\Config\User as UserConfig;
 use App\Entity\User;
