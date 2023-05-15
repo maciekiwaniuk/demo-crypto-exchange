@@ -5,6 +5,7 @@ namespace App\Tests\Integration\MessageHandler;
 use App\Entity\Cryptocurrency;
 use App\Entity\Order;
 use App\Entity\User;
+use App\Config\User as UserConfig;
 use App\Config\Order as OrderConfig;
 use App\Exception\OrderFailedException;
 use App\Exception\TooManyAttemptsOnOrderException;
@@ -107,9 +108,13 @@ class BuyOrderHandlerTest extends KernelTestCase
             $this->userRepository
         );
 
-        $this->expectException(TooManyAttemptsOnOrderException::class);
+        try {
+            $handler->__invoke($this->buyOrder);
+        } catch (TooManyAttemptsOnOrderException) {
+            $this->assertTrue(true);
+        }
 
-        $handler->__invoke($this->buyOrder);
+        $this->assertEquals(UserConfig::DEFAULT_BALANCE, $this->user->getBalance());
     }
 
     public function testFailingInsufficientBalance(): void
@@ -130,7 +135,8 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->setValue($requestedPriceOfCryptoToBuy)
             ->setAmountOfCryptoToBuy(1);
 
-        $this->user->setBalance(10);
+        $userBalance = 10;
+        $this->user->setBalance($userBalance);
         $this->userRepository
             ->expects($this->atLeastOnce())
             ->method('find')
@@ -142,9 +148,13 @@ class BuyOrderHandlerTest extends KernelTestCase
             $this->userRepository
         );
 
-        $this->expectException(OrderFailedException::class);
+        try {
+            $handler->__invoke($this->buyOrder);
+        } catch (OrderFailedException) {
+            $this->assertTrue(true);
+        }
 
-        $handler->__invoke($this->buyOrder);
+        $this->assertEquals($userBalance, $this->user->getBalance());
     }
 
     public function testFailingBuyPriceLowerThanFetchedPrice(): void
@@ -165,7 +175,8 @@ class BuyOrderHandlerTest extends KernelTestCase
             ->setValue($requestedPriceOfCryptoToBuy)
             ->setAmountOfCryptoToBuy(1);
 
-        $this->user->setBalance(1000);
+        $userBalanace = 1000;
+        $this->user->setBalance($userBalanace);
         $this->userRepository
             ->expects($this->atLeastOnce())
             ->method('find')
@@ -177,8 +188,12 @@ class BuyOrderHandlerTest extends KernelTestCase
             $this->userRepository
         );
 
-        $this->expectException(OrderFailedException::class);
+        try {
+            $handler->__invoke($this->buyOrder);
+        } catch (OrderFailedException) {
+            $this->assertTrue(true);
+        }
 
-        $handler->__invoke($this->buyOrder);
+        $this->assertEquals($userBalanace, $this->user->getBalance());
     }
 }

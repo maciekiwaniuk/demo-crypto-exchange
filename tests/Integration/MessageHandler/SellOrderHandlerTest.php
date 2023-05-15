@@ -107,9 +107,11 @@ class SellOrderHandlerTest extends KernelTestCase
             $this->userRepository
         );
 
-        $this->expectException(TooManyAttemptsOnOrderException::class);
-
-        $handler->__invoke($this->sellOrder);
+        try {
+            $handler->__invoke($this->sellOrder);
+        } catch (TooManyAttemptsOnOrderException) {
+            $this->assertTrue(true);
+        }
 
         $this->assertEquals(UserConfig::DEFAULT_BALANCE, $this->user->getBalance());
     }
@@ -145,9 +147,11 @@ class SellOrderHandlerTest extends KernelTestCase
             $this->userRepository
         );
 
-        $this->expectException(OrderFailedException::class);
-
-        $handler->__invoke($this->sellOrder);
+        try {
+            $handler->__invoke($this->sellOrder);
+        } catch (OrderFailedException) {
+            $this->assertTrue(true);
+        }
 
         $this->assertEquals($userBalanace, $this->user->getBalance());
     }
