@@ -6,6 +6,7 @@ use App\Entity\Cryptocurrency;
 use App\Entity\Order;
 use App\Config\Order as OrderConfig;
 use App\Entity\User;
+use App\Config\User as UserConfig;
 use App\Exception\OrderFailedException;
 use App\Exception\TooManyAttemptsOnOrderException;
 use App\Message\SellOrder;
@@ -58,10 +59,10 @@ class SellOrderHandlerTest extends KernelTestCase
             ->willReturn($currentPriceOfCrypto);
 
         $requestedPriceOfCrypto = 90;
-        $requestAmountOfCrypto = 1;
+        $requestedAmountOfCrypto = 1;
         $this->order
             ->setValue($requestedPriceOfCrypto)
-            ->setAmountOfCryptoToSell($requestAmountOfCrypto);
+            ->setAmountOfCryptoToSell($requestedAmountOfCrypto);
 
         $userBalance = 1000;
         $this->user->setBalance($userBalance);
@@ -78,7 +79,7 @@ class SellOrderHandlerTest extends KernelTestCase
 
         $handler->__invoke($this->sellOrder);
 
-        $finalProfit = $requestAmountOfCrypto * $requestedPriceOfCrypto;
+        $finalProfit = $requestedAmountOfCrypto * $requestedPriceOfCrypto;
         $balanceAfterTransaction = $userBalance + $finalProfit;
         $this->assertEquals($balanceAfterTransaction, $this->user->getBalance());
     }
@@ -109,6 +110,8 @@ class SellOrderHandlerTest extends KernelTestCase
         $this->expectException(TooManyAttemptsOnOrderException::class);
 
         $handler->__invoke($this->sellOrder);
+
+        $this->assertEquals(UserConfig::DEFAULT_BALANCE, $this->user->getBalance());
     }
 
     public function testFailingSellPriceHigherThanFetchedPrice(): void
@@ -129,7 +132,8 @@ class SellOrderHandlerTest extends KernelTestCase
             ->setValue($requestedPriceOfCryptoToSell)
             ->setAmountOfCryptoToSell(1);
 
-        $this->user->setBalance(1000);
+        $userBalanace = 1000;
+        $this->user->setBalance($userBalanace);
         $this->userRepository
             ->expects($this->atLeastOnce())
             ->method('find')
@@ -144,5 +148,7 @@ class SellOrderHandlerTest extends KernelTestCase
         $this->expectException(OrderFailedException::class);
 
         $handler->__invoke($this->sellOrder);
+
+        $this->assertEquals($userBalanace, $this->user->getBalance());
     }
 }
