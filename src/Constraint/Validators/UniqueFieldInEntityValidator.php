@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class UniqueFieldInEntityValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly ManagerRegistry $doctrine
+        protected readonly ManagerRegistry $doctrine
     ) {
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-enum User
+class User
 {
     // balance
     public const DEFAULT_BALANCE = 100_000;

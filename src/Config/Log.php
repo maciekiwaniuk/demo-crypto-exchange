@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-enum Log
+class Log
 {
     public const LOGIN = 'login';
     public const REGISTER = 'register';

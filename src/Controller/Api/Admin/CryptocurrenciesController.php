@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class CryptocurrenciesController extends AbstractController
 {
     public function __construct(
-        private readonly CryptocurrencyRepository $cryptoRepository,
-        private readonly SerializerInterface $serializer
+        protected readonly CryptocurrencyRepository $cryptoRepository,
+        protected readonly SerializerInterface $serializer
     ) {
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-enum Cryptocurrency
+class Cryptocurrency
 {
     public const ACTIVE = 'active';
     public const ACTIVE_TEXT = 'Active';

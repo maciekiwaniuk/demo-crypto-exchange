@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CryptocurrenciesController extends AbstractController
 {
     public function __construct(
-        private readonly CryptocurrenciesDataService $cryptoDataService,
+        protected readonly CryptocurrenciesDataService $cryptoDataService
     ) {
     }
 

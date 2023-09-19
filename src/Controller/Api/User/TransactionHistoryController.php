@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class TransactionHistoryController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        protected readonly SerializerInterface $serializer
     ) {
     }
 

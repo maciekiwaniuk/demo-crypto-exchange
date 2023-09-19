@@ -14,7 +14,7 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
     private Request $request;
 
     public function __construct(
-        private readonly UserRepository $userRepository
+        protected readonly UserRepository $userRepository
     ) {
     }
 

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class NewCryptocurrencyValueResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
-        private readonly ValidatorInterface $validator
+        protected readonly ValidatorInterface $validator
     ) {
     }
 

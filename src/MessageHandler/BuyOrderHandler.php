@@ -16,9 +16,9 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class BuyOrderHandler
 {
     public function __construct(
-        private readonly CryptocurrenciesDataService $cryptoDataService,
-        private readonly OrderRepository $orderRepository,
-        private readonly UserRepository $userRepository,
+        protected readonly CryptocurrenciesDataService $cryptoDataService,
+        protected readonly OrderRepository $orderRepository,
+        protected readonly UserRepository $userRepository
     ) {
     }
 

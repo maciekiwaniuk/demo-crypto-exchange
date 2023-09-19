@@ -1,5 +1,5 @@
-
 ###> symfony/framework-bundle ###
+.env
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -23,19 +23,9 @@ yarn-error.log
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 ###> phpunit/phpunit ###
-/phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-
-###> docker ###
-/mysql
-###< docker ###
 
 ###> notepad++ ###
 README.md.bak

@@ -9,7 +9,7 @@ class BinanceApiHttpClient
     const URL = 'https://api.binance.com/api/v3';
 
     public function __construct(
-        private readonly HttpClientInterface $client
+        protected readonly HttpClientInterface $client
     ) {
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-enum Order
+class Order
 {
     // type
     public const EXCHANGE_BETWEEN_CRYPTOS = 'exchange_between_cryptos';

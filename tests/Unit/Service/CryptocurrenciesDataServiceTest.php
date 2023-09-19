@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Integration\Service;
+namespace App\Tests\Unit\Service;
 
 use App\Entity\Cryptocurrency;
 use App\HttpClient\BinanceApiHttpClient;

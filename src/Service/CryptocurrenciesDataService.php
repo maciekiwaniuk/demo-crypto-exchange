@@ -12,8 +12,8 @@ use Psr\Log\LoggerInterface;
 class CryptocurrenciesDataService
 {
     public function __construct(
-        private readonly BinanceApiHttpClient $binanceApiHttpClient,
-        private readonly CryptocurrencyRepository $cryptoRepository
+        protected readonly BinanceApiHttpClient $binanceApiHttpClient,
+        protected readonly CryptocurrencyRepository $cryptoRepository
     ) {
     }
 
