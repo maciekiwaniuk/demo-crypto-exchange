@@ -21,15 +21,15 @@ Run docker
 
     docker-compose up -d
 
-Run environment file
+Copy environment file
 
     docker-compose exec php cp .env.dist .env
 
-Run composer
+Run composer install
 
     docker-compose exec php composer install
 	
-Run npm install command
+Run npm install
 
 	docker-compose exec php npm install
 	
